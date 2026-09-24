@@ -1,0 +1,86 @@
+name: Build & Deploy
+
+# Push a main: construye solo lo que cambió y lo despliega en la EC2.
+on:
+  push:
+    branches: [main]
+
+jobs:
+  # Marca qué partes del repo cambiaron. El resto de jobs lee estas salidas.
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      frontend: ${{ steps.filter.outputs.frontend }}
+      backend: ${{ steps.filter.outputs.backend }}
+      compose: ${{ steps.filter.outputs.compose }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            frontend:
+              - 'frontend/**'
+            compose:
+              - 'docker-compose.prod.yml'
+
+  # Publica el front. El login es para el push: una imagen pública igual exige autenticación.
+  build-frontend:
+    needs: changes
+    if: needs.changes.outputs.frontend == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          push: true
+          tags: |
+            404welldone/frontend:latest
+            404welldone/frontend:${{ github.sha }}
+
+  # Copia el compose y levanta los contenedores.
+  # Corre si algún build acabó bien, o si solo cambió el compose.
+  # No corre si un build falló o si se canceló el workflow.
+  deploy:
+    needs: [changes, build-frontend]
+    if: >-
+      always() && !cancelled() &&
+      needs.changes.result == 'success' &&
+      needs.build-frontend.result != 'failure' &&
+      (needs.build-frontend.result == 'success' || needs.changes.outputs.compose == 'true')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 2200
+          script: mkdir -p /home/ubuntu/welldone
+      # Solo el compose. .env.prod se queda en el servidor y no se sube desde el repo.
+      - uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 2200
+          source: docker-compose.prod.yml
+          target: /home/ubuntu/welldone
+          overwrite: true
+      - uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 2200
+          script: |
+            cd /home/ubuntu/welldone
+            docker compose -f docker-compose.prod.yml pull
+            docker compose -f docker-compose.prod.yml up -d
+            docker image prune -f
