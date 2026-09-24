@@ -28,6 +28,13 @@ docker-compose.prod.yml
 
 ## Dockerfile front Next.js
 
+- Loguearse en el repo de Docker via terminal
+  `docker login --username <username> --password <password>`
+- Hacer build de la imagen
+  `docker build -t <username>/<image_name>:<tag> -f Dockerfile .`
+- Subir la imagen al repositorio
+  `docker push <username>/<image_name>:<tag>`
+
 ```dockerfile
 FROM node:24.14.1-alpine AS build
 
@@ -130,6 +137,15 @@ server {
 ```
 
 ## Github Action
+
+### Declarar variables en el repo
+
+- En Settings->Secrets and variables->Actions->New repository secret
+
+### Añadir usuario a grupo 'docker'
+
+- `sudo usermod -aG docker "$USER"`
+- Cerrar sesión ssh y volver a entrar
 
 ```yml
 name: Build & Deploy
