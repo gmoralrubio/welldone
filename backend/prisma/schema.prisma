@@ -13,8 +13,46 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  surname   String
+  username  String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  articles Article[]
+}
+
+enum ArticleStatus {
+  DRAFT
+  PUBLISHED
+}
+
 model Article {
   id      Int    @id @default(autoincrement())
   title   String
   content String
+  intro   String
+  slug    String
+
+  status      ArticleStatus @default(DRAFT)
+  publishedAt DateTime?
+
+  featuredImageUrl String?
+  featuredVideoUrl String?
+
+  authorId Int?
+  author   User? @relation(fields: [authorId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // WHERE 
+  @@unique([authorId, slug])
+  @@index([authorId])
+  @@index([publishedAt])
+  @@index([status])
 }
