@@ -1,7 +1,8 @@
 {
-  "name": "kc-backend-avanzado-seed",
+  "name": "welldone-alicia-guille-rocio",
   "version": "1.0.0",
-  "description": "CRUD de libros con Express + PostgreSQL + Prisma",
+  "description": "Proyecto Final Keepcoding 20 Welldone",
+  "type": "module",
   "main": "dist/index.js",
   "scripts": {
     "start": "tsx watch src/index.ts",
