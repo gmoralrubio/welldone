@@ -11,7 +11,7 @@ interface ArticleProps extends EntityProps {
   publishedAt: Date | null;
   featuredImageUrl: string | null;
   featuredVideoUrl: string | null;
-  authorId: number | null;
+  authorId: number;
 }
 
 export class Article extends Entity {
@@ -23,7 +23,7 @@ export class Article extends Entity {
   readonly publishedAt: Date | null;
   readonly featuredImageUrl: string | null;
   readonly featuredVideoUrl: string | null;
-  readonly authorId: number | null;
+  readonly authorId: number;
 
   constructor(props: ArticleProps) {
     super({
