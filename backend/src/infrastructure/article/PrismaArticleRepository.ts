@@ -1,21 +1,40 @@
-
 //Infraestructura (programas para ejecutar los casos de uso)
 
-import { PrismaClient } from '@prisma/client';
-import { ArticleRepository } from '../../domain/article/ArticleRepository';
-import { Article } from '../../domain/article/Article';
+import prismaClient from '@infrastructure/shared/prisma-client';
+import { ArticleRepository } from '@domain/article/ArticleRepository';
+import { Article, ArticleStatus } from '@domain/article/Article';
 
-const prisma = new PrismaClient();
+interface PrismaArticle {
+  id: number;
+  authorId: number;
+  title: string;
+  content: string;
+  intro: string;
+  slug: string;
+  status: ArticleStatus;
+  publishedAt: Date | null;
+  featuredImageUrl: string | null;
+  featuredVideoUrl: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 export class PrismaArticleRepository implements ArticleRepository {
-  async getHelloArticle(): Promise<Article> {
-    
-    const firstArticle = await prisma.article.findFirst();
-    
-    if (firstArticle) {
-      return new Article(firstArticle.id, firstArticle.title, firstArticle.content);
-    }
-    
-    return new Article(0, "Hello World", "Comunicación Hexagonal Exitosa");
+  private readonly prisma = prismaClient;
+  private restore(prismaArticle: PrismaArticle): Article {
+    return new Article({
+      id: prismaArticle.id,
+      authorId: prismaArticle.authorId,
+      title: prismaArticle.title,
+      content: prismaArticle.content,
+      intro: prismaArticle.intro,
+      slug: prismaArticle.slug,
+      status: prismaArticle.status,
+      publishedAt: prismaArticle.publishedAt,
+      featuredImageUrl: prismaArticle.featuredImageUrl,
+      featuredVideoUrl: prismaArticle.featuredVideoUrl,
+      createdAt: prismaArticle.createdAt,
+      updatedAt: prismaArticle.updatedAt,
+    });
   }
 }
