@@ -1,5 +1,3 @@
-//Infraestructura (programas para ejecutar los casos de uso)
-
 import prismaClient from '@infrastructure/shared/prisma-client';
 import { ArticleRepository } from '@domain/article/ArticleRepository';
 import { Article, ArticleStatus } from '@domain/article/Article';
@@ -21,6 +19,20 @@ interface PrismaArticle {
 
 export class PrismaArticleRepository implements ArticleRepository {
   private readonly prisma = prismaClient;
+  async findPublishedByAuthorAndSlug(
+    authorId: number,
+    slug: string
+  ): Promise<Article | null> {
+    const prismaArticle = await this.prisma.article.findFirst({
+      where: { status: 'PUBLISHED', authorId, slug },
+    });
+
+    if (!prismaArticle) {
+      return null;
+    } else {
+      return this.restore(prismaArticle);
+    }
+  }
   private restore(prismaArticle: PrismaArticle): Article {
     return new Article({
       id: prismaArticle.id,
