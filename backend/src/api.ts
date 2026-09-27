@@ -1,16 +1,17 @@
-import express, { Request, Response } from "express";
-import { userRouter } from "./ui/user/routes/user-route.js";
+import express, { Request, Response } from 'express';
+import { userRouter } from './ui/user/routes/user-route.js';
+
+import { articlesRouter } from '@ui/article/routes/articles-routes';
 
 const api = express();
 
 api.use(express.json());
 
-api.use("/users", userRouter);
+api.use('/users', userRouter);
+api.use('/articles', articlesRouter);
 
-// api.use('/articles', articlesRouter);
-
-api.get("/health", (req: Request, res: Response) => {
-  res.json({ status: "ok" });
+api.get('/health', (req: Request, res: Response) => {
+  res.json({ status: 'ok' });
 });
 
 // TODO: implementar src/ui/shared/middlewares/error-handler-middleware.ts
