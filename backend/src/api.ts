@@ -14,6 +14,6 @@ api.get("/health", (req: Request, res: Response) => {
 });
 
 // TODO: implementar src/ui/shared/middlewares/error-handler-middleware.ts
-// api.use(errorHandlerMiddleware);
+// api.use(errorHandlerMiddleware)
 
 export default api;
