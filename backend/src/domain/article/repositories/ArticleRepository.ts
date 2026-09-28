@@ -2,7 +2,7 @@ import { Article } from '@domain/article/Article';
 
 export interface ArticleRepository {
   findPublishedByAuthorAndSlug(
-    authorId: number,
+    authorName: string,
     slug: string
   ): Promise<Article | null>;
 }

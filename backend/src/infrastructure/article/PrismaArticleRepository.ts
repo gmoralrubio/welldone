@@ -20,11 +20,11 @@ interface PrismaArticle {
 export class PrismaArticleRepository implements ArticleRepository {
   private readonly prisma = prismaClient;
   async findPublishedByAuthorAndSlug(
-    authorId: number,
+    authorName: string,
     slug: string
   ): Promise<Article | null> {
     const prismaArticle = await this.prisma.article.findFirst({
-      where: { status: 'PUBLISHED', authorId, slug },
+      where: { status: 'PUBLISHED', author: { username: authorName }, slug },
     });
 
     if (!prismaArticle) {

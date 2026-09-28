@@ -2,7 +2,7 @@ import { Article, ArticleStatus } from '@domain/article/Article';
 import { ArticleRepository } from '@domain/article/repositories/ArticleRepository';
 
 export interface FindArticleUseCaseInput {
-  authorId: number;
+  authorName: string;
   slug: string;
 }
 
