@@ -10,10 +10,15 @@ export const articleDetailController = async (
 ) => {
   const prismaArticleRepository = new PrismaArticleRepository();
   const findArticleUseCase = new FindArticleUseCase(prismaArticleRepository);
-  // TODO: a partir del authorName, obtener el authorID
   try {
     const { authorName, slug } = articleDetailValidationSchema.parse(
       req.params
     );
-  } catch {}
+
+    const article = await findArticleUseCase.execute({ authorName, slug });
+
+    res.status(200).json({ article });
+  } catch (error) {
+    next(error);
+  }
 };
