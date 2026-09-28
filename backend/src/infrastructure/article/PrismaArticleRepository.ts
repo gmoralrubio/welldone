@@ -1,5 +1,5 @@
 import prismaClient from '@infrastructure/shared/prisma-client';
-import { ArticleRepository } from '@domain/article/ArticleRepository';
+import { ArticleRepository } from '@domain/article/repositories/ArticleRepository';
 import { Article, ArticleStatus } from '@domain/article/Article';
 
 interface PrismaArticle {
