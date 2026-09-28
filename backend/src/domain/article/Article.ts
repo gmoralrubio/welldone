@@ -8,7 +8,7 @@ interface ArticleProps extends EntityProps {
   intro: string;
   slug: string;
   status: ArticleStatus;
-  publishedAt: Date | null;
+  publishedAt: Date;
   featuredImageUrl: string | null;
   featuredVideoUrl: string | null;
   authorId: number;
@@ -20,7 +20,7 @@ export class Article extends Entity {
   readonly intro: string;
   readonly slug: string;
   readonly status: ArticleStatus;
-  readonly publishedAt: Date | null;
+  readonly publishedAt: Date;
   readonly featuredImageUrl: string | null;
   readonly featuredVideoUrl: string | null;
   readonly authorId: number;
