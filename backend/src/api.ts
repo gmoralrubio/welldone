@@ -1,11 +1,16 @@
-import { Router } from 'express';
-import { PrismaArticleRepository } from './infrastructure/article/PrismaArticleRepository';
-import { ArticleController } from './ui/article/ArticleController';
+import express, { Request, Response } from 'express';
 
-export const apiRouter = Router();
+const api = express();
 
-const articleRepository = new PrismaArticleRepository();
-const articleController = new ArticleController(articleRepository);
+api.use(express.json());
 
+// api.use('/articles', articlesRouter);
 
-apiRouter.get('/hello', (req, res) => articleController.getHello(req, res));
+api.get('/health', (req: Request, res: Response) => {
+  res.json({ status: 'ok' });
+});
+
+// TODO: implementar src/ui/shared/middlewares/error-handler-middleware.ts
+// api.use(errorHandlerMiddleware);
+
+export default api;
