@@ -1,9 +1,14 @@
 import type { Metadata } from 'next';
-import { Public_Sans } from 'next/font/google';
+import { Plus_Jakarta_Sans, Newsreader } from 'next/font/google';
 import './globals.css';
 
-const publicSans = Public_Sans({
-  variable: '--font-public-sans',
+const plusJakartaSans = Plus_Jakarta_Sans({
+  variable: '--font-jakarta-sans',
+  subsets: ['latin'],
+});
+
+const newsreader = Newsreader({
+  variable: '--font-newsreader',
   subsets: ['latin'],
 });
 
@@ -16,7 +21,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html
       lang="en"
-      className={`${publicSans.variable} h-full antialiased`}
+      className={`${plusJakartaSans.variable} ${newsreader.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

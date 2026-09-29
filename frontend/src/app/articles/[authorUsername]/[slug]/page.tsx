@@ -1,6 +1,6 @@
 import { getArticleByAuthorAndSlug } from '@/app/articles/actions';
-import { formatDate } from '@/app/articles/article-presenters';
-import { Avatar, Breadcrumbs, Card, Separator } from '@heroui/react';
+import { formatDate, slugify } from '@/app/articles/article-presenters';
+import { Avatar, Breadcrumbs, Card, Chip, Separator } from '@heroui/react';
 import { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
@@ -37,15 +37,35 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
     <div className="flex flex-1 flex-col bg-background text-foreground">
       <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-6 py-10">
         <Breadcrumbs aria-label="Migas de pan">
-          <Breadcrumbs.Item href="/">Inicio</Breadcrumbs.Item>
-          <Breadcrumbs.Item href="/articles">Artículos</Breadcrumbs.Item>
-          <Breadcrumbs.Item>{article.title}</Breadcrumbs.Item>
+          <Breadcrumbs.Item
+            className="uppercase"
+            href="/"
+          >
+            <span className="text-xs">Inicio</span>
+          </Breadcrumbs.Item>
+          <Breadcrumbs.Item
+            className="uppercase"
+            href="/articles"
+          >
+            <span className="text-xs">Artículos</span>
+          </Breadcrumbs.Item>
+          <Breadcrumbs.Item className="uppercase">
+            <span className="text-xs">{slugify(article.title)}</span>
+          </Breadcrumbs.Item>
         </Breadcrumbs>
 
-        <header className="flex flex-col gap-4">
-          <h1 className="text-4xl font-semibold tracking-tight">{article.title}</h1>
+        <div className="flex gap-2">
+          <Chip className="rounded-none bg-accent">Desarrollo web</Chip>
+        </div>
 
-          <p className="text-lg leading-7 text-muted">{article.intro}</p>
+        <header className="flex flex-col gap-4">
+          <h1 className="text-6xl tracking-tight font-serif text-balance">
+            {article.title}
+          </h1>
+
+          <p className="text-xl leading-7 font-serif text-muted text-balance">
+            {article.intro}
+          </p>
 
           <div className="flex items-center gap-3">
             <Avatar size="sm">
