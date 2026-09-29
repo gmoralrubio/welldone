@@ -1,12 +1,11 @@
 import { type EntityProps, Entity } from "../shared/Entity.js";
-import { Article } from "../article/Article.js";
 
 interface UserProps extends EntityProps {
   email: string;
   password: string;
   name: string;
   surname: string;
-  articles: Article[];
+  username: string;
 }
 
 export class User extends Entity {
@@ -23,6 +22,6 @@ export class User extends Entity {
     this.password = props.password;
     this.name = props.name;
     this.surname = props.surname;
-    this.username = props.surname;
+    this.username = props.username;
   }
 }
