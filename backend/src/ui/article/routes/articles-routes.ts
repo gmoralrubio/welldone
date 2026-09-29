@@ -4,4 +4,4 @@ import { Router } from 'express';
 export const articlesRouter = Router();
 
 // Detalle artículo por authorName y slug
-articlesRouter.get('/:authorName/:slug', articleDetailController);
+articlesRouter.get('/:authorUsername/:slug', articleDetailController);

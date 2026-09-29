@@ -10,7 +10,7 @@ interface PrismaArticle {
   intro: string;
   slug: string;
   status: ArticleStatus;
-  publishedAt: Date | null;
+  publishedAt: Date;
   featuredImageUrl: string | null;
   featuredVideoUrl: string | null;
   createdAt: Date;
@@ -20,11 +20,15 @@ interface PrismaArticle {
 export class PrismaArticleRepository implements ArticleRepository {
   private readonly prisma = prismaClient;
   async findPublishedByAuthorAndSlug(
-    authorName: string,
+    authorUsername: string,
     slug: string
   ): Promise<Article | null> {
     const prismaArticle = await this.prisma.article.findFirst({
-      where: { status: 'PUBLISHED', author: { username: authorName }, slug },
+      where: {
+        status: 'PUBLISHED',
+        author: { username: authorUsername },
+        slug,
+      },
     });
 
     if (!prismaArticle) {

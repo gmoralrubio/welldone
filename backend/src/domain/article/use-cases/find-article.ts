@@ -1,10 +1,10 @@
-import { Article, ArticleStatus } from '@domain/article/Article';
+import { Article } from '@domain/article/Article';
 import { ArticleRepository } from '@domain/article/repositories/ArticleRepository';
 import { BusinessConflictError } from '@domain/errors/BusinessConflictError';
 import { EntityNotFoundError } from '@domain/errors/EntityNotFoundError';
 
 export interface FindArticleUseCaseInput {
-  authorName: string;
+  authorUsername: string;
   slug: string;
 }
 
@@ -15,9 +15,9 @@ export class FindArticleUseCase {
     this.articleRepository = articleRepository;
   }
 
-  async execute(params: FindArticleUseCaseInput): Promise<Article | null> {
+  async execute(params: FindArticleUseCaseInput): Promise<Article> {
     const article = await this.articleRepository.findPublishedByAuthorAndSlug(
-      params.authorName,
+      params.authorUsername,
       params.slug
     );
 

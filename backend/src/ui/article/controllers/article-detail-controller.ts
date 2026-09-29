@@ -11,12 +11,11 @@ export const articleDetailController = async (
   const prismaArticleRepository = new PrismaArticleRepository();
   const findArticleUseCase = new FindArticleUseCase(prismaArticleRepository);
   try {
-    const { authorName, slug } = articleDetailValidationSchema.parse(
+    const { authorUsername, slug } = articleDetailValidationSchema.parse(
       req.params
     );
 
-    const article = await findArticleUseCase.execute({ authorName, slug });
-
+    const article = await findArticleUseCase.execute({ authorUsername, slug });
     res.status(200).json({ article });
   } catch (error) {
     next(error);
