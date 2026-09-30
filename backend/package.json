@@ -12,7 +12,9 @@
     "prettier:fix": "prettier --write src/",
     "typecheck": "tsc --noEmit",
     "test": "jest --runInBand --forceExit",
-    "prisma:sync": "npx prisma migrate dev"
+    "prisma:sync": "npx prisma migrate dev",
+    "prisma:seed": "tsx prisma/seed.ts",
+    "prisma:reset": "npx prisma migrate reset"
   },
   "keywords": [],
   "author": "",

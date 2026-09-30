@@ -52,7 +52,8 @@
 
   /* Font Family */
   /* Make sure to load Public Sans font in your app */
-  --font-sans: var(--font-public-sans);
+  --font-sans: var(--font-jakarta-sans);
+  --font-serif: var(--font-newsreader);
 }
 
 .dark,
