@@ -7,14 +7,14 @@ const router = express.Router();
 
 router.use(express.json());
 
-api.use('/users', userRouter);
-api.use('/articles', articlesRouter);
+api.use('/api', router);
+
+router.use('/users', userRouter);
+router.use('/articles', articlesRouter);
 
 router.get('/health', (req: Request, res: Response) => {
   res.json({ status: 'ok' });
 });
-
-api.use('/api', router);
 
 // TODO: implementar src/ui/shared/middlewares/error-handler-middleware.ts
 
