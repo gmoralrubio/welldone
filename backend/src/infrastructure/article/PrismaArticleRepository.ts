@@ -2,6 +2,13 @@ import prismaClient from '@infrastructure/shared/prisma-client';
 import { ArticleRepository } from '@domain/article/repositories/ArticleRepository';
 import { Article, ArticleStatus } from '@domain/article/Article';
 
+interface PrismaArticleAuthor {
+  id: number;
+  name: string;
+  surname: string;
+  username: string;
+}
+
 interface PrismaArticle {
   id: number;
   authorId: number;
@@ -15,6 +22,7 @@ interface PrismaArticle {
   featuredVideoUrl: string | null;
   createdAt: Date;
   updatedAt: Date;
+  author: PrismaArticleAuthor;
 }
 
 export class PrismaArticleRepository implements ArticleRepository {
@@ -28,6 +36,16 @@ export class PrismaArticleRepository implements ArticleRepository {
         status: 'PUBLISHED',
         author: { username: authorUsername },
         slug,
+      },
+      include: {
+        author: {
+          select: {
+            id: true,
+            name: true,
+            surname: true,
+            username: true,
+          },
+        },
       },
     });
 
@@ -51,6 +69,12 @@ export class PrismaArticleRepository implements ArticleRepository {
       featuredVideoUrl: prismaArticle.featuredVideoUrl,
       createdAt: prismaArticle.createdAt,
       updatedAt: prismaArticle.updatedAt,
+      author: {
+        id: prismaArticle.author.id,
+        name: prismaArticle.author.name,
+        surname: prismaArticle.author.surname,
+        username: prismaArticle.author.username,
+      },
     });
   }
 }
