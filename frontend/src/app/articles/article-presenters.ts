@@ -1,5 +1,7 @@
-const dateFormatter = new Intl.DateTimeFormat('en', {
-  dateStyle: 'medium',
+const dateFormatter = new Intl.DateTimeFormat('es', {
+  day: '2-digit',
+  month: 'long',
+  year: 'numeric',
 });
 
 export function formatDate(isoDate: string): string {
@@ -24,4 +26,8 @@ export function slugify(input: string): string {
   slug = slug.replace(/[\s-]+/g, '-');
 
   return slug;
+}
+
+export function formatAvatarLetter(authorName: string, authorSurname: string): string {
+  return authorName.charAt(0).toUpperCase().concat(authorSurname.charAt(0).toUpperCase());
 }
