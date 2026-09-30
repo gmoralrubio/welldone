@@ -13,7 +13,8 @@ export function PaginationSimplePrevNext() {
   const endItem = Math.min(page * itemsPerPage, totalItems);
 
   return (
-    <Pagination className="w-full">
+    // Center the pagination
+    <Pagination className="w-full justify-center">
       <Pagination.Summary>
         {startItem} a {endItem} de {totalItems} comentarios
       </Pagination.Summary>

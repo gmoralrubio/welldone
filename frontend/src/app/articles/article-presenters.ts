@@ -8,13 +8,14 @@ export function formatDate(isoDate: string): string {
   return dateFormatter.format(new Date(isoDate));
 }
 
+export function truncateSlug(slug: string): string {
+  return slug.length > 20 ? slug.substring(0, 20) + '...' : slug;
+}
+
 export function slugify(input: string): string {
   if (!input) return '';
 
   let slug = input.toLowerCase().trim();
-
-  // el slug se limita a 10 palabras
-  slug = slug.split(/\s+/).slice(0, 8).join(' ');
 
   // elimina acentos
   slug = slug.normalize('NFD').replace(/[\u0300-\u036f]/g, '');

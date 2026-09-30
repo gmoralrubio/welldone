@@ -3,6 +3,7 @@ import {
   formatAvatarLetter,
   formatDate,
   slugify,
+  truncateSlug,
 } from '@/app/articles/article-presenters';
 import {
   Avatar,
@@ -95,7 +96,7 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
             <span className="text-xs">Artículos</span>
           </Breadcrumbs.Item>
           <Breadcrumbs.Item className="uppercase">
-            <span className="text-xs">{slugify(article.title)}</span>
+            <span className="text-xs">{truncateSlug(slugify(article.title))}</span>
           </Breadcrumbs.Item>
         </Breadcrumbs>
 
@@ -104,15 +105,15 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
         </div>
 
         <header className="flex flex-col gap-4">
-          <h1 className="text-6xl tracking-tight font-serif text-balance">
+          <h1 className="text-4xl xs:text-5xl sm:text-6xl tracking-tight font-serif text-balance">
             {article.title}
           </h1>
 
-          <p className="text-xl leading-7 font-serif text-muted text-balance">
+          <p className="text-lg xs:text-xl leading-7 font-serif text-muted text-balance">
             {article.intro}
           </p>
 
-          <Card className="flex flex-row justify-between items-center gap-3 my-2">
+          <Card className="flex flex-col sm:flex-row justify-between xs:items-center gap-3 my-2">
             <div className="flex flex-row gap-2">
               <Avatar
                 size="md"
@@ -238,8 +239,8 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
             <h4 className="uppercase text-sm font-medium text-muted">
               Más historias de {article.author.name} {article.author.surname}
             </h4>
-            <div className="pt-2 flex gap-4">
-              <Card className="w-1/2 p-6 flex flex-col justify-between hover:shadow-md transition-shadow group">
+            <div className="pt-2 flex flex-col sm:flex-row gap-4">
+              <Card className="w-full sm:w-1/2 p-6 flex flex-col justify-between hover:shadow-md transition-shadow group">
                 <div>
                   <span className="uppercase text-xs font-medium text-accent">
                     Diseño web
@@ -252,7 +253,7 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
                   15 de enero de 2026 | 16 likes
                 </span>
               </Card>
-              <Card className="w-1/2 p-6 flex flex-col justify-between hover:shadow-md transition-shadow group">
+              <Card className="w-full sm:w-1/2 p-6 flex flex-col justify-between hover:shadow-md transition-shadow group">
                 <CardContent>
                   <div>
                     <span className="uppercase text-xs font-medium text-accent">
@@ -438,7 +439,12 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
                 </Card>
               </div>
             </Card>
-            <PaginationSimplePrevNext />
+            <div className="flex justify-center">
+              {/* Center the pagination */}
+              <div className="flex justify-center">
+                <PaginationSimplePrevNext />
+              </div>
+            </div>
           </div>
         </section>
       </main>
