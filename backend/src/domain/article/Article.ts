@@ -9,6 +9,12 @@ export interface ArticleAuthor {
   username: string;
 }
 
+export interface ArticleCategory {
+  id: number;
+  name: string;
+  slug: string;
+}
+
 interface ArticleProps extends EntityProps {
   title: string;
   content: string;
@@ -20,6 +26,7 @@ interface ArticleProps extends EntityProps {
   featuredVideoUrl: string | null;
   authorId: number;
   author: ArticleAuthor;
+  categories?: ArticleCategory[];
 }
 
 export class Article extends Entity {
@@ -33,6 +40,7 @@ export class Article extends Entity {
   readonly featuredVideoUrl: string | null;
   readonly authorId: number;
   readonly author: ArticleAuthor;
+  readonly categories: ArticleCategory[];
 
   constructor(props: ArticleProps) {
     super({
@@ -51,5 +59,6 @@ export class Article extends Entity {
     this.featuredVideoUrl = props.featuredVideoUrl;
     this.authorId = props.authorId;
     this.author = props.author;
+    this.categories = props.categories || [];
   }
 }
