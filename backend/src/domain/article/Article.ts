@@ -2,6 +2,13 @@ import { EntityProps, Entity } from '@domain/shared/Entity.js';
 
 export type ArticleStatus = 'DRAFT' | 'PUBLISHED';
 
+export interface ArticleAuthor {
+  id: number;
+  name: string;
+  surname: string;
+  username: string;
+}
+
 interface ArticleProps extends EntityProps {
   title: string;
   content: string;
@@ -12,6 +19,7 @@ interface ArticleProps extends EntityProps {
   featuredImageUrl: string | null;
   featuredVideoUrl: string | null;
   authorId: number;
+  author: ArticleAuthor;
 }
 
 export class Article extends Entity {
@@ -24,6 +32,7 @@ export class Article extends Entity {
   readonly featuredImageUrl: string | null;
   readonly featuredVideoUrl: string | null;
   readonly authorId: number;
+  readonly author: ArticleAuthor;
 
   constructor(props: ArticleProps) {
     super({
@@ -41,5 +50,6 @@ export class Article extends Entity {
     this.featuredImageUrl = props.featuredImageUrl;
     this.featuredVideoUrl = props.featuredVideoUrl;
     this.authorId = props.authorId;
+    this.author = props.author;
   }
 }
