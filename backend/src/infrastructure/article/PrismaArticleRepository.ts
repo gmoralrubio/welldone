@@ -1,6 +1,16 @@
 import prismaClient from '@infrastructure/shared/prisma-client';
-import { ArticleRepository, CreateArticleParams } from '@domain/article/repositories/ArticleRepository';
-import { Article, ArticleStatus, ArticleCategory } from '@domain/article/Article';
+import {
+  ArticleRepository,
+  CreateArticleParams,
+} from '@domain/article/repositories/ArticleRepository';
+import {
+  Article,
+  ArticleStatus,
+  ArticleCategory,
+} from '@domain/article/Article';
+
+import { FindArticlesResponse } from '@domain/article/types/FindArticlesResponse';
+import { FindPublishedArticlesUseCaseInput } from '@domain/article/use-cases/find-published-articles';
 
 interface PrismaArticleAuthor {
   id: number;
@@ -27,6 +37,51 @@ interface PrismaArticle {
 }
 
 export class PrismaArticleRepository implements ArticleRepository {
+  async findPublishedArticles(
+    criteria: FindPublishedArticlesUseCaseInput
+  ): Promise<FindArticlesResponse> {
+    const { page, limit } = criteria;
+
+    const where: Record<string, unknown> = {};
+    if (criteria.search) {
+      where.OR = [
+        { title: { contains: criteria.search, mode: 'insensitive' as const } },
+        { author: { contains: criteria.search, mode: 'insensitive' as const } },
+      ];
+    }
+
+    if (criteria.authorId) {
+      where.authorId = criteria.authorId;
+    }
+
+    const now = new Date();
+
+    const [articlesPrisma, articlesCount] = await Promise.all([
+      await this.prisma.article.findMany({
+        where: { ...where, status: 'PUBLISHED', publishedAt: { lt: now } },
+        skip: (page - 1) * limit,
+        take: limit,
+        include: {
+          author: {
+            select: {
+              id: true,
+              name: true,
+              surname: true,
+              username: true,
+            },
+          },
+        },
+      }),
+      this.prisma.article.count({ where }),
+    ]);
+
+    const articles = articlesPrisma.map((article) => this.restore(article));
+
+    return {
+      articles,
+      total: articlesCount,
+    };
+  }
   private readonly prisma = prismaClient;
   async findPublishedByAuthorAndSlug(
     authorUsername: string,
@@ -51,9 +106,9 @@ export class PrismaArticleRepository implements ArticleRepository {
           select: {
             id: true,
             name: true,
-            slug: true
-          }
-        }
+            slug: true,
+          },
+        },
       },
     });
 
@@ -77,12 +132,14 @@ export class PrismaArticleRepository implements ArticleRepository {
         featuredVideoUrl: params.featuredVideoUrl,
         authorId: params.authorId,
         categories: {
-          connect: params.categoryIds.map(id => ({ id }))
-        }
+          connect: params.categoryIds.map((id) => ({ id })),
+        },
       },
       include: {
-        author: { select: { id: true, name: true, surname: true, username: true } },
-        categories: { select: { id: true, name: true, slug: true } }
+        author: {
+          select: { id: true, name: true, surname: true, username: true },
+        },
+        categories: { select: { id: true, name: true, slug: true } },
       },
     });
 
@@ -109,7 +166,7 @@ export class PrismaArticleRepository implements ArticleRepository {
         surname: prismaArticle.author.surname,
         username: prismaArticle.author.username,
       },
-      categories : prismaArticle.categories || [],
+      categories: prismaArticle.categories || [],
     });
   }
 }
