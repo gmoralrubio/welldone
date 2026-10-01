@@ -54,7 +54,8 @@ export async function generateMetadata({
 }
 
 {
-  /* TODO: 
+  /* TODO:
+    - Loading
     - Incluir categorías
     - Imagen de Avatar
     - Calcular seguidores
