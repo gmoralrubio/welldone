@@ -274,7 +274,7 @@ jobs:
   POSTGRES_DB=WelldoneApi
   ```
 
-- `.env.back` -> se le pasa a los servicios `back` y `migrate` vía `env_file` en `docker-compose.prod.yml`
+- `.env.back` -> se le pasa a los servicios `backend` y `migrate` vía `env_file` en `docker-compose.prod.yml`
   - Se inyecta como variables de entorno dentro del contenedor cuando arranca
   - Son las que valida `EnvironmentService`. `DATABASE_URL` apunta al servicio `postgres` y usa
     el mismo usuario/clave/BD que el `.env` de arriba. Maildev no va a producción, así que
@@ -287,6 +287,19 @@ jobs:
   PORT=4000
   JWT_SECRET=<secreto-largo-y-aleatorio>
   ```
+
+> **Cuidado con el `$` en las contraseñas.** Docker Compose interpola `${VAR}` también en los
+> `.env`, así que un `$` literal en una contraseña se interpreta como variable y se pierde (verás
+> un aviso tipo `The "nJ" variable is not set`). Si la contraseña lleva `$`, escríbelo duplicado
+> (`$$`) en el archivo; dentro del contenedor queda un solo `$`. Lo más simple es usar contraseñas
+> sin `$` ni `@`. Esto aplica tanto a `POSTGRES_PASSWORD` en `.env` como a `DATABASE_URL` en
+> `.env.back`, y ambas deben coincidir.
+
+> **Las credenciales de Postgres solo se fijan al crear el volumen.** `POSTGRES_USER` y
+> `POSTGRES_PASSWORD` solo tienen efecto la primera vez que `postgres_data` está vacío. Cambiarlas
+> en el `.env` cuando el volumen ya existe no actualiza al usuario, y la migración fallará con
+> `P1000: Authentication failed`. Para aplicar credenciales nuevas hay que recrear el volumen
+> (ver "Empezar de cero").
 
 ## Notas deploy
 
@@ -306,3 +319,77 @@ Cosas que el workflow no puede hacer y hay que dejar listas una sola vez:
   anterior). No se suben desde el repo; solo se copia `docker-compose.prod.yml`.
 - Configurar Nginx con el `proxy_pass` de `/api/` sin barra final (ver sección nginx).
 - Verificar que los cinco secrets de arriba existen en el repo de GitHub.
+
+## Operación y troubleshooting
+
+### Nombres de servicio vs contenedor
+
+Los servicios `backend` y `frontend` tienen el mismo `container_name` que su nombre de servicio.
+Los de infraestructura no: el servicio `postgres` crea el contenedor `welldone_postgres`, `redis`
+crea `welldone_redis` y `migrate` crea `welldone_migrate`. Los comandos de Compose usan el nombre de
+servicio; `docker ...` y la columna NAMES de `docker ps` usan el del contenedor.
+
+```bash
+docker compose -f docker-compose.prod.yml logs backend    # servicio
+docker logs welldone_postgres                             # contenedor (nombre con prefijo)
+```
+
+Nota: si Compose responde `no such service: backend`, es que en la EC2 está el compose antiguo (el
+que solo definía `front`). Asegúrate de que el `docker-compose.prod.yml` del servidor es el que
+define `postgres`, `redis`, `migrate`, `backend` y `frontend`.
+
+### El servicio `migrate`
+
+`migrate` ejecuta `prisma migrate deploy` una sola vez y termina; es normal verlo en
+`Exited (0)`. Tiene `restart: "no"`, así que no se relanza solo. El servicio `backend` depende de que
+`migrate` salga con código 0, de modo que si la migración falla, `backend` ni siquiera se crea.
+
+Reintentar la migración tras corregir el `.env.back`:
+
+```bash
+docker compose -f docker-compose.prod.yml rm -f migrate
+docker compose -f docker-compose.prod.yml up -d --force-recreate migrate
+docker compose -f docker-compose.prod.yml logs migrate
+```
+
+### Empezar de cero
+
+Borra contenedores y el volumen de Postgres (se pierden los datos). Imágenes y `.env` se conservan:
+
+```bash
+docker compose -f docker-compose.prod.yml down -v --remove-orphans
+docker compose -f docker-compose.prod.yml pull
+docker compose -f docker-compose.prod.yml up -d
+```
+
+Al estar vacío el volumen, Postgres se inicializa con el `POSTGRES_USER`/`POSTGRES_PASSWORD`
+actuales del `.env`.
+
+### Estado esperado tras un deploy correcto
+
+```bash
+docker compose -f docker-compose.prod.yml ps -a
+```
+
+- `backend` y `frontend`: `Up` (backend además `(healthy)`).
+- `welldone_postgres` y `welldone_redis`: `Up (healthy)`.
+- `welldone_migrate`: `Exited (0)`.
+
+### Cargar datos de ejemplo (seed)
+
+El contenedor `migrate` solo aplica el esquema (`prisma migrate deploy`), no inserta datos. Para
+cargar el usuario y artículo de ejemplo de `prisma/seed.ts` hay que lanzarlo a mano. `tsx` no está
+en la imagen de producción, así que `npx` lo descarga en el momento:
+
+```bash
+docker compose -f docker-compose.prod.yml exec backend npx tsx prisma/seed.ts
+```
+
+Verificar que el artículo responde:
+
+```bash
+curl -sS -o /dev/null -w '%{http_code}\n' \
+  http://127.0.0.1:4000/api/articles/jdoe/el-renacimiento-de-la-arquitectura-de-software-patrones
+```
+
+Un `200` indica que el seed cargó y la URL pública ya muestra el artículo.

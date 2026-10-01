@@ -42,7 +42,7 @@ services:
     networks:
       - welldone_net
 
-  back:
+  backend:
     image: 404welldone/backend:latest
     container_name: backend
     env_file:
@@ -64,15 +64,15 @@ services:
     networks:
       - welldone_net
 
-  front:
+  frontend:
     image: 404welldone/frontend:latest
     container_name: frontend
     environment:
-      API_URL: http://back:4000
+      API_URL: http://backend:4000
     ports:
       - '127.0.0.1:3000:3000'
     depends_on:
-      - back
+      - backend
     restart: always
     networks:
       - welldone_net
