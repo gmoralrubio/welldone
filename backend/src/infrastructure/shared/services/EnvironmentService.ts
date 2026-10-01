@@ -10,7 +10,7 @@ const environmentVariablesValidator = z.object({
   PORT: z.coerce.number(),
   REDIS_URL: z.url(),
   MAILDEV_HOST: z.string().optional(),
-  MAILDEV_PORT: z.coerce.number().optional(),
+  MAILDEV_PORT: z.string().optional(),
 });
 
 type EnvironmentVariables = z.infer<typeof environmentVariablesValidator>;
