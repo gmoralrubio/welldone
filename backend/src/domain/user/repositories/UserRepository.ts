@@ -6,4 +6,5 @@ export interface UserRepository {
   findByEmail: (email: string) => Promise<User | null>;
   findById: (id: number) => Promise<User | null>;
   create: (params: CreateUserUseCaseInput) => Promise<User>;
+  delete: (id: number) => Promise<void>;
 }

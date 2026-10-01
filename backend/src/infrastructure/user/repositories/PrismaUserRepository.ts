@@ -74,6 +74,14 @@ export class PrismaUserRepository implements UserRepository {
     return this.restore(user);
   }
 
+  async delete(id: number): Promise<void> {
+    await this.prismaClient.user.delete({
+      where: {
+        id,
+      },
+    });
+  }
+
   private restore(prismaUser: PrismaUser): User {
     return new User({
       id: prismaUser.id,
