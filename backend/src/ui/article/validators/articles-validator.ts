@@ -1,5 +1,15 @@
 import { z } from 'zod';
 
+export const findArticlesValidationSchema = z.object({
+  page: z.coerce.number('Invalid page. Must be a number').positive().default(1),
+  limit: z.coerce
+    .number('Invalid limit. Must be a number')
+    .positive()
+    .max(100)
+    .default(10),
+  search: z.string().min(3).optional(),
+});
+
 export const articleDetailValidationSchema = z.object({
   authorUsername: z
     .string('Author is required')
