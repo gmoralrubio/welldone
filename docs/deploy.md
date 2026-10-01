@@ -121,8 +121,10 @@ networks:
 server {
     listen 80;
     server_name dominio.com;
+    # Sin barra final en proxy_pass: así se conserva el prefijo /api y la app recibe /api/...
+    # Con barra (http://127.0.0.1:4000/) nginx quita /api y /api/health llegaría como /health (404).
     location /api/ {
-        proxy_pass http://127.0.0.1:4000/;
+        proxy_pass http://127.0.0.1:4000;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
@@ -263,38 +265,44 @@ jobs:
 
 ## Archivos .env
 
-- `.env` -> mismo directorio `docker-compose.prod.yml`
-  - Sustituye las variables `${}`
+- `.env` -> mismo directorio que `docker-compose.prod.yml` (`/home/ubuntu/welldone/`)
+  - Lo leen las interpolaciones `${}` del compose (servicio `postgres`)
 
   ```
   POSTGRES_USER=user
   POSTGRES_PASSWORD=password
+  POSTGRES_DB=WelldoneApi
   ```
 
-- `.env.back` -> se le pasa al contenedor `back` vía `env_file` en `docker-compose.prod.yml`:
-  - Se inyecta como variables de entorno dentro del contenedor del back cuando arranca
+- `.env.back` -> se le pasa a los servicios `back` y `migrate` vía `env_file` en `docker-compose.prod.yml`
+  - Se inyecta como variables de entorno dentro del contenedor cuando arranca
+  - Son las que valida `EnvironmentService`. `DATABASE_URL` apunta al servicio `postgres` y usa
+    el mismo usuario/clave/BD que el `.env` de arriba. Maildev no va a producción, así que
+    `MAILDEV_HOST`/`MAILDEV_PORT` se omiten (son opcionales).
 
   ```
-  DATABASE_URL=postgresql://user:password@postgres:5432/DB_name
+  DATABASE_URL=postgresql://user:password@postgres:5432/WelldoneApi
   REDIS_URL=redis://redis:6379
   NODE_ENV=production
   PORT=4000
-
-  SMTP_HOST=...
-  SMTP_PORT=...
-  SMTP_USER=...
-  SMTP_PASSWORD=...
-
-  JWT_SECRET=...
+  JWT_SECRET=<secreto-largo-y-aleatorio>
   ```
 
 ## Notas deploy
 
-- Secrets github:
+- Secrets github (Settings -> Secrets and variables -> Actions):
   - DOCKERHUB_USER
   - DOCKERHUB_TOKEN
   - EC2_HOST
   - EC2_USER
   - EC2_SSH_KEY
-- `docker-compose.prod.yml` + `prod.env` +
-  Subir manualmente a antes del primer deploy
+
+### Preparación manual antes del primer deploy
+
+Cosas que el workflow no puede hacer y hay que dejar listas una sola vez:
+
+- Crear en Docker Hub los repos `404welldone/frontend` y `404welldone/backend`.
+- En la EC2, dentro de `/home/ubuntu/welldone/`, crear a mano `.env` y `.env.back` (ver sección
+  anterior). No se suben desde el repo; solo se copia `docker-compose.prod.yml`.
+- Configurar Nginx con el `proxy_pass` de `/api/` sin barra final (ver sección nginx).
+- Verificar que los cinco secrets de arriba existen en el repo de GitHub.

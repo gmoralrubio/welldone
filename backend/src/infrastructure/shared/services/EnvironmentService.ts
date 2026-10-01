@@ -9,8 +9,8 @@ const environmentVariablesValidator = z.object({
   NODE_ENV: z.enum(['local', 'staging', 'production', 'test']),
   PORT: z.coerce.number(),
   REDIS_URL: z.url(),
-  MAILDEV_HOST: z.string(),
-  MAILDEV_PORT: z.coerce.number(),
+  MAILDEV_HOST: z.string().optional(),
+  MAILDEV_PORT: z.coerce.number().optional(),
 });
 
 type EnvironmentVariables = z.infer<typeof environmentVariablesValidator>;

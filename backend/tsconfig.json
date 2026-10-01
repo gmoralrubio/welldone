@@ -13,7 +13,7 @@
     "sourceMap": true,
     "types": ["jest", "node"],
     "paths": {
-      "@*": ["./src/*"],
+      "@api": ["./src/api.ts"],
       "@domain/*": ["./src/domain/*"],
       "@infrastructure/*": ["./src/infrastructure/*"],
       "@ui/*": ["./src/ui/*"]

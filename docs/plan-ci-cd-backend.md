@@ -6,13 +6,13 @@ backend compile y arranque en producción.
 
 ## Tareas
 
-- [ ] **fix-build** — Corregir las dos llamadas a `new Article()` en `PrismaArticleRepository.ts` para que pasen un objeto `ArticleProps` completo, normalizando `featuredImageUrl`/`featuredVideoUrl` nullable con `?? ''`.
-- [ ] **fix-runtime** — Hacer que `dist/index.js` arranque: quitar `"type": "module"` de `backend/package.json`, poner `start` en `node dist/index.js` y `dev` en `tsx watch`, cambiar `build` a `prisma generate && tsc && tsc-alias`, añadir `tsc-alias` a `devDependencies`, mover `prisma` a `dependencies`, añadir `--passWithNoTests` al script `test`, y añadir `baseUrl: "."` en `tsconfig.json`.
-- [ ] **docker-backend** — Crear `backend/.dockerignore` y `backend/Dockerfile` multi-stage con `node:24.20.0-alpine`.
-- [ ] **compose-prod** — Ampliar `docker-compose.prod.yml` con `postgres`, `redis`, el servicio `migrate` y `back`; añadir `API_URL=http://back:4000` al servicio `front`.
-- [ ] **workflow** — Actualizar `.github/workflows/aws.yml`: trigger `pull_request`, `permissions`, `concurrency`, el filtro `backend` que falta, los jobs `ci-backend`/`ci-frontend`/`build-backend`, la guarda de `deploy` y el smoke test de `/health`.
-- [ ] **docs-env** — Actualizar `backend/.env.example` con las siete variables que valida `EnvironmentService` y documentar en `docs/deploy.md` la preparación manual de la EC2.
-- [ ] **verify** — Verificar en local que `npm ci && npm run build && node dist/index.js` arranca y que `docker build ./backend` termina bien.
+- [x] **fix-build** — `PrismaArticleRepository.ts` construye `new Article({...})` con la forma de objeto y normaliza `featuredImageUrl`/`featuredVideoUrl` nullable con `?? ''`. El typecheck pasa.
+- [x] **fix-runtime** — Hacer que `dist/index.js` arranque: quitar `"type": "module"` de `backend/package.json`, poner `start` en `node dist/index.js` y `dev` en `tsx watch`, cambiar `build` a `prisma generate && tsc && tsc-alias`, añadir `tsc-alias` a `devDependencies`, mover `prisma` a `dependencies`, añadir `--passWithNoTests` al script `test`. No añadir `baseUrl`: TypeScript 6 lo marca como obsoleto (`TS5101`) y los `paths` relativos no lo necesitan. Además, sustituir el comodín `"@*"` por `"@api"` para que no colisione con paquetes npm con scope, e ignorar `dist/` en `backend/.gitignore`.
+- [x] **docker-backend** — Crear `backend/.dockerignore` y `backend/Dockerfile` multi-stage con `node:24.20.0-alpine`.
+- [x] **compose-prod** — Ampliar `docker-compose.prod.yml` con `postgres`, `redis`, el servicio `migrate` y `back`; añadir `API_URL=http://back:4000` al servicio `front`. Sin Maildev: `MAILDEV_HOST`/`MAILDEV_PORT` pasan a opcionales en `EnvironmentService`.
+- [x] **workflow** — Actualizar `.github/workflows/aws.yml`: trigger `pull_request`, `permissions`, `concurrency`, el filtro `backend` que falta, los jobs `ci-backend`/`ci-frontend`/`build-backend`, la guarda de `deploy` y el smoke test de `/api/health`. Validado con actionlint.
+- [x] **docs-env** — Actualizar `backend/.env.example` con las siete variables que valida `EnvironmentService` y documentar en `docs/deploy.md` la preparación manual de la EC2.
+- [x] **verify** — `npm run build && node dist/index.js` arranca y responde en `/api/health`; `docker build ./backend` termina bien y la imagen contiene `dist/`, `bcrypt` y `@prisma/client` sin arrastrar `.env`.
 
 ## Errores confirmados (reproducidos, no hipotéticos)
 
@@ -40,8 +40,9 @@ backend compile y arranque en producción.
 
 ### [backend/tsconfig.json](../backend/tsconfig.json)
 
-Añadir `"baseUrl": "."` junto a `paths`. Hoy funciona para `tsc` porque TS 5 resuelve relativo al
-tsconfig, pero lo hacemos explícito para que `tsc-alias` reescriba los alias sin ambigüedad.
+No añadir `"baseUrl"`. TypeScript 6 lo marca como obsoleto (`TS5101`: dejará de funcionar en
+TypeScript 7). Los `paths` ya empiezan por `./`, así que TypeScript 5.9 los resuelve sin `baseUrl`,
+y `tsc-alias` 1.9 recalcula esas rutas respecto a `rootDir` cuando falta.
 
 ### [backend/src/infrastructure/article/PrismaArticleRepository.ts](../backend/src/infrastructure/article/PrismaArticleRepository.ts)
 
@@ -99,13 +100,13 @@ Añadir `back`, `postgres`, `redis` y un servicio de migración de un solo uso:
 - `postgres`: `postgres:16`, volumen `postgres_data`, `healthcheck` con `pg_isready`, credenciales vía `${POSTGRES_*}` desde el `.env` que vive junto al compose en la EC2. Sin publicar puertos al host.
 - `redis`: `redis:7`, `healthcheck` con `redis-cli ping`. Sin publicar puertos.
 - `migrate`: misma imagen que `back`, `command: npx prisma migrate deploy`, `restart: "no"`, `depends_on: postgres: {condition: service_healthy}`. Declarativo, idempotente, y si falla el deploy se ve en el log en lugar de dejar el backend en bucle de reinicio.
-- `back`: `404welldone/backend:latest`, `env_file: ./.env.back`, `ports: ['127.0.0.1:4000:4000']`, `depends_on: migrate: {condition: service_completed_successfully}`, `healthcheck` contra el `/health` que ya existe en [backend/src/api.ts](../backend/src/api.ts).
+- `back`: `404welldone/backend:latest`, `env_file: ./.env.back`, `ports: ['127.0.0.1:4000:4000']`, `depends_on: migrate: {condition: service_completed_successfully}`, `healthcheck` contra `/api/health`. En [backend/src/api.ts](../backend/src/api.ts) el router va montado en `/api`, así que la ruta es `/api/health` y no `/health`.
 - `front`: añadir `environment: API_URL: http://back:4000` y `depends_on: back`.
 
-Nota: `REDIS_URL` debe ser `redis://redis:6379` y `MAILDEV_HOST`/`MAILDEV_PORT` deben tener valor
-aunque no se usen en producción, porque el validador de Zod los exige. Si preferís no arrastrar
-Maildev a producción, la alternativa es hacerlos opcionales en `EnvironmentService`; queda fuera de
-este plan.
+Nota: `REDIS_URL` debe ser `redis://redis:6379`. Para no arrastrar Maildev a producción,
+`MAILDEV_HOST`/`MAILDEV_PORT` se han hecho opcionales en `EnvironmentService` (`z.string().optional()`
+y `z.coerce.number().optional()`); hoy no los consume ningún módulo, así que el cambio es seguro y el
+compose de producción no define servicio `maildev` ni esas variables.
 
 ## [.github/workflows/aws.yml](../.github/workflows/aws.yml)
 
@@ -119,7 +120,7 @@ flowchart TD
   ciFront["ci-frontend: npm ci + build"]
   buildBack["build-backend: push 404welldone/backend"]
   buildFront["build-frontend: push 404welldone/frontend"]
-  deploy["deploy: scp compose + pull + up -d + smoke /health"]
+  deploy["deploy: scp compose + pull + up -d + smoke /api/health"]
 
   changes --> ciBack --> buildBack --> deploy
   changes --> ciFront --> buildFront --> deploy
@@ -166,7 +167,7 @@ En el script SSH final, un paso de verificación tras `up -d`:
 ```bash
 docker compose -f docker-compose.prod.yml pull
 docker compose -f docker-compose.prod.yml up -d --remove-orphans
-curl -fsS --retry 10 --retry-delay 3 --retry-all-errors http://127.0.0.1:4000/health
+curl -fsS --retry 10 --retry-delay 3 --retry-all-errors http://127.0.0.1:4000/api/health
 docker image prune -f
 ```
 
@@ -179,7 +180,7 @@ Nada de esto lo puede hacer el workflow, así que conviene documentarlo en [depl
 
 - Crear el repositorio `404welldone/backend` en Docker Hub.
 - En `/home/ubuntu/welldone/`: `.env` con `POSTGRES_USER`/`POSTGRES_PASSWORD`/`POSTGRES_DB` (lo lee el compose) y `.env.back` con las siete variables que valida `EnvironmentService`, incluyendo `NODE_ENV=production`, `PORT=4000` y `DATABASE_URL=postgresql://<user>:<pass>@postgres:5432/<db>`.
-- Añadir el bloque `location /api/ { proxy_pass http://127.0.0.1:4000/; }` a la config de Nginx.
+- Añadir el bloque `location /api/ { proxy_pass http://127.0.0.1:4000; }` a la config de Nginx, **sin** barra final en `proxy_pass`. Esa barra elimina el prefijo `/api` antes de reenviar, así que una petición a `/api/health` llegaría al backend como `/health` y devolvería 404. Sin la barra, el prefijo se conserva y la app recibe `/api/health`.
 - Confirmar que los secrets `DOCKERHUB_USER`, `DOCKERHUB_TOKEN`, `EC2_HOST`, `EC2_USER`, `EC2_SSH_KEY` existen en el repo.
 
 ## Verificación antes de abrir PR
