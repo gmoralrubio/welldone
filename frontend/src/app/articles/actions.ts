@@ -1,32 +1,26 @@
 'use server';
 
+import { articleQueryParams, parseArticleQuery } from '@/app/articles/article-query';
 import { ArticleDto } from '@/lib/articles.types';
 import { redirect } from 'next/navigation';
-
-import { parseArticleQuery } from '@/app/articles/article-query';
 import { PaginatedResponse } from '@/lib/pagination.types';
 
 type ArticlesSearchParams = Record<string, string | string[] | undefined>;
-export const ARTICLE_PAGE_SIZE = 4;
 
 export async function getArticles(
   searchParams: ArticlesSearchParams
-): Promise<PaginatedResponse<ArticleDto> | null> {
+): Promise<PaginatedResponse<ArticleDto>> {
   const criteria = parseArticleQuery(searchParams);
-  const params = new URLSearchParams({
-    page: String(criteria.page),
-    limit: String(ARTICLE_PAGE_SIZE),
-  });
+  const params = articleQueryParams(criteria);
 
-  if (criteria.query.length >= 3) {
-    params.set('search', criteria.query);
-  }
-
-  const response = await fetch(`${process.env.API_URL}/api/articles?${params}`);
+  const response = await fetch(
+    `${process.env.API_URL}/api/articles?${params.toString()}`
+  );
 
   if (!response.ok) throw new Error('No se pudieron cargar los artículos');
 
   const data: PaginatedResponse<ArticleDto> = await response.json();
+
   return data;
 }
 
