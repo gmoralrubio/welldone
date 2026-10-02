@@ -1,9 +1,21 @@
 name: Build & Deploy
 
-# Push a main: construye solo lo que cambió y lo despliega en la EC2.
+# Push a main: valida, construye solo lo que cambió y lo despliega en la EC2.
+# Pull request a main: solo valida (CI), sin build ni deploy.
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
+
+# Solo lectura del repo. El deploy se autentica con secrets, no con el token de Actions.
+permissions:
+  contents: read
+
+# Un deploy a la vez por rama. No cancela el que ya esté en curso para no dejarlo a medias.
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   # Marca qué partes del repo cambiaron. El resto de jobs lee estas salidas.
@@ -21,13 +33,57 @@ jobs:
           filters: |
             frontend:
               - 'frontend/**'
+              - '.github/workflows/aws.yml'
+            backend:
+              - 'backend/**'
+              - '.github/workflows/aws.yml'
             compose:
               - 'docker-compose.prod.yml'
 
-  # Publica el front. El login es para el push: una imagen pública igual exige autenticación.
-  build-frontend:
+  # CI del back: genera el cliente Prisma, valida tipos y comprueba que compila.
+  ci-backend:
+    needs: changes
+    if: needs.changes.outputs.backend == 'true'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+      - run: npm ci
+      # Prisma genera tipos que usa el código: hay que generarlos antes del typecheck.
+      - run: npx prisma generate
+      - run: npm run typecheck
+      - run: npm run build
+
+  # CI del front: comprueba que el build de Next pasa.
+  ci-frontend:
     needs: changes
     if: needs.changes.outputs.frontend == 'true'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - run: npm run build
+
+  # Publica el front. El login es para el push: una imagen pública igual exige autenticación.
+  # Solo en push a main y si el CI del front ha pasado. En pull request no se publica.
+  build-frontend:
+    needs: [changes, ci-frontend]
+    if: github.event_name == 'push' && needs.changes.outputs.frontend == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -43,16 +99,40 @@ jobs:
             404welldone/frontend:latest
             404welldone/frontend:${{ github.sha }}
 
+  # Publica el back. Misma razón de login que en el front.
+  # Solo en push a main y si el CI del back ha pasado. En pull request no se publica.
+  build-backend:
+    needs: [changes, ci-backend]
+    if: github.event_name == 'push' && needs.changes.outputs.backend == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          push: true
+          tags: |
+            404welldone/backend:latest
+            404welldone/backend:${{ github.sha }}
+
   # Copia el compose y levanta los contenedores.
   # Corre si algún build acabó bien, o si solo cambió el compose.
-  # No corre si un build falló o si se canceló el workflow.
+  # No corre en pull request, si un build falló o si se canceló el workflow.
   deploy:
-    needs: [changes, build-frontend]
+    needs: [changes, build-frontend, build-backend]
     if: >-
       always() && !cancelled() &&
+      github.event_name == 'push' &&
       needs.changes.result == 'success' &&
       needs.build-frontend.result != 'failure' &&
-      (needs.build-frontend.result == 'success' || needs.changes.outputs.compose == 'true')
+      needs.build-backend.result != 'failure' &&
+      (needs.build-frontend.result == 'success' ||
+       needs.build-backend.result == 'success' ||
+       needs.changes.outputs.compose == 'true')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -63,7 +143,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           port: 2200
           script: mkdir -p /home/ubuntu/welldone
-      # Solo el compose. .env.prod se queda en el servidor y no se sube desde el repo.
+      # Solo el compose. .env y .env.back se quedan en el servidor y no se suben desde el repo.
       - uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -79,8 +159,11 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           port: 2200
+          # --remove-orphans: el compose pasa de un servicio a varios, limpia los que sobren.
+          # El curl verifica que el back responde en /api/health antes de dar el deploy por bueno.
           script: |
             cd /home/ubuntu/welldone
             docker compose -f docker-compose.prod.yml pull
-            docker compose -f docker-compose.prod.yml up -d
+            docker compose -f docker-compose.prod.yml up -d --remove-orphans
+            curl -fsS --retry 10 --retry-delay 3 --retry-all-errors http://127.0.0.1:4000/api/health
             docker image prune -f

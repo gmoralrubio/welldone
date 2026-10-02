@@ -2,16 +2,16 @@
   "name": "welldone-alicia-guille-rocio",
   "version": "1.0.0",
   "description": "Proyecto Final Keepcoding 20 Welldone",
-  "type": "module",
   "main": "dist/index.js",
   "scripts": {
-    "start": "tsx watch src/index.ts",
-    "build": "tsc",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "build": "prisma generate && tsc && tsc-alias",
     "lint": "eslint src/",
     "prettier": "prettier --check src/",
     "prettier:fix": "prettier --write src/",
     "typecheck": "tsc --noEmit",
-    "test": "jest --runInBand --forceExit",
+    "test": "jest --runInBand --forceExit --passWithNoTests",
     "prisma:sync": "npx prisma migrate dev",
     "prisma:seed": "tsx prisma/seed.ts",
     "prisma:reset": "npx prisma migrate reset"
@@ -29,6 +29,7 @@
     "jsonwebtoken": "^9.0.3",
     "node-cron": "^4.6.0",
     "nodemailer": "^9.0.3",
+    "prisma": "^6.0.0",
     "socket.io": "^4.8.3",
     "zod": "^4.4.3"
   },
@@ -47,9 +48,9 @@
     "eslint-config-prettier": "^9.1.0",
     "jest": "^30.4.2",
     "prettier": "^3.4.0",
-    "prisma": "^6.0.0",
     "supertest": "^7.2.2",
     "ts-jest": "^29.4.11",
+    "tsc-alias": "^1.9.7",
     "tsx": "^4.19.0",
     "typescript": "^5.6.0"
   }
