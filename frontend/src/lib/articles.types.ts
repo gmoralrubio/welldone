@@ -4,7 +4,7 @@ export enum ArticleStatus {
 }
 
 export type ArticleDto = {
-  id: string;
+  id: number;
   title: string;
   content: string;
   intro: string;
@@ -16,7 +16,7 @@ export type ArticleDto = {
   createdAt: string;
   updatedAt: string;
   author: {
-    id: string;
+    id: number;
     name: string;
     surname: string;
     username: string;

@@ -37,28 +37,24 @@ interface PrismaArticle {
 }
 
 export class PrismaArticleRepository implements ArticleRepository {
+  private readonly prisma = prismaClient;
+
   async findPublishedArticles(
     criteria: FindPublishedArticlesUseCaseInput
   ): Promise<FindArticlesResponse> {
     const { page, limit } = criteria;
-
-    const where: Record<string, unknown> = {};
-    if (criteria.search) {
-      where.OR = [
-        { title: { contains: criteria.search, mode: 'insensitive' as const } },
-        { author: { contains: criteria.search, mode: 'insensitive' as const } },
-      ];
-    }
-
-    if (criteria.authorId) {
-      where.authorId = criteria.authorId;
-    }
-
     const now = new Date();
-
+    const where = {
+      status: 'PUBLISHED' as const,
+      publishedAt: { lt: now },
+      ...(criteria.authorId ? { authorId: criteria.authorId } : {}),
+      ...(criteria.search
+        ? { title: { contains: criteria.search, mode: 'insensitive' as const } }
+        : {}),
+    };
     const [articlesPrisma, articlesCount] = await Promise.all([
-      await this.prisma.article.findMany({
-        where: { ...where, status: 'PUBLISHED', publishedAt: { lt: now } },
+      this.prisma.article.findMany({
+        where,
         skip: (page - 1) * limit,
         take: limit,
         include: {
@@ -74,15 +70,12 @@ export class PrismaArticleRepository implements ArticleRepository {
       }),
       this.prisma.article.count({ where }),
     ]);
-
     const articles = articlesPrisma.map((article) => this.restore(article));
-
     return {
       articles,
       total: articlesCount,
     };
   }
-  private readonly prisma = prismaClient;
   async findPublishedByAuthorAndSlug(
     authorUsername: string,
     slug: string

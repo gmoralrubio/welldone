@@ -1,12 +1,15 @@
 import { z } from 'zod';
 
+export const ARTICLE_PAGE_SIZE = 4;
+export const ARTICLE_MAX_PAGE_SIZE = 12;
+
 export const findArticlesValidationSchema = z.object({
   page: z.coerce.number('Invalid page. Must be a number').positive().default(1),
   limit: z.coerce
     .number('Invalid limit. Must be a number')
     .positive()
-    .max(100)
-    .default(10),
+    .max(ARTICLE_MAX_PAGE_SIZE)
+    .default(ARTICLE_PAGE_SIZE),
   search: z.string().min(3).optional(),
 });
 

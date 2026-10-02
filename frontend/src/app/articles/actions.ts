@@ -1,16 +1,43 @@
 'use server';
-import { ArticleDto } from '@/lib/articles.types'
+
+import { ArticleDto } from '@/lib/articles.types';
 import { redirect } from 'next/navigation';
-;
+
+import { parseArticleQuery } from '@/app/articles/article-query';
+import { PaginatedResponse } from '@/lib/pagination.types';
+
+type ArticlesSearchParams = Record<string, string | string[] | undefined>;
+export const ARTICLE_PAGE_SIZE = 4;
+
+export async function getArticles(
+  searchParams: ArticlesSearchParams
+): Promise<PaginatedResponse<ArticleDto> | null> {
+  const criteria = parseArticleQuery(searchParams);
+  const params = new URLSearchParams({
+    page: String(criteria.page),
+    limit: String(ARTICLE_PAGE_SIZE),
+  });
+
+  if (criteria.query.length >= 3) {
+    params.set('search', criteria.query);
+  }
+
+  const response = await fetch(`${process.env.API_URL}/api/articles?${params}`);
+
+  if (!response.ok) throw new Error('No se pudieron cargar los artículos');
+
+  const data: PaginatedResponse<ArticleDto> = await response.json();
+  return data;
+}
+
 export async function getArticleByAuthorAndSlug(
   authorUsername: string,
   slug: string
 ): Promise<ArticleDto | null> {
   const response = await fetch(
-    `${process.env.API_URL}/api/articles/${authorUsername}/${slug}`,
-    { cache: 'no-store' }
+    `${process.env.API_URL}/api/articles/${authorUsername}/${slug}`
   );
-  
+
   if (response.status === 404) return null;
   if (!response.ok) throw new Error('No se pudo cargar el artículo');
   const data: { article: ArticleDto } = await response.json();
@@ -24,7 +51,7 @@ export async function createArticleAction(formData: FormData) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ identifier: 'jdoe', password: 'seed-password' }),
   });
-  
+
   if (!loginResponse.ok) {
     //throw new Error('Error de autenticación.');
     const errorDetails = await loginResponse.text();
@@ -47,7 +74,7 @@ export async function createArticleAction(formData: FormData) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`, 
+      Authorization: `Bearer ${accessToken}`,
     },
     body: JSON.stringify(payload),
   });
