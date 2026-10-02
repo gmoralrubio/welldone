@@ -99,8 +99,8 @@ export class PrismaArticleRepository implements ArticleRepository {
       slug: prismaArticle.slug,
       status: prismaArticle.status,
       publishedAt: prismaArticle.publishedAt,
-      featuredImageUrl: prismaArticle.featuredImageUrl,
-      featuredVideoUrl: prismaArticle.featuredVideoUrl,
+      featuredImageUrl: prismaArticle.featuredImageUrl ?? '',
+      featuredVideoUrl: prismaArticle.featuredVideoUrl ?? '',
       createdAt: prismaArticle.createdAt,
       updatedAt: prismaArticle.updatedAt,
       author: {
