@@ -32,6 +32,7 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { PaginationBasic } from '@/app/components/shared/PaginationBasic';
 import { PaginationSimplePrevNext } from '@/app/components/shared/PaginationSimplePrevNext';
+import { ArticleCategory } from '@/app/components/article/article-category';
 
 interface ArticleDetailPageProps {
   params: Promise<{ authorUsername: string; slug: string }>;
@@ -100,7 +101,12 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
       </Breadcrumbs>
 
       <div className="flex gap-2">
-        <Chip className="rounded-none bg-accent">Desarrollo web</Chip>
+        {article.categories.map((category) => (
+          <ArticleCategory
+            key={category.id}
+            name={category.name}
+          />
+        ))}
       </div>
 
       <header className="flex flex-col gap-4">
@@ -163,19 +169,16 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
       </header>
 
       {article.featuredImageUrl ? (
-        <Card
-          variant="transparent"
-          className="overflow-hidden p-0! rounded-none"
-        >
+        <div className="relative aspect-video w-full overflow-hidden rounded">
           <Image
             fill
             loading="eager"
             src={article.featuredImageUrl}
             alt={article.title}
             sizes="(min-width: 56rem) 848px, calc(100vw - 3rem)"
-            className="aspect-video w-full rounded object-cover"
+            className="object-cover"
           />
-        </Card>
+        </div>
       ) : null}
 
       {article.featuredVideoUrl ? (

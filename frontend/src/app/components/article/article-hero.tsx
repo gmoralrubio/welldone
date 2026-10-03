@@ -4,9 +4,10 @@ import {
   readingMinutes,
 } from '@/app/articles/article-presenters';
 import { ArticleDto } from '@/lib/articles.types';
-import { Avatar, Button, Card, Chip, Link } from '@heroui/react';
+import { Avatar, Button, Card, Link } from '@heroui/react';
 import { ArrowUpFromSquare, Bookmark, Clock, Comment } from '@gravity-ui/icons';
 import Image from 'next/image';
+import { ArticleCategory } from '@/app/components/article/article-category';
 
 type EditorialHeroProps = {
   article: ArticleDto;
@@ -35,12 +36,10 @@ export function ArticleHero({ article }: EditorialHeroProps) {
           <div className="flex flex-col gap-2">
             <div className="flex flex-wrap items-center gap-2 text-xs text-muted mb-2">
               {article.categories.map((category) => (
-                <Chip
+                <ArticleCategory
                   key={category.id}
-                  className="rounded-sm bg-accent px-2.5 py-0.5 text-xs font-bold tracking-wider text-accent-foreground uppercase"
-                >
-                  {category.name}
-                </Chip>
+                  name={category.name}
+                />
               ))}
               <span>
                 Publicado {formatRelativeTime(article.publishedAt).toLowerCase()}
