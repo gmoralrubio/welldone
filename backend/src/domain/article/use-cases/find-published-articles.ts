@@ -5,6 +5,8 @@ import { Pagination } from '@domain/shared/Pagination';
 interface ArticleFilterQuery {
   authorId?: number;
   search?: string;
+  category?: number;
+  order: 'asc' | 'desc';
 }
 
 export type FindPublishedArticlesUseCaseInput = Pagination & ArticleFilterQuery;
