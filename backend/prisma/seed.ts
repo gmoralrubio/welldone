@@ -6,6 +6,10 @@ const prisma = new PrismaClient();
 
 export const SEED_PASSWORD = 'Seed1234!';
 
+function featuredImageUrl(slug: string) {
+  return `https://picsum.photos/seed/${slug}/960/640`;
+}
+
 type SeedArticle = {
   title: string;
   intro: string;
@@ -248,6 +252,7 @@ async function main() {
     await prisma.article.create({
       data: {
         ...data,
+        featuredImageUrl: featuredImageUrl(article.slug),
         categories: { connect: [{ slug: categorySlug }] },
       },
     });
