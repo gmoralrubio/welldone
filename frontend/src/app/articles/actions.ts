@@ -39,11 +39,12 @@ export async function getArticleByAuthorAndSlug(
 }
 
 export async function createArticleAction(formData: FormData) {
+  // Seed password, solo para pruebas:
   //Login usuario del seed
   const loginResponse = await fetch(`${process.env.API_URL}/api/users/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ identifier: 'jdoe', password: 'seed-password' }),
+    body: JSON.stringify({ identifier: 'jdoe', password: 'Seed1234!' }),
   });
 
   if (!loginResponse.ok) {

@@ -4,7 +4,7 @@ import { ArticleStatus, PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-const SEED_PASSWORD = 'Seed1234!';
+export const SEED_PASSWORD = 'Seed1234!';
 
 type SeedArticle = {
   title: string;
@@ -13,6 +13,7 @@ type SeedArticle = {
   slug: string;
   status: ArticleStatus;
   publishedAt: Date;
+  categorySlug: string;
 };
 
 const johnArticles: SeedArticle[] = [
@@ -26,6 +27,7 @@ const johnArticles: SeedArticle[] = [
     slug: 'el-renacimiento-de-la-arquitectura-de-software-patrones',
     status: 'PUBLISHED',
     publishedAt: new Date('2026-01-15T10:00:00.000Z'),
+    categorySlug: 'arquitectura-de-software',
   },
   {
     title: 'Por qué los nombres importan más que los frameworks',
@@ -36,6 +38,7 @@ const johnArticles: SeedArticle[] = [
     slug: 'por-que-los-nombres-importan-mas-que-los-frameworks',
     status: 'PUBLISHED',
     publishedAt: new Date('2026-03-02T09:30:00.000Z'),
+    categorySlug: 'arquitectura-de-software',
   },
   {
     title: 'Notas de un incidente que no debió llegar a producción',
@@ -46,6 +49,7 @@ const johnArticles: SeedArticle[] = [
     slug: 'notas-de-un-incidente-que-no-debio-llegar-a-produccion',
     status: 'PUBLISHED',
     publishedAt: new Date('2026-05-18T16:00:00.000Z'),
+    categorySlug: 'desarrollo-web',
   },
   {
     title: 'La revisión de código como conversación',
@@ -56,6 +60,7 @@ const johnArticles: SeedArticle[] = [
     slug: 'la-revision-de-codigo-como-conversacion',
     status: 'PUBLISHED',
     publishedAt: new Date('2026-08-04T11:15:00.000Z'),
+    categorySlug: 'desarrollo-web',
   },
   {
     title: 'Medir antes de optimizar',
@@ -66,6 +71,7 @@ const johnArticles: SeedArticle[] = [
     slug: 'medir-antes-de-optimizar',
     status: 'DRAFT',
     publishedAt: new Date('2026-09-20T08:00:00.000Z'),
+    categorySlug: 'desarrollo-web',
   },
   {
     title: 'Colas, reintentos y la paciencia del sistema',
@@ -76,6 +82,7 @@ const johnArticles: SeedArticle[] = [
     slug: 'colas-reintentos-y-la-paciencia-del-sistema',
     status: 'DRAFT',
     publishedAt: new Date('2026-09-28T18:45:00.000Z'),
+    categorySlug: 'desarrollo-web',
   },
   {
     title: 'Lo que cambia cuando el equipo crece de tres a diez',
@@ -86,6 +93,7 @@ const johnArticles: SeedArticle[] = [
     slug: 'lo-que-cambia-cuando-el-equipo-crece-de-tres-a-diez',
     status: 'PUBLISHED',
     publishedAt: new Date('2026-11-12T10:00:00.000Z'),
+    categorySlug: 'arquitectura-de-software',
   },
   {
     title: 'Un mapa breve de la observabilidad',
@@ -96,6 +104,7 @@ const johnArticles: SeedArticle[] = [
     slug: 'un-mapa-breve-de-la-observabilidad',
     status: 'PUBLISHED',
     publishedAt: new Date('2027-01-20T09:00:00.000Z'),
+    categorySlug: 'arquitectura-de-software',
   },
 ];
 
@@ -109,6 +118,7 @@ const anaArticles: SeedArticle[] = [
     slug: 'escribir-en-publico-sin-pedir-permiso',
     status: 'PUBLISHED',
     publishedAt: new Date('2026-02-10T12:00:00.000Z'),
+    categorySlug: 'diseno-ux-ui',
   },
   {
     title: 'El párrafo que sostiene un artículo',
@@ -119,6 +129,7 @@ const anaArticles: SeedArticle[] = [
     slug: 'el-parrafo-que-sostiene-un-articulo',
     status: 'PUBLISHED',
     publishedAt: new Date('2026-04-07T08:20:00.000Z'),
+    categorySlug: 'diseno-ux-ui',
   },
   {
     title: 'Lectores, no métricas',
@@ -129,6 +140,7 @@ const anaArticles: SeedArticle[] = [
     slug: 'lectores-no-metricas',
     status: 'PUBLISHED',
     publishedAt: new Date('2026-06-21T17:40:00.000Z'),
+    categorySlug: 'diseno-ux-ui',
   },
   {
     title: 'Cómo editar lo que ya creías terminado',
@@ -139,6 +151,7 @@ const anaArticles: SeedArticle[] = [
     slug: 'como-editar-lo-que-ya-creias-terminado',
     status: 'PUBLISHED',
     publishedAt: new Date('2026-09-01T13:05:00.000Z'),
+    categorySlug: 'diseno-ux-ui',
   },
   {
     title: 'Títulos que prometen menos de lo que cumplen',
@@ -149,6 +162,7 @@ const anaArticles: SeedArticle[] = [
     slug: 'titulos-que-prometen-menos-de-lo-que-cumplen',
     status: 'DRAFT',
     publishedAt: new Date('2026-09-15T10:10:00.000Z'),
+    categorySlug: 'diseno-ux-ui',
   },
   {
     title: 'La voz propia no se encuentra el primer día',
@@ -158,6 +172,7 @@ const anaArticles: SeedArticle[] = [
     slug: 'la-voz-propia-no-se-encuentra-el-primer-dia',
     status: 'DRAFT',
     publishedAt: new Date('2026-09-30T19:00:00.000Z'),
+    categorySlug: 'diseno-ux-ui',
   },
   {
     title: 'Archivos personales y la memoria del blog',
@@ -168,6 +183,7 @@ const anaArticles: SeedArticle[] = [
     slug: 'archivos-personales-y-la-memoria-del-blog',
     status: 'PUBLISHED',
     publishedAt: new Date('2026-12-03T15:30:00.000Z'),
+    categorySlug: 'diseno-ux-ui',
   },
   {
     title: 'Una defensa de los textos largos',
@@ -178,12 +194,27 @@ const anaArticles: SeedArticle[] = [
     slug: 'una-defensa-de-los-textos-largos',
     status: 'PUBLISHED',
     publishedAt: new Date('2027-02-14T11:00:00.000Z'),
+    categorySlug: 'diseno-ux-ui',
   },
 ];
 
 async function main() {
   await prisma.article.deleteMany();
+  await prisma.category.deleteMany();
   await prisma.user.deleteMany();
+
+  await prisma.$executeRaw`ALTER SEQUENCE "Category_id_seq" RESTART WITH 1`;
+
+  await prisma.category.create({
+    data: { name: 'Desarrollo Web', slug: 'desarrollo-web' },
+  });
+  await prisma.category.create({
+    data: { name: 'Arquitectura de Software', slug: 'arquitectura-de-software' },
+  });
+  await prisma.category.create({
+    data: { name: 'Diseño UX/UI', slug: 'diseno-ux-ui' },
+  });
+
   //Encriptación de la contraseña simulando el registro real
   const hashedPassword = await bcrypt.hash(SEED_PASSWORD, 10);
 
@@ -207,12 +238,20 @@ async function main() {
     },
   });
 
-  await prisma.article.createMany({
-    data: [
-      ...johnArticles.map((article) => ({ ...article, authorId: john.id })),
-      ...anaArticles.map((article) => ({ ...article, authorId: ana.id })),
-    ],
-  });
+  const articles = [
+    ...johnArticles.map((article) => ({ ...article, authorId: john.id })),
+    ...anaArticles.map((article) => ({ ...article, authorId: ana.id })),
+  ];
+
+  for (const article of articles) {
+    const { categorySlug, ...data } = article;
+    await prisma.article.create({
+      data: {
+        ...data,
+        categories: { connect: [{ slug: categorySlug }] },
+      },
+    });
+  }
 }
 
 main()
