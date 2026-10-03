@@ -13,6 +13,7 @@ import {
 } from '@gravity-ui/icons';
 import { Input, Label, TextField } from '@heroui/react';
 import Link from 'next/link';
+import { registerUser } from './actions';
 
 export default function RegisterPage() {
   const [password, setPassword] = useState('');
@@ -20,7 +21,7 @@ export default function RegisterPage() {
   const [errors, setErrors] = useState<Partial<Record<keyof RegisterFormData, string>>>(
     {}
   );
-  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
@@ -52,6 +53,28 @@ export default function RegisterPage() {
     }
 
     setErrors({});
+
+    const response = await registerUser({
+      name: result.data.name,
+      surname: result.data.surname,
+      username: result.data.username,
+      email: result.data.email,
+      password: result.data.password,
+    });
+
+    if (response.status === 201) {
+      console.log('Usuario registrado correctamente');
+
+      return;
+    }
+
+    if (response.status === 409) {
+      console.error('El email o nombre de usuario ya está en uso');
+
+      return;
+    }
+
+    console.error('Error al registrar usuario');
   };
   return (
     <main className="min-h-screen bg-[#faf9f6] text-[#1a1c1a] antialiased">
