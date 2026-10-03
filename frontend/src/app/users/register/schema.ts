@@ -9,13 +9,21 @@ export const registerSchema = z
     username: z
       .string()
       .trim()
-      .min(3, 'El nombre de usuario debe tener mínimo tres caracteres.'),
+      .min(3, 'El nombre de usuario debe tener mínimo tres caracteres.')
+      .regex(
+        /^[a-zA-Z0-9._]+$/,
+        'El nombre de usuario solo puede contener letras, números, puntos y guiones bajos.'
+      ),
 
     email: z
       .string()
       .trim()
       .min(1, 'El correo electrónico es obligatorio.')
-      .pipe(z.email({ error: 'Introduce un correo electrónico válido.' })),
+      .pipe(
+        z.email({
+          error: 'Introduce un correo electrónico válido.',
+        })
+      ),
 
     password: z
       .string()

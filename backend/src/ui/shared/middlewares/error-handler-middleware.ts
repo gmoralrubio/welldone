@@ -19,7 +19,7 @@ export const errorHandlerMiddleware = (
   if (error instanceof BadSyntaxError) {
     res.status(401).json({ error: error.message });
   } else if (error instanceof BusinessConflictError) {
-    res.status(409).json({ error: error.message });
+    res.status(409).json({ error: error.message, field: error.field });
   } else if (error instanceof EntityNotFoundError) {
     res.status(404).json({ error: error.message });
   } else if (error instanceof ForbiddenOperationError) {

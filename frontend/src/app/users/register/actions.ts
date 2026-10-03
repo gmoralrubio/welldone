@@ -24,3 +24,17 @@ export async function registerUser(data: RegisterUserData) {
     data: responseData,
   };
 }
+
+export async function checkAvailability(
+  field: 'username' | 'email',
+  value: string
+): Promise<boolean> {
+  const response = await fetch(
+    `${process.env.API_URL}api/users/availability?field=${field}&value=${encodeURIComponent(value)}`
+  );
+
+  if (!response.ok) return true;
+
+  const data = await response.json();
+  return data.available;
+}

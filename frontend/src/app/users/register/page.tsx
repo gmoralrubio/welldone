@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type SubmitEvent } from 'react';
+import { useState, type SubmitEvent, type FocusEvent } from 'react';
 import { registerSchema, type RegisterFormData } from './schema';
 import {
   ArrowLeft,
@@ -13,7 +13,7 @@ import {
 } from '@gravity-ui/icons';
 import { Input, Label, TextField } from '@heroui/react';
 import Link from 'next/link';
-import { registerUser } from './actions';
+import { registerUser, checkAvailability } from './actions';
 
 export default function RegisterPage() {
   const [password, setPassword] = useState('');
@@ -69,12 +69,63 @@ export default function RegisterPage() {
     }
 
     if (response.status === 409) {
-      console.error('El email o nombre de usuario ya está en uso');
+      const field = response.data.field as 'email' | 'username';
+
+      setErrors({
+        [field]:
+          field === 'email'
+            ? 'Este correo electrónico ya está registrado'
+            : 'Este nombre de usuario ya está en uso',
+      });
 
       return;
     }
 
     console.error('Error al registrar usuario');
+  };
+
+  const handleOnBlur = async (event: FocusEvent<HTMLInputElement>) => {
+    const field = event.target.name as keyof RegisterFormData;
+    const value = event.target.value.trim();
+
+    if (!value) {
+      return;
+    }
+
+    const fieldSchema = registerSchema.shape[field];
+
+    if (!fieldSchema) {
+      return;
+    }
+
+    const result = fieldSchema.safeParse(value);
+
+    if (!result.success) {
+      setErrors((prev) => ({
+        ...prev,
+        [field]: result.error.issues[0].message,
+      }));
+      return;
+    }
+
+    if (field === 'username' || field === 'email') {
+      const available = await checkAvailability(field, value);
+
+      const messages = {
+        username: 'Este nombre de usuario ya está en uso',
+        email: 'Este correo electrónico ya está registrado',
+      };
+
+      setErrors((prev) => ({
+        ...prev,
+        [field]: available ? undefined : messages[field],
+      }));
+    } else {
+      setErrors((prev) => ({
+        ...prev,
+        [field]: undefined,
+      }));
+    }
   };
   return (
     <main className="min-h-screen bg-[#faf9f6] text-[#1a1c1a] antialiased">
@@ -130,6 +181,7 @@ export default function RegisterPage() {
           <form
             className="flex flex-col gap-4"
             onSubmit={handleSubmit}
+            noValidate
           >
             {/* Nombre y apellidos */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -151,6 +203,7 @@ export default function RegisterPage() {
                     name="name"
                     placeholder="Tu nombre"
                     className="w-full pl-10"
+                    onBlur={handleOnBlur}
                   />
                 </div>
                 {errors.name && (
@@ -178,6 +231,7 @@ export default function RegisterPage() {
                     name="surname"
                     placeholder="Tus apellidos"
                     className="w-full pl-10"
+                    onBlur={handleOnBlur}
                   />
                 </div>
                 {errors.surname && (
@@ -213,6 +267,7 @@ export default function RegisterPage() {
                   name="username"
                   placeholder="tu_usuario"
                   className="w-full pl-10"
+                  onBlur={handleOnBlur}
                 />
               </div>
               {errors.username && (
@@ -247,6 +302,7 @@ export default function RegisterPage() {
                   type="email"
                   placeholder="tu@email.com"
                   className="w-full pl-10"
+                  onBlur={handleOnBlur}
                 />
               </div>
               {errors.email && (
@@ -283,6 +339,7 @@ export default function RegisterPage() {
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
                   className="w-full pl-10"
+                  onBlur={handleOnBlur}
                 />
               </div>
               {errors.password && (
