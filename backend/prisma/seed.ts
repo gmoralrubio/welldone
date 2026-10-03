@@ -1,14 +1,19 @@
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcrypt';
+import process from 'process';
 
 const prisma = new PrismaClient();
 
 async function main() {
+  //Encriptación de la contraseña simulando el registro real
+  const hashedPassword = await bcrypt.hash('seed-password', 10);
+
   const user = await prisma.user.upsert({
     where: { username: 'John' },
     update: {},
     create: {
       email: 'john@example.com',
-      password: 'seed-password',
+      password: hashedPassword,
       name: 'John',
       surname: 'Doe',
       username: 'jdoe',

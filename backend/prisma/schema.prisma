@@ -47,12 +47,21 @@ model Article {
   authorId Int
   author   User @relation(fields: [authorId], references: [id])
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  categories Category[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
 
   // WHERE 
   @@unique([authorId, slug])
   @@index([authorId])
   @@index([publishedAt])
   @@index([status])
+}
+
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  slug String @unique
+
+  articles Article[]
 }

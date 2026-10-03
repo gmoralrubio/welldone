@@ -1,6 +1,6 @@
 import prismaClient from '@infrastructure/shared/prisma-client';
-import { ArticleRepository } from '@domain/article/repositories/ArticleRepository';
-import { Article, ArticleStatus } from '@domain/article/Article';
+import { ArticleRepository, CreateArticleParams } from '@domain/article/repositories/ArticleRepository';
+import { Article, ArticleStatus, ArticleCategory } from '@domain/article/Article';
 
 interface PrismaArticleAuthor {
   id: number;
@@ -23,6 +23,7 @@ interface PrismaArticle {
   createdAt: Date;
   updatedAt: Date;
   author: PrismaArticleAuthor;
+  categories?: ArticleCategory[];
 }
 
 export class PrismaArticleRepository implements ArticleRepository {
@@ -46,6 +47,13 @@ export class PrismaArticleRepository implements ArticleRepository {
             username: true,
           },
         },
+        categories: {
+          select: {
+            id: true,
+            name: true,
+            slug: true
+          }
+        }
       },
     });
 
@@ -55,6 +63,32 @@ export class PrismaArticleRepository implements ArticleRepository {
       return this.restore(prismaArticle);
     }
   }
+
+  async create(params: CreateArticleParams): Promise<Article> {
+    const prismaArticle = await this.prisma.article.create({
+      data: {
+        title: params.title,
+        content: params.content,
+        intro: params.intro,
+        slug: params.slug,
+        status: params.status,
+        publishedAt: params.publishedAt,
+        featuredImageUrl: params.featuredImageUrl,
+        featuredVideoUrl: params.featuredVideoUrl,
+        authorId: params.authorId,
+        categories: {
+          connect: params.categoryIds.map(id => ({ id }))
+        }
+      },
+      include: {
+        author: { select: { id: true, name: true, surname: true, username: true } },
+        categories: { select: { id: true, name: true, slug: true } }
+      },
+    });
+
+    return this.restore(prismaArticle);
+  }
+
   private restore(prismaArticle: PrismaArticle): Article {
     return new Article({
       id: prismaArticle.id,
@@ -75,6 +109,7 @@ export class PrismaArticleRepository implements ArticleRepository {
         surname: prismaArticle.author.surname,
         username: prismaArticle.author.username,
       },
+      categories : prismaArticle.categories || [],
     });
   }
 }
