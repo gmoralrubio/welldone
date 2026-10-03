@@ -4,9 +4,10 @@ import {
   readingMinutes,
 } from '@/app/articles/article-presenters';
 import { ArticleDto } from '@/lib/articles.types';
-import { Avatar, Button, Card, Chip, Link } from '@heroui/react';
+import { Avatar, Button, Card, Link } from '@heroui/react';
 import { ArrowUpFromSquare, Bookmark, Clock, Comment } from '@gravity-ui/icons';
 import Image from 'next/image';
+import { ArticleCategory } from '@/app/components/article/article-category';
 
 type ArticleCardProps = {
   article: ArticleDto;
@@ -51,12 +52,10 @@ export function ArticleCard({ article }: ArticleCardProps) {
         <div className="flex items-center justify-between gap-3">
           <div className="flex flex-wrap items-center gap-2 text-xs text-muted">
             {article.categories.map((category) => (
-              <Chip
+              <ArticleCategory
                 key={category.id}
-                className="rounded-sm bg-accent/50 px-2 py-0.5 text-xs font-bold text-accent-foreground uppercase"
-              >
-                {category.name}
-              </Chip>
+                name={category.name}
+              />
             ))}
             <span className="inline-flex items-center gap-1">
               <Clock
@@ -103,7 +102,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
           </div>
         </div>
       </div>
-      <div className="relative w-full shrink-0 overflow-hidden rounded bg-surface-secondary sm:w-48">
+      <div className="relative aspect-3/2 w-full shrink-0 overflow-hidden rounded bg-surface-secondary sm:aspect-auto sm:w-48 sm:self-stretch">
         {article.featuredImageUrl ? (
           <Image
             src={article.featuredImageUrl}
