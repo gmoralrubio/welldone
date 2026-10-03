@@ -30,8 +30,8 @@ import {
 import { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { PaginationBasic } from '@/app/components/PaginationBasic';
-import { PaginationSimplePrevNext } from '@/app/components/PaginationSimplePrevNext';
+import { PaginationBasic } from '@/app/components/shared/PaginationBasic';
+import { PaginationSimplePrevNext } from '@/app/components/shared/PaginationSimplePrevNext';
 
 interface ArticleDetailPageProps {
   params: Promise<{ authorUsername: string; slug: string }>;
@@ -74,14 +74,13 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
   const { authorUsername, slug } = await params;
 
   const article = await getArticleByAuthorAndSlug(authorUsername, slug);
-  console.log(article);
 
   if (!article) {
     notFound();
   }
 
   return (
-    <>
+    <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-8 px-6 py-10">
       <Breadcrumbs aria-label="Migas de pan">
         <Breadcrumbs.Item
           className="uppercase"
@@ -169,9 +168,8 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
           className="overflow-hidden p-0! rounded-none"
         >
           <Image
-            width={768}
-            height={400}
-            loading="lazy"
+            fill
+            loading="eager"
             src={article.featuredImageUrl}
             alt={article.title}
             className="aspect-video w-full rounded object-cover"
@@ -442,6 +440,6 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
           </div>
         </div>
       </section>
-    </>
+    </main>
   );
 }
