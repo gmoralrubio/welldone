@@ -110,6 +110,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
             alt=""
             fill
             loading="eager"
+            sizes="(min-width: 40rem) 12rem, calc(100vw - 7rem)"
             className="size-full object-cover"
           />
         ) : null}

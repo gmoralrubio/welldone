@@ -172,6 +172,7 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
             loading="eager"
             src={article.featuredImageUrl}
             alt={article.title}
+            sizes="(min-width: 56rem) 848px, calc(100vw - 3rem)"
             className="aspect-video w-full rounded object-cover"
           />
         </Card>
