@@ -1,4 +1,3 @@
-import { ArticleStatus } from '@domain/article/Article';
 import { ArticleRepository } from '@domain/article/repositories/ArticleRepository';
 import { FindArticlesResponse } from '@domain/article/types/FindArticlesResponse';
 import { Pagination } from '@domain/shared/Pagination';

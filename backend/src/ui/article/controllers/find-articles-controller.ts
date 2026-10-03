@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
 import { PrismaArticleRepository } from '@infrastructure/article/PrismaArticleRepository';
-import { FindArticleDetailUseCase } from '@domain/article/use-cases/find-article-detail';
 import { findArticlesValidationSchema } from '@ui/article/validators/articles-validator';
 import { FindPublishedArticlesUseCase } from '@domain/article/use-cases/find-published-articles';
 import { buildPaginatedResponse } from '@ui/shared/presenters/paginated-response';
