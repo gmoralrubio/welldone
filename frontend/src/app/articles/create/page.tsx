@@ -100,6 +100,17 @@ export default function CreateArticlePage() {
                 </div>
               </div>
 
+              {/* NUEVO: Campo para programar la fecha de publicación */}
+              <div className="flex flex-col gap-1">
+                <label className="text-sm font-medium text-foreground ml-1">Fecha y hora de publicación (Opcional)</label>
+                <input
+                  type="datetime-local"
+                  name="publishedAt"
+                  className="w-full h-10 px-3 rounded-md bg-surface-secondary border-none font-serif text-foreground outline-none focus:ring-2 focus:ring-accent"
+                />
+                <span className="text-xs text-muted ml-1">Si lo dejas en blanco, se usará la fecha actual.</span>
+              </div>
+
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex flex-col gap-1 w-full sm:w-1/2">
                   <label className="text-sm font-medium text-foreground ml-1">URL de Imagen Destacada (Opcional)</label>
