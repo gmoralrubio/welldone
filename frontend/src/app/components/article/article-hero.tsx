@@ -129,7 +129,7 @@ export function ArticleHero({ article }: EditorialHeroProps) {
               alt=""
               fill
               loading="eager"
-              sizes="(min-width: 1024px) 42vw, 100vw"
+              sizes="(min-width: 72rem) 26rem, (min-width: 64rem) calc((100vw - 11.5rem) * 5 / 12), (min-width: 48rem) calc(100vw - 9rem), calc(100vw - 7rem)"
               className="object-cover"
             />
           ) : null}
