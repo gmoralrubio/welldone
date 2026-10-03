@@ -15,7 +15,7 @@ export const findPublishedArticlesController = async (
   );
 
   try {
-    const { page, limit, search } = findArticlesValidationSchema.parse(
+    const { page, limit, search, order } = findArticlesValidationSchema.parse(
       req.query
     );
 
@@ -23,6 +23,7 @@ export const findPublishedArticlesController = async (
       page,
       limit,
       search,
+      order,
     });
 
     const url = `${req.protocol}://${req.get('host')}${req.baseUrl}`;

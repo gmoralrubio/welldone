@@ -33,7 +33,7 @@ interface PrismaArticle {
   createdAt: Date;
   updatedAt: Date;
   author: PrismaArticleAuthor;
-  categories?: ArticleCategory[];
+  categories: ArticleCategory[];
 }
 
 export class PrismaArticleRepository implements ArticleRepository {
@@ -57,6 +57,7 @@ export class PrismaArticleRepository implements ArticleRepository {
         where,
         skip: (page - 1) * limit,
         take: limit,
+        orderBy: { publishedAt: criteria.order },
         include: {
           author: {
             select: {
@@ -64,6 +65,13 @@ export class PrismaArticleRepository implements ArticleRepository {
               name: true,
               surname: true,
               username: true,
+            },
+          },
+          categories: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
             },
           },
         },
