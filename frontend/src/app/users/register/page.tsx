@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, type SubmitEvent } from 'react';
+import { registerSchema, type RegisterFormData } from './schema';
 import {
   ArrowLeft,
   ArrowRight,
@@ -16,9 +17,42 @@ import Link from 'next/link';
 export default function RegisterPage() {
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
+  const [errors, setErrors] = useState<Partial<Record<keyof RegisterFormData, string>>>(
+    {}
+  );
+  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-  const passwordsMatch = repeatPassword.length === 0 || password === repeatPassword;
+    const formData = new FormData(event.currentTarget);
 
+    const data: RegisterFormData = {
+      name: formData.get('name')?.toString() ?? '',
+      surname: formData.get('surname')?.toString() ?? '',
+      username: formData.get('username')?.toString() ?? '',
+      email: formData.get('email')?.toString() ?? '',
+      password: formData.get('password')?.toString() ?? '',
+      repeatPassword: formData.get('repeatPassword')?.toString() ?? '',
+    };
+
+    const result = registerSchema.safeParse(data);
+
+    if (!result.success) {
+      const validationErrors: Partial<Record<keyof RegisterFormData, string>> = {};
+
+      result.error.issues.forEach((issue) => {
+        const field = issue.path[0] as keyof RegisterFormData;
+
+        if (!validationErrors[field]) {
+          validationErrors[field] = issue.message;
+        }
+      });
+
+      setErrors(validationErrors);
+      return;
+    }
+
+    setErrors({});
+  };
   return (
     <main className="min-h-screen bg-[#faf9f6] text-[#1a1c1a] antialiased">
       {/* Header */}
@@ -70,7 +104,10 @@ export default function RegisterPage() {
           </div>
 
           {/* Formulario */}
-          <form className="flex flex-col gap-4">
+          <form
+            className="flex flex-col gap-4"
+            onSubmit={handleSubmit}
+          >
             {/* Nombre y apellidos */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <TextField>
@@ -93,6 +130,11 @@ export default function RegisterPage() {
                     className="w-full pl-10"
                   />
                 </div>
+                {errors.name && (
+                  <p className="mt-1.5 text-xs font-medium text-[#ba1a1a]">
+                    {errors.name}
+                  </p>
+                )}
               </TextField>
 
               <TextField>
@@ -115,6 +157,11 @@ export default function RegisterPage() {
                     className="w-full pl-10"
                   />
                 </div>
+                {errors.surname && (
+                  <p className="mt-1.5 text-xs font-medium text-[#ba1a1a]">
+                    {errors.surname}
+                  </p>
+                )}
               </TextField>
             </div>
 
@@ -145,6 +192,11 @@ export default function RegisterPage() {
                   className="w-full pl-10"
                 />
               </div>
+              {errors.username && (
+                <p className="mt-1.5 text-xs font-medium text-[#ba1a1a]">
+                  {errors.username}
+                </p>
+              )}
             </TextField>
 
             {/* Email */}
@@ -174,6 +226,11 @@ export default function RegisterPage() {
                   className="w-full pl-10"
                 />
               </div>
+              {errors.email && (
+                <p className="mt-1.5 text-xs font-medium text-[#ba1a1a]">
+                  {errors.email}
+                </p>
+              )}
             </TextField>
 
             {/* Contraseña */}
@@ -205,6 +262,11 @@ export default function RegisterPage() {
                   className="w-full pl-10"
                 />
               </div>
+              {errors.password && (
+                <p className="mt-1.5 text-xs font-medium text-[#ba1a1a]">
+                  {errors.password}
+                </p>
+              )}
             </TextField>
 
             {/* Repetir contraseña */}
@@ -235,10 +297,9 @@ export default function RegisterPage() {
                   className="w-full pl-10"
                 />
               </div>
-
-              {!passwordsMatch && (
+              {errors.repeatPassword && (
                 <p className="mt-1.5 text-xs font-medium text-[#ba1a1a]">
-                  Las contraseñas no coinciden.
+                  {errors.repeatPassword}
                 </p>
               )}
             </TextField>
@@ -246,8 +307,7 @@ export default function RegisterPage() {
             {/* Botón */}
             <button
               type="submit"
-              disabled={!passwordsMatch}
-              className="mt-1 flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-black px-5 text-sm font-semibold text-white transition-colors hover:bg-[#006a63] disabled:cursor-not-allowed disabled:opacity-40"
+              className="mt-1 flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-black px-5 text-sm font-semibold text-white transition-colors hover:bg-[#006a63]"
             >
               Crear cuenta
               <ArrowRight
