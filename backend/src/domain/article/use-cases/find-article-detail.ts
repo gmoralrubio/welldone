@@ -3,19 +3,19 @@ import { ArticleRepository } from '@domain/article/repositories/ArticleRepositor
 import { BusinessConflictError } from '@domain/errors/BusinessConflictError';
 import { EntityNotFoundError } from '@domain/errors/EntityNotFoundError';
 
-export interface FindArticleUseCaseInput {
+export interface FindArticleDetailUseCaseInput {
   authorUsername: string;
   slug: string;
 }
 
-export class FindArticleUseCase {
+export class FindArticleDetailUseCase {
   readonly articleRepository: ArticleRepository;
 
   constructor(articleRepository: ArticleRepository) {
     this.articleRepository = articleRepository;
   }
 
-  async execute(params: FindArticleUseCaseInput): Promise<Article> {
+  async execute(params: FindArticleDetailUseCaseInput): Promise<Article> {
     const article = await this.articleRepository.findPublishedByAuthorAndSlug(
       params.authorUsername,
       params.slug

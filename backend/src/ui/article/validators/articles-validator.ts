@@ -1,5 +1,20 @@
 import { z } from 'zod';
 
+export const ARTICLE_PAGE_SIZE = 6;
+export const ARTICLE_MAX_PAGE_SIZE = 12;
+
+export const findArticlesValidationSchema = z.object({
+  page: z.coerce.number('Invalid page. Must be a number').positive().default(1),
+  limit: z.coerce
+    .number('Invalid limit. Must be a number')
+    .positive()
+    .max(ARTICLE_MAX_PAGE_SIZE)
+    .default(ARTICLE_PAGE_SIZE),
+  search: z.string().min(3).optional(),
+  category: z.coerce.number().positive().max(3).optional(),
+  order: z.enum(['asc', 'desc']).default('desc').catch('desc'),
+});
+
 export const articleDetailValidationSchema = z.object({
   authorUsername: z
     .string('Author is required')
@@ -12,11 +27,23 @@ export const articleDetailValidationSchema = z.object({
 export const createArticleValidationSchema = z.object({
   title: z.string().min(2, 'El título debe tener al menos 2 caracteres'),
   content: z.string().min(5, 'El contenido debe tener al menos 5 caracteres'),
-  intro: z.string().min(5, 'La introducción es obligatoria, al menos 5 caracteres'),
+  intro: z
+    .string()
+    .min(5, 'La introducción es obligatoria, al menos 5 caracteres'),
   slug: z.string().optional(),
   status: z.enum(['DRAFT', 'PUBLISHED']),
   publishedAt: z.string().optional().nullable(),
-  featuredImageUrl: z.string().url('Debe ser una URL válida').optional().nullable(),
-  featuredVideoUrl: z.string().url('Debe ser una URL válida').optional().nullable(),
-  categoryIds: z.array(z.number()).min(1, 'Debes seleccionar al menos una categoría'),
+  featuredImageUrl: z
+    .string()
+    .url('Debe ser una URL válida')
+    .optional()
+    .nullable(),
+  featuredVideoUrl: z
+    .string()
+    .url('Debe ser una URL válida')
+    .optional()
+    .nullable(),
+  categoryIds: z
+    .array(z.number())
+    .min(1, 'Debes seleccionar al menos una categoría'),
 });
