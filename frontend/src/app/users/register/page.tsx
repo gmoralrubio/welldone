@@ -14,6 +14,7 @@ import {
 import { Input, Label, TextField } from '@heroui/react';
 import Link from 'next/link';
 import { registerUser, checkAvailability } from './actions';
+import { redirect } from 'next/navigation';
 
 export default function RegisterPage() {
   const [password, setPassword] = useState('');
@@ -64,7 +65,7 @@ export default function RegisterPage() {
 
     if (response.status === 201) {
       console.log('Usuario registrado correctamente');
-
+      redirect('/');
       return;
     }
 
