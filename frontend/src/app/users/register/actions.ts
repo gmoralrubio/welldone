@@ -9,7 +9,7 @@ interface RegisterUserData {
 }
 
 export async function registerUser(data: RegisterUserData) {
-  const response = await fetch(`${process.env.API_URL}api/users/register`, {
+  const response = await fetch(`${process.env.API_URL}/api/users/register`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -30,7 +30,7 @@ export async function checkAvailability(
   value: string
 ): Promise<boolean> {
   const response = await fetch(
-    `${process.env.API_URL}api/users/availability?field=${field}&value=${encodeURIComponent(value)}`
+    `${process.env.API_URL}/api/users/availability?field=${field}&value=${encodeURIComponent(value)}`
   );
 
   if (!response.ok) return true;

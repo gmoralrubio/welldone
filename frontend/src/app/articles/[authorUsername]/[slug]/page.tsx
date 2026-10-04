@@ -56,6 +56,8 @@ export async function generateMetadata({
 
 {
   /* TODO:
+    - Loading
+    - Incluir categorías
     - Imagen de Avatar
     - Calcular seguidores
     - Calcular comentarios
