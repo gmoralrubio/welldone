@@ -1,4 +1,6 @@
 import { Article, ArticleStatus } from '@domain/article/Article';
+import { FindArticlesResponse } from '@domain/article/types/FindArticlesResponse';
+import { FindPublishedArticlesUseCaseInput } from '@domain/article/use-cases/find-published-articles';
 
 export interface CreateArticleParams {
   title: string;
@@ -14,12 +16,13 @@ export interface CreateArticleParams {
 }
 
 export interface ArticleRepository {
+  findPublishedArticles(
+    criteria: FindPublishedArticlesUseCaseInput
+  ): Promise<FindArticlesResponse>;
   findPublishedByAuthorAndSlug(
     authorUsername: string,
     slug: string
   ): Promise<Article | null>;
-  
-  create(
-    params: CreateArticleParams
-  ): Promise<Article>
+
+  create(params: CreateArticleParams): Promise<Article>;
 }
