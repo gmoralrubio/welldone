@@ -33,10 +33,10 @@ export class CreateUserUseCase {
     );
 
     if (existingEmail) {
-      throw new BusinessConflictError("Email already in use");
+      throw new BusinessConflictError("Email already in use", "email");
     }
     if (existingUsername) {
-      throw new BusinessConflictError("Username already in use");
+      throw new BusinessConflictError("Username already in use", "username");
     }
     // 2. Validas contraseña
     this.validatePassword(input.password);
