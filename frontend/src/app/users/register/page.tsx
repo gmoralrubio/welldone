@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, type SubmitEvent, type FocusEvent } from 'react';
+import { useRouter } from 'next/navigation';
 import { registerSchema, type RegisterFormData } from './schema';
 import {
   ArrowLeft,
@@ -14,9 +15,9 @@ import {
 import { Input, Label, TextField } from '@heroui/react';
 import Link from 'next/link';
 import { registerUser, checkAvailability } from './actions';
-import { redirect } from 'next/navigation';
 
 export default function RegisterPage() {
+  const router = useRouter();
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
   const [errors, setErrors] = useState<Partial<Record<keyof RegisterFormData, string>>>(
@@ -65,7 +66,7 @@ export default function RegisterPage() {
 
     if (response.status === 201) {
       console.log('Usuario registrado correctamente');
-      redirect('/');
+      router.push('/');
       return;
     }
 
@@ -129,7 +130,7 @@ export default function RegisterPage() {
     }
   };
   return (
-    <main className="min-h-screen bg-[#faf9f6] text-[#1a1c1a] antialiased">
+    <main className="flex min-h-screen flex-col bg-[#faf9f6] text-[#1a1c1a] antialiased">
       {/* Header */}
       <header className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <div className="text-xl font-semibold tracking-tight text-black">WellDone</div>
@@ -154,7 +155,7 @@ export default function RegisterPage() {
       </header>
 
       {/* Contenido */}
-      <section className="mx-auto flex w-full max-w-7xl justify-center px-4 pb-5 pt-1 sm:px-6 lg:px-8">
+      <section className="mx-auto flex w-full max-w-7xl flex-1 items-start justify-center px-4 pb-5 pt-1 sm:px-6 lg:px-8">
         <div className="w-full max-w-xl rounded-xl bg-white p-6 shadow-md sm:p-8">
           {/* Cabecera */}
           <div className="mb-6">
