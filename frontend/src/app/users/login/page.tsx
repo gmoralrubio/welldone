@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, type SubmitEvent } from 'react';
-// import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { loginSchema, type LoginFormData } from './schema';
 import { ArrowLeft, ArrowRight, At, Lock, Person } from '@gravity-ui/icons';
 import { Input, Label, TextField } from '@heroui/react';
@@ -11,7 +11,7 @@ import { loginUser } from './actions';
 type LoginErrors = Partial<Record<keyof LoginFormData | 'form', string>>;
 
 export default function LoginPage() {
-  //   const router = useRouter();
+  const router = useRouter();
   const [errors, setErrors] = useState<LoginErrors>({});
 
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
@@ -46,8 +46,7 @@ export default function LoginPage() {
     const response = await loginUser(result.data);
 
     if (response.status === 200) {
-      console.log('Login correcto:', response.data.accessToken);
-      //   router.push('/');
+      router.push('/');
       return;
     }
 

@@ -1,5 +1,7 @@
 'use server';
 
+import { cookies } from 'next/headers';
+
 interface LoginUserData {
   identifier: string;
   password: string;
@@ -15,6 +17,16 @@ export async function loginUser(data: LoginUserData) {
   });
 
   const responseData = await response.json();
+
+  if (response.ok && responseData.accessToken) {
+    const cookieStore = await cookies();
+    cookieStore.set('accessToken', responseData.accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+    });
+  }
 
   return {
     status: response.status,
