@@ -1,0 +1,12 @@
+{
+  "LocaleSwitcher": {
+    "label": "Language",
+    "options": {
+      "es": "Spanish",
+      "en": "English"
+    }
+  },
+  "ArticleHero": {
+    "heading": "Last publication"
+  }
+}
