@@ -1,6 +1,6 @@
 'use client';
 
-import { ArticleOrder, articlesHref } from '@/app/articles/article-query';
+import { ArticleOrder, articlesHref } from '@/app/[locale]/articles/article-query';
 import { Pagination } from '@heroui/react';
 import { useRouter } from 'next/navigation';
 

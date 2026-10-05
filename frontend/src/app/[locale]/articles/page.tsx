@@ -1,11 +1,14 @@
-import { getArticles } from '@/app/articles/actions';
-import { parseArticleQuery, type SearchParamValue } from '@/app/articles/article-query';
-import { ArticleCard } from '@/app/components/article/article-card';
-import { ArticleHero } from '@/app/components/article/article-hero';
-import { ArticlePagination } from '@/app/components/article/article-pagination';
-import { SiteSidebar } from '@/app/components/shared/site-sidebar';
-import { SiteFooter } from '@/app/components/shared/site-footer';
-import { SiteHeader } from '@/app/components/shared/site-header';
+import { getArticles } from '@/app/[locale]/articles/actions';
+import {
+  parseArticleQuery,
+  type SearchParamValue,
+} from '@/app/[locale]/articles/article-query';
+import { ArticleCard } from '@/app/[locale]/components/article/article-card';
+import { ArticleHero } from '@/app/[locale]/components/article/article-hero';
+import { ArticlePagination } from '@/app/[locale]/components/article/article-pagination';
+import { SiteSidebar } from '@/app/[locale]/components/shared/site-sidebar';
+import { SiteFooter } from '@/app/[locale]/components/shared/site-footer';
+import { SiteHeader } from '@/app/[locale]/components/shared/site-header';
 import { EmptyState } from '@heroui/react';
 import { Metadata } from 'next';
 

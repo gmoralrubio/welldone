@@ -1,6 +1,6 @@
 'use client';
 
-import { ArticleOrder, articlesHref } from '@/app/articles/article-query';
+import { ArticleOrder, articlesHref } from '@/app/[locale]/articles/article-query';
 import { ListBox, Select, type Key } from '@heroui/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 

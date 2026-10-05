@@ -1,5 +1,5 @@
-import { SiteFooter } from '@/app/components/shared/site-footer';
-import { SiteHeader } from '@/app/components/shared/site-header';
+import { SiteFooter } from '@/app/[locale]/components/shared/site-footer';
+import { SiteHeader } from '@/app/[locale]/components/shared/site-header';
 import { Card, Skeleton, Surface } from '@heroui/react';
 
 const FEED_PLACEHOLDERS = 3;

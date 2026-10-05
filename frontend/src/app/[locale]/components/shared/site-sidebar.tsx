@@ -1,7 +1,7 @@
 import { Surface, Link, SearchField } from '@heroui/react';
 import { articleCategories } from '@/lib/articles.types';
-import { SelectOrder } from '@/app/components/article/select-order';
-import { ArticleOrder } from '@/app/articles/article-query';
+import { SelectOrder } from '@/app/[locale]/components/article/select-order';
+import { ArticleOrder } from '@/app/[locale]/articles/article-query';
 
 type SiteSidebarProps = {
   search: string;

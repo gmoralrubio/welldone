@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Plus_Jakarta_Sans, Newsreader } from 'next/font/google';
 import './globals.css';
+import { NextIntlClientProvider } from 'next-intl';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: '--font-jakarta-sans',
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
   description: 'Proyecto final de Bootcamp Keep Coding Web 20',
 };
 
-export default function RootLayout({ children }: LayoutProps<'/'>) {
+export default function RootLayout({ children }: LayoutProps<'/[locale]'>) {
   return (
     <html
       lang="en"
@@ -25,7 +26,8 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
     >
       <body className="min-h-full flex flex-col">
         <div className="flex flex-1 flex-col bg-background text-foreground">
-          {children}
+          {/* Provider next-intl para Client components */}
+          <NextIntlClientProvider>{children}</NextIntlClientProvider>
         </div>
       </body>
     </html>

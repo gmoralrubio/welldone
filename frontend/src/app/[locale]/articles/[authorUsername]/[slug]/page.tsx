@@ -1,10 +1,10 @@
-import { getArticleByAuthorAndSlug } from '@/app/articles/actions';
+import { getArticleByAuthorAndSlug } from '@/app/[locale]/articles/actions';
 import {
   formatAvatarLetter,
   formatDate,
   slugify,
   truncateSlug,
-} from '@/app/articles/article-presenters';
+} from '@/app/[locale]/articles/article-presenters';
 import {
   Avatar,
   Breadcrumbs,
@@ -30,9 +30,9 @@ import {
 import { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { PaginationBasic } from '@/app/components/shared/PaginationBasic';
-import { PaginationSimplePrevNext } from '@/app/components/shared/PaginationSimplePrevNext';
-import { ArticleCategory } from '@/app/components/article/article-category';
+import { PaginationBasic } from '@/app/[locale]/components/shared/PaginationBasic';
+import { PaginationSimplePrevNext } from '@/app/[locale]/components/shared/PaginationSimplePrevNext';
+import { ArticleCategory } from '@/app/[locale]/components/article/article-category';
 
 interface ArticleDetailPageProps {
   params: Promise<{ authorUsername: string; slug: string }>;

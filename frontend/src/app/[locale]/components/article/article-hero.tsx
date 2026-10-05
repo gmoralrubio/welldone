@@ -2,12 +2,13 @@ import {
   formatAvatarLetter,
   formatRelativeTime,
   readingMinutes,
-} from '@/app/articles/article-presenters';
+} from '@/app/[locale]/articles/article-presenters';
 import { ArticleDto } from '@/lib/articles.types';
 import { Avatar, Button, Card, Link } from '@heroui/react';
 import { ArrowUpFromSquare, Bookmark, Clock, Comment } from '@gravity-ui/icons';
 import Image from 'next/image';
-import { ArticleCategory } from '@/app/components/article/article-category';
+import { ArticleCategory } from '@/app/[locale]/components/article/article-category';
+import { useTranslations } from 'next-intl';
 
 type EditorialHeroProps = {
   article: ArticleDto;
@@ -17,13 +18,15 @@ export function ArticleHero({ article }: EditorialHeroProps) {
   const href = `/articles/${article.author.username}/${article.slug}`;
   const minutes = readingMinutes(article.intro, article.content);
 
+  const t = useTranslations('ArticleHero');
+
   return (
     <section className=" px-0 py-10">
       <div className="flex items-center justify-between gap-4 text-xs">
         <div className="flex items-center gap-2">
           <span className="size-2 rounded-full bg-accent-soft" />
           <span className="text-xs font-bold tracking-widest text-accent-soft uppercase">
-            Última publicación
+            {t('heading')}
           </span>
           <span className="text-muted">|</span>
           <span className="font-medium text-muted">

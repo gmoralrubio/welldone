@@ -1,6 +1,9 @@
 'use server';
 
-import { articleQueryParams, parseArticleQuery } from '@/app/articles/article-query';
+import {
+  articleQueryParams,
+  parseArticleQuery,
+} from '@/app/[locale]/articles/article-query';
 import { ArticleDto } from '@/lib/articles.types';
 import { redirect } from 'next/navigation';
 import { PaginatedResponse } from '@/lib/pagination.types';

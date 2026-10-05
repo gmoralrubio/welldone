@@ -2,12 +2,12 @@ import {
   formatAvatarLetter,
   formatRelativeTime,
   readingMinutes,
-} from '@/app/articles/article-presenters';
+} from '@/app/[locale]/articles/article-presenters';
 import { ArticleDto } from '@/lib/articles.types';
 import { Avatar, Button, Card, Link } from '@heroui/react';
 import { ArrowUpFromSquare, Bookmark, Clock, Comment } from '@gravity-ui/icons';
 import Image from 'next/image';
-import { ArticleCategory } from '@/app/components/article/article-category';
+import { ArticleCategory } from '@/app/[locale]/components/article/article-category';
 
 type ArticleCardProps = {
   article: ArticleDto;
