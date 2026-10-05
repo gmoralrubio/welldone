@@ -1,0 +1,22 @@
+{
+  "LocaleSwitcher": {
+    "label": "Language",
+    "options": {
+      "es": "Spanish",
+      "en": "English"
+    }
+  },
+  "CreateArticlePage": {
+    "title": "Write your history"
+  },
+  "ArticleHero": {
+    "heading": "Last publication"
+  },
+  "ArticleDetailPage": {
+    "breadCrumbs": {
+      "ariaLabel": "Breadcrumbs",
+      "home": "Home",
+      "articles": "Articles"
+    }
+  }
+}

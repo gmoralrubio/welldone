@@ -1,0 +1,22 @@
+{
+  "LocaleSwitcher": {
+    "label": "Idioma",
+    "options": {
+      "es": "Castellano",
+      "en": "Inglés"
+    }
+  },
+  "ArticleHero": {
+    "heading": "Última publicación"
+  },
+  "CreateArticlePage": {
+    "title": "Escribe tu historia"
+  },
+  "ArticleDetailPage": {
+    "breadCrumbs": {
+      "ariaLabel": "Migas de pan",
+      "home": "Inicio",
+      "articles": "Artículos"
+    }
+  }
+}

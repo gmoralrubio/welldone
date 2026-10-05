@@ -26,8 +26,7 @@ export default function RootLayout({ children }: LayoutProps<'/[locale]'>) {
     >
       <body className="min-h-full flex flex-col">
         <div className="flex flex-1 flex-col bg-background text-foreground">
-          {/* Provider next-intl para Client components */}
-          <NextIntlClientProvider>{children}</NextIntlClientProvider>
+          <NextIntlClientProvider> {children}</NextIntlClientProvider>
         </div>
       </body>
     </html>

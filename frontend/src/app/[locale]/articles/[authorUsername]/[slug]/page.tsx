@@ -33,6 +33,7 @@ import { notFound } from 'next/navigation';
 import { PaginationBasic } from '@/app/[locale]/components/shared/PaginationBasic';
 import { PaginationSimplePrevNext } from '@/app/[locale]/components/shared/PaginationSimplePrevNext';
 import { ArticleCategory } from '@/app/[locale]/components/article/article-category';
+import { getTranslations } from 'next-intl/server';
 
 interface ArticleDetailPageProps {
   params: Promise<{ authorUsername: string; slug: string }>;
@@ -80,20 +81,22 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
     notFound();
   }
 
+  const t = await getTranslations('ArticleDetailPage');
+
   return (
     <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-8 px-6 py-10">
-      <Breadcrumbs aria-label="Migas de pan">
+      <Breadcrumbs aria-label={t('breadCrumbs.ariaLabel')}>
         <Breadcrumbs.Item
           className="uppercase"
           href="/"
         >
-          <span className="text-xs">Inicio</span>
+          <span className="text-xs">{t('breadCrumbs.home')}</span>
         </Breadcrumbs.Item>
         <Breadcrumbs.Item
           className="uppercase"
           href="/articles"
         >
-          <span className="text-xs">Artículos</span>
+          <span className="text-xs">{t('breadCrumbs.articles')}</span>
         </Breadcrumbs.Item>
         <Breadcrumbs.Item className="uppercase">
           <span className="text-xs">{truncateSlug(slugify(article.title))}</span>
