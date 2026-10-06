@@ -1,18 +1,22 @@
 'use client';
 
-import { ArticleOrder, articlesHref } from '@/app/[locale]/articles/article-query';
+import { ArticleOrder, articlesListHref } from '@/app/[locale]/articles/article-query';
 import { ListBox, Select, type Key } from '@heroui/react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from '@/i18n/navigation';
+import { useTranslations } from 'next-intl';
 
 export function SelectOrder() {
+  const t = useTranslations('SelectOrder');
+
   const orders = [
     {
-      id: 'desc',
-      name: 'Más recientes',
+      id: 'desc' as const,
+      name: t('desc'),
     },
     {
-      id: 'asc',
-      name: 'Más antiguos',
+      id: 'asc' as const,
+      name: t('asc'),
     },
   ];
 
@@ -22,16 +26,18 @@ export function SelectOrder() {
   const search = searchParams.get('search');
 
   const handleOnChange = (value: Key | null) => {
-    const order = value === 'asc' ? 'asc' : 'desc';
-    router.push(articlesHref({ page: 1, search: search ?? '', order }));
+    const nextOrder = value === 'asc' ? 'asc' : 'desc';
+    router.push(
+      articlesListHref({ page: 1, search: search ?? '', order: nextOrder })
+    );
   };
 
   return (
     <div className="space-y-2">
       <Select
         className="w-full"
-        placeholder="Selecciona el orden"
-        aria-label="Orden"
+        placeholder={t('placeholder')}
+        aria-label={t('ariaLabel')}
         value={order}
         onChange={(value) => handleOnChange(value)}
       >
@@ -41,13 +47,13 @@ export function SelectOrder() {
         </Select.Trigger>
         <Select.Popover>
           <ListBox>
-            {orders.map((order) => (
+            {orders.map((orderOption) => (
               <ListBox.Item
-                key={order.id}
-                id={order.id}
-                textValue={order.name}
+                key={orderOption.id}
+                id={orderOption.id}
+                textValue={orderOption.name}
               >
-                {order.name}
+                {orderOption.name}
                 <ListBox.ItemIndicator />
               </ListBox.Item>
             ))}

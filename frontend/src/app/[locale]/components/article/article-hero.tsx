@@ -1,14 +1,17 @@
+'use client';
+
 import {
   formatAvatarLetter,
   formatRelativeTime,
   readingMinutes,
 } from '@/app/[locale]/articles/article-presenters';
 import { ArticleDto } from '@/lib/articles.types';
-import { Avatar, Button, Card, Link } from '@heroui/react';
+import { Avatar, Button, Card } from '@heroui/react';
 import { ArrowUpFromSquare, Bookmark, Clock, Comment } from '@gravity-ui/icons';
 import Image from 'next/image';
 import { ArticleCategory } from '@/app/[locale]/components/article/article-category';
 import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
 
 type EditorialHeroProps = {
   article: ArticleDto;
@@ -17,6 +20,7 @@ type EditorialHeroProps = {
 export function ArticleHero({ article }: EditorialHeroProps) {
   const href = `/articles/${article.author.username}/${article.slug}`;
   const minutes = readingMinutes(article.intro, article.content);
+  const relativeTime = formatRelativeTime(article.publishedAt);
 
   const t = useTranslations('ArticleHero');
 
@@ -29,9 +33,7 @@ export function ArticleHero({ article }: EditorialHeroProps) {
             {t('heading')}
           </span>
           <span className="text-muted">|</span>
-          <span className="font-medium text-muted">
-            {formatRelativeTime(article.publishedAt)}
-          </span>
+          <span className="font-medium text-muted">{relativeTime}</span>
         </div>
       </div>
       <Card className="mt-4 grid gap-10 bg-white p-6 shadow-xs shadow-accent-dark/30 md:p-10 lg:grid-cols-12 hover:shadow-md">
@@ -41,19 +43,17 @@ export function ArticleHero({ article }: EditorialHeroProps) {
               {article.categories.map((category) => (
                 <ArticleCategory
                   key={category.id}
-                  name={category.name}
+                  categoryId={category.id}
                 />
               ))}
-              <span>
-                Publicado {formatRelativeTime(article.publishedAt).toLowerCase()}
-              </span>
+              <span>{t('published', { time: relativeTime.toLowerCase() })}</span>
               <span className="text-muted">|</span>
               <span className="inline-flex items-center gap-1 text-muted">
                 <Clock
                   width={12}
                   height={12}
                 />
-                {minutes} min de lectura
+                {t('readMinutes', { minutes })}
               </span>
             </div>
             <Link

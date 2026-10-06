@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, type SubmitEvent, type FocusEvent } from 'react';
-import { useRouter } from 'next/navigation';
 import { registerSchema, type RegisterFormData } from './schema';
 import {
   ArrowLeft,
@@ -13,16 +12,45 @@ import {
   Envelope,
 } from '@gravity-ui/icons';
 import { Input, Label, TextField } from '@heroui/react';
-import Link from 'next/link';
 import { registerUser, checkAvailability } from './actions';
+import { Link, useRouter } from '@/i18n/navigation';
+import LocaleSwitcher from '@/app/[locale]/components/shared/locale-switcher';
+import { useTranslations } from 'next-intl';
+
+type RegisterFieldKey = keyof RegisterFormData;
+type RegisterValidationKey =
+  | 'nameMin'
+  | 'surnameRequired'
+  | 'usernameMin'
+  | 'usernamePattern'
+  | 'emailRequired'
+  | 'emailInvalid'
+  | 'passwordRequired'
+  | 'passwordPattern'
+  | 'repeatPasswordRequired'
+  | 'passwordsMismatch';
+type RegisterConflictKey = 'emailTaken' | 'usernameTaken';
+
+type RegisterErrors = Partial<
+  Record<RegisterFieldKey, RegisterValidationKey | RegisterConflictKey>
+>;
 
 export default function RegisterPage() {
   const router = useRouter();
+  const t = useTranslations('AuthRegister');
+  const tValidation = useTranslations('Validation.Register');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
-  const [errors, setErrors] = useState<Partial<Record<keyof RegisterFormData, string>>>(
-    {}
-  );
+  const [errors, setErrors] = useState<RegisterErrors>({});
+
+  const fieldErrorMessage = (field: RegisterFieldKey, key?: string) => {
+    if (!key) return null;
+    if (key === 'emailTaken' || key === 'usernameTaken') {
+      return t(`errors.${key}`);
+    }
+    return tValidation(key as RegisterValidationKey);
+  };
+
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -40,13 +68,13 @@ export default function RegisterPage() {
     const result = registerSchema.safeParse(data);
 
     if (!result.success) {
-      const validationErrors: Partial<Record<keyof RegisterFormData, string>> = {};
+      const validationErrors: RegisterErrors = {};
 
       result.error.issues.forEach((issue) => {
-        const field = issue.path[0] as keyof RegisterFormData;
+        const field = issue.path[0] as RegisterFieldKey;
 
         if (!validationErrors[field]) {
-          validationErrors[field] = issue.message;
+          validationErrors[field] = issue.message as RegisterValidationKey;
         }
       });
 
@@ -65,8 +93,7 @@ export default function RegisterPage() {
     });
 
     if (response.status === 201) {
-      console.log('Usuario registrado correctamente');
-      router.push('/');
+      router.push('/articles');
       return;
     }
 
@@ -74,10 +101,7 @@ export default function RegisterPage() {
       const field = response.data.field as 'email' | 'username';
 
       setErrors({
-        [field]:
-          field === 'email'
-            ? 'Este correo electrónico ya está registrado'
-            : 'Este nombre de usuario ya está en uso',
+        [field]: field === 'email' ? 'emailTaken' : 'usernameTaken',
       });
 
       return;
@@ -87,7 +111,7 @@ export default function RegisterPage() {
   };
 
   const handleOnBlur = async (event: FocusEvent<HTMLInputElement>) => {
-    const field = event.target.name as keyof RegisterFormData;
+    const field = event.target.name as RegisterFieldKey;
     const value = event.target.value.trim();
 
     if (!value) {
@@ -105,7 +129,7 @@ export default function RegisterPage() {
     if (!result.success) {
       setErrors((prev) => ({
         ...prev,
-        [field]: result.error.issues[0].message,
+        [field]: result.error.issues[0].message as RegisterValidationKey,
       }));
       return;
     }
@@ -113,14 +137,9 @@ export default function RegisterPage() {
     if (field === 'username' || field === 'email') {
       const available = await checkAvailability(field, value);
 
-      const messages = {
-        username: 'Este nombre de usuario ya está en uso',
-        email: 'Este correo electrónico ya está registrado',
-      };
-
       setErrors((prev) => ({
         ...prev,
-        [field]: available ? undefined : messages[field],
+        [field]: available ? undefined : field === 'email' ? 'emailTaken' : 'usernameTaken',
       }));
     } else {
       setErrors((prev) => ({
@@ -129,38 +148,30 @@ export default function RegisterPage() {
       }));
     }
   };
+
   return (
     <main className="flex min-h-screen flex-col bg-[#faf9f6] text-[#1a1c1a] antialiased">
-      {/* Header */}
       <header className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        <div className="text-xl font-semibold tracking-tight text-black">WellDone</div>
+        <div className="text-xl font-semibold tracking-tight text-black">{t('brand')}</div>
 
         <div className="flex items-center gap-4">
           <Link
-            href="/"
+            href="/articles"
             className="hidden items-center gap-2 text-sm font-medium text-[#45464d] transition-colors hover:text-black sm:flex"
           >
             <ArrowLeft className="h-4 w-4" />
-            Volver a la lectura pública
+            {t('backToReading')}
           </Link>
 
-          <div className="flex items-center gap-2 rounded-full bg-[#f4f3f1] px-3 py-1.5 text-xs font-semibold shadow-sm">
-            <span className="text-black">ES</span>
-            <span className="text-[#76777d]">/</span>
-            <span className="text-[#76777d]">EN</span>
-            <span className="text-[#76777d]">/</span>
-            <span className="text-[#76777d]">FR</span>
-          </div>
+          <LocaleSwitcher />
         </div>
       </header>
 
-      {/* Contenido */}
       <section className="mx-auto flex w-full max-w-7xl flex-1 items-start justify-center px-4 pb-5 pt-1 sm:px-6 lg:px-8">
         <div className="w-full max-w-xl rounded-xl bg-white p-6 shadow-md sm:p-8">
-          {/* Cabecera */}
           <div className="mb-6">
             <p className="mb-2 text-xs font-semibold uppercase tracking-[0.12em] text-[#006a63]">
-              Únete a WellDone
+              {t('eyebrow')}
             </p>
 
             <div className="flex items-center gap-3">
@@ -170,29 +181,27 @@ export default function RegisterPage() {
               />
 
               <h1 className="font-serif text-[30px] font-medium leading-[38px] tracking-tight text-black">
-                Crear cuenta
+                {t('title')}
               </h1>
             </div>
 
             <p className="mt-2 max-w-md text-[15px] leading-[22px] text-[#45464d]">
-              Crea tu cuenta para participar en la comunidad de WellDone.
+              {t('subtitle')}
             </p>
           </div>
 
-          {/* Formulario */}
           <form
             className="flex flex-col gap-4"
             onSubmit={handleSubmit}
             noValidate
           >
-            {/* Nombre y apellidos */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <TextField>
                 <Label
                   isRequired
                   className="mb-1 text-[12px] font-semibold text-[#45464d]"
                 >
-                  Nombre
+                  {t('nameLabel')}
                 </Label>
 
                 <div className="relative">
@@ -203,16 +212,16 @@ export default function RegisterPage() {
 
                   <Input
                     name="name"
-                    placeholder="Tu nombre"
+                    placeholder={t('namePlaceholder')}
                     className="w-full pl-10"
                     onBlur={handleOnBlur}
                   />
                 </div>
-                {errors.name && (
+                {errors.name ? (
                   <p className="mt-1.5 text-xs font-medium text-[#ba1a1a]">
-                    {errors.name}
+                    {fieldErrorMessage('name', errors.name)}
                   </p>
-                )}
+                ) : null}
               </TextField>
 
               <TextField>
@@ -220,7 +229,7 @@ export default function RegisterPage() {
                   isRequired
                   className="mb-1 text-[12px] font-semibold text-[#45464d]"
                 >
-                  Apellidos
+                  {t('surnameLabel')}
                 </Label>
 
                 <div className="relative">
@@ -231,31 +240,30 @@ export default function RegisterPage() {
 
                   <Input
                     name="surname"
-                    placeholder="Tus apellidos"
+                    placeholder={t('surnamePlaceholder')}
                     className="w-full pl-10"
                     onBlur={handleOnBlur}
                   />
                 </div>
-                {errors.surname && (
+                {errors.surname ? (
                   <p className="mt-1.5 text-xs font-medium text-[#ba1a1a]">
-                    {errors.surname}
+                    {fieldErrorMessage('surname', errors.surname)}
                   </p>
-                )}
+                ) : null}
               </TextField>
             </div>
 
-            {/* Username */}
             <TextField>
               <div className="mb-1 flex items-center justify-between">
                 <Label
                   isRequired
                   className="text-[12px] font-semibold text-[#45464d]"
                 >
-                  Nombre de usuario
+                  {t('usernameLabel')}
                 </Label>
 
                 <span className="text-[11px] font-medium text-[#76777d]">
-                  Obligatorio
+                  {t('required')}
                 </span>
               </div>
 
@@ -267,30 +275,29 @@ export default function RegisterPage() {
 
                 <Input
                   name="username"
-                  placeholder="tu_usuario"
+                  placeholder={t('usernamePlaceholder')}
                   className="w-full pl-10"
                   onBlur={handleOnBlur}
                 />
               </div>
-              {errors.username && (
+              {errors.username ? (
                 <p className="mt-1.5 text-xs font-medium text-[#ba1a1a]">
-                  {errors.username}
+                  {fieldErrorMessage('username', errors.username)}
                 </p>
-              )}
+              ) : null}
             </TextField>
 
-            {/* Email */}
             <TextField>
               <div className="mb-1 flex items-center justify-between">
                 <Label
                   isRequired
                   className="text-[12px] font-semibold text-[#45464d]"
                 >
-                  Correo electrónico
+                  {t('emailLabel')}
                 </Label>
 
                 <span className="text-[11px] font-medium text-[#76777d]">
-                  Obligatorio
+                  {t('required')}
                 </span>
               </div>
 
@@ -302,30 +309,29 @@ export default function RegisterPage() {
                 <Input
                   name="email"
                   type="email"
-                  placeholder="tu@email.com"
+                  placeholder={t('emailPlaceholder')}
                   className="w-full pl-10"
                   onBlur={handleOnBlur}
                 />
               </div>
-              {errors.email && (
+              {errors.email ? (
                 <p className="mt-1.5 text-xs font-medium text-[#ba1a1a]">
-                  {errors.email}
+                  {fieldErrorMessage('email', errors.email)}
                 </p>
-              )}
+              ) : null}
             </TextField>
 
-            {/* Contraseña */}
             <TextField>
               <div className="mb-1 flex items-center justify-between">
                 <Label
                   isRequired
                   className="text-[12px] font-semibold text-[#45464d]"
                 >
-                  Contraseña
+                  {t('passwordLabel')}
                 </Label>
 
                 <span className="text-[11px] font-medium text-[#76777d]">
-                  Obligatorio
+                  {t('required')}
                 </span>
               </div>
 
@@ -337,31 +343,30 @@ export default function RegisterPage() {
                 <Input
                   name="password"
                   type="password"
-                  placeholder="Introduce tu contraseña"
+                  placeholder={t('passwordPlaceholder')}
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
                   className="w-full pl-10"
                   onBlur={handleOnBlur}
                 />
               </div>
-              {errors.password && (
+              {errors.password ? (
                 <p className="mt-1.5 text-xs font-medium text-[#ba1a1a]">
-                  {errors.password}
+                  {fieldErrorMessage('password', errors.password)}
                 </p>
-              )}
+              ) : null}
             </TextField>
 
-            {/* Repetir contraseña */}
             <TextField>
               <div className="mb-1 flex items-center justify-between">
                 <Label
                   isRequired
                   className="text-[12px] font-semibold text-[#45464d]"
                 >
-                  Repetir contraseña
+                  {t('repeatPasswordLabel')}
                 </Label>
                 <span className="text-[11px] font-medium text-[#76777d]">
-                  Obligatorio
+                  {t('required')}
                 </span>
               </div>
 
@@ -373,25 +378,24 @@ export default function RegisterPage() {
                 <Input
                   name="repeatPassword"
                   type="password"
-                  placeholder="Repite tu contraseña"
+                  placeholder={t('repeatPasswordPlaceholder')}
                   value={repeatPassword}
                   onChange={(event) => setRepeatPassword(event.target.value)}
                   className="w-full pl-10"
                 />
               </div>
-              {errors.repeatPassword && (
+              {errors.repeatPassword ? (
                 <p className="mt-1.5 text-xs font-medium text-[#ba1a1a]">
-                  {errors.repeatPassword}
+                  {fieldErrorMessage('repeatPassword', errors.repeatPassword)}
                 </p>
-              )}
+              ) : null}
             </TextField>
 
-            {/* Botón */}
             <button
               type="submit"
               className="mt-1 flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-black px-5 text-sm font-semibold text-white transition-colors hover:bg-[#006a63]"
             >
-              Crear cuenta
+              {t('submit')}
               <ArrowRight
                 className="h-4 w-4"
                 aria-hidden="true"
@@ -399,15 +403,14 @@ export default function RegisterPage() {
             </button>
           </form>
 
-          {/* Login */}
           <div className="mt-6 border-t border-[#c6c6cd] pt-5">
             <div className="flex items-center justify-center gap-2 text-sm">
-              <p className="text-[#45464d]">¿Ya tienes una cuenta?</p>
+              <p className="text-[#45464d]">{t('hasAccount')}</p>
               <Link
                 href="/login"
                 className="inline-flex items-center gap-1.5 font-semibold text-black transition-colors hover:text-[#006a63]"
               >
-                Iniciar sesión
+                {t('signIn')}
                 <ArrowRight
                   className="h-4 w-4"
                   aria-hidden="true"
@@ -418,28 +421,27 @@ export default function RegisterPage() {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-4 px-4 pb-8 pt-2 text-center sm:flex-row sm:px-6 sm:text-left lg:px-8">
         <div className="flex flex-wrap items-center justify-center gap-3 text-[11px] font-bold tracking-[0.06em] text-[#76777d] sm:justify-start">
-          <span>© 2025 WELLDONE PRESS</span>
+          <span>{t('footerCopyright')}</span>
           <span className="text-[#c6c6cd]">•</span>
-          <span>TODOS LOS DERECHOS RESERVADOS</span>
+          <span>{t('footerRights')}</span>
           <span className="text-[#c6c6cd]">•</span>
-          <span>ISSN 2984-118X</span>
+          <span>{t('footerIssn')}</span>
         </div>
         <div className="flex flex-wrap items-center justify-center gap-4 text-[11px] font-bold tracking-[0.06em] text-[#76777d]">
-          <span>KEEPCODING BOOTCAMP PROYECTO FINAL</span>
+          <span>{t('footerProject')}</span>
           <a
             href="#"
             className="transition-colors hover:text-[#000000]"
           >
-            Términos Editoriales
+            {t('footerTerms')}
           </a>
           <a
             href="#"
             className="transition-colors hover:text-[#000000]"
           >
-            Privacidad
+            {t('footerPrivacy')}
           </a>
         </div>
       </footer>

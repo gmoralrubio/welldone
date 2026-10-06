@@ -33,7 +33,8 @@ import { notFound } from 'next/navigation';
 import { PaginationBasic } from '@/app/[locale]/components/shared/PaginationBasic';
 import { PaginationSimplePrevNext } from '@/app/[locale]/components/shared/PaginationSimplePrevNext';
 import { ArticleCategory } from '@/app/[locale]/components/article/article-category';
-import { getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
+import { getPathname } from '@/i18n/navigation';
 
 interface ArticleDetailPageProps {
   params: Promise<{ authorUsername: string; slug: string }>;
@@ -82,19 +83,23 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
   }
 
   const t = await getTranslations('ArticleDetailPage');
+  const locale = await getLocale();
+  const homeHref = getPathname({ locale, href: '/' });
+  const articlesHref = getPathname({ locale, href: '/articles' });
+  const authorName = `${article.author.name} ${article.author.surname}`;
 
   return (
     <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-8 px-6 py-10">
       <Breadcrumbs aria-label={t('breadCrumbs.ariaLabel')}>
         <Breadcrumbs.Item
           className="uppercase"
-          href="/"
+          href={homeHref}
         >
           <span className="text-xs">{t('breadCrumbs.home')}</span>
         </Breadcrumbs.Item>
         <Breadcrumbs.Item
           className="uppercase"
-          href="/articles"
+          href={articlesHref}
         >
           <span className="text-xs">{t('breadCrumbs.articles')}</span>
         </Breadcrumbs.Item>
@@ -107,7 +112,7 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
         {article.categories.map((category) => (
           <ArticleCategory
             key={category.id}
-            name={category.name}
+            categoryId={category.id}
           />
         ))}
       </div>
@@ -142,7 +147,7 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
                   color="success"
                 >
                   <Check width={12} />
-                  Siguiendo
+                  {t('following')}
                 </Chip>
               </div>
               <div>
@@ -195,7 +200,7 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
             poster={article.featuredImageUrl ?? undefined}
             className="aspect-video w-full rounded-2xl bg-surface-secondary"
           >
-            Tu navegador no reproduce este vídeo.
+            {t('videoUnsupported')}
           </video>
         </Card>
       ) : null}
@@ -227,22 +232,22 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
                   {article.author.name} {article.author.surname}
                 </h3>
                 <span className="text-muted text-sm leading-tight">
-                  <span className="font-medium">@{article.author.username}</span> - 12.2k
-                  seguidores
+                  <span className="font-medium">@{article.author.username}</span> -{' '}
+                  {t('followers', { count: '12.2k' })}
                 </span>
               </div>
             </div>
             <div>
               <Button className="bg-black text-white">
                 <PersonPlus />
-                Seguir
+                {t('follow')}
               </Button>
             </div>
           </div>
         </Card.Header>
         <Card.Content className="mt-4">
           <h4 className="uppercase text-sm font-medium text-muted">
-            Más historias de {article.author.name} {article.author.surname}
+            {t('moreStories', { author: authorName })}
           </h4>
           <div className="pt-2 flex flex-col sm:flex-row gap-4">
             <Card className="w-full sm:w-1/2 p-6 flex flex-col justify-between hover:shadow-md transition-shadow group">
@@ -283,7 +288,7 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
       {/* Comentarios */}
       <section className="mt-4 space-y-6">
         <div className="flex gap-4">
-          <h3 className="text-3xl font-serif font-semibold">Comentarios</h3>
+          <h3 className="text-3xl font-serif font-semibold">{t('commentsTitle')}</h3>
           <Chip
             size="md"
             variant="soft"
@@ -304,12 +309,12 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
                 {formatAvatarLetter(article.author.name, article.author.surname)}
               </Avatar.Fallback>
             </Avatar>
-            <span>Escribe una respuesta...</span>
+            <span>{t('writeReply')}</span>
           </CardHeader>
           <CardContent>
             <TextArea
               fullWidth
-              placeholder="Comparte tu conocimiento"
+              placeholder={t('replyPlaceholder')}
               variant="secondary"
             />
           </CardContent>
@@ -320,7 +325,7 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
               <Code className="text-muted hover:text-black" />
             </div>
             <Button className="bg-black text-white ml-auto mt-2">
-              Publicar respuesta
+              {t('publishReply')}
             </Button>
           </CardFooter>
         </Card>
@@ -340,7 +345,7 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
                 <div className="flex flex-col">
                   <div className="flex gap-2">
                     <span className="text-sm font-semibold">Jane Doe</span>
-                    <Chip size="sm">Miembro</Chip>
+                    <Chip size="sm">{t('member')}</Chip>
                   </div>
                   <div>
                     <span className="text-xs leading-0">hace 2 horas</span>
@@ -363,7 +368,7 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
                 <ThumbsUp className="text-muted hover:text-foreground" />
                 <span className="text-sm text-muted">24</span>
               </div>
-              <span className="text-sm text-muted">Responder</span>
+              <span className="text-sm text-muted">{t('reply')}</span>
             </CardFooter>
           </Card>
           <Card>
@@ -381,7 +386,7 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
                 <div className="flex flex-col">
                   <div className="flex gap-2">
                     <span className="text-sm font-semibold">Jane Doe</span>
-                    <Chip size="sm">Miembro</Chip>
+                    <Chip size="sm">{t('member')}</Chip>
                   </div>
                   <div>
                     <span className="text-xs leading-0">hace 2 horas</span>
@@ -399,7 +404,7 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
                 <ThumbsUp className="text-muted hover:text-foreground" />
                 <span className="text-sm text-muted">24</span>
               </div>
-              <span className="text-sm text-muted">Responder</span>
+              <span className="text-sm text-muted">{t('reply')}</span>
             </CardFooter>
             <div className="w-15/16 ml-auto">
               <Card variant="tertiary">
@@ -422,7 +427,7 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
                           color="success"
                           variant="soft"
                         >
-                          Autor
+                          {t('author')}
                         </Chip>
                       </div>
                       <div>

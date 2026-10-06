@@ -1,4 +1,10 @@
 {
+  "AppMetadata": {
+    "title": "Welldone",
+    "description": "Proyecto final de Bootcamp Keep Coding Web 20",
+    "articlesTitle": "Welldone | Artículos",
+    "articlesDescription": "WellDone es una red de blogging que pretende ser la competencia de Medium."
+  },
   "LocaleSwitcher": {
     "label": "Idioma",
     "options": {
@@ -6,17 +12,201 @@
       "en": "Inglés"
     }
   },
+  "SiteHeader": {
+    "write": "Escribir",
+    "searchAria": "Buscar artículos",
+    "searchPlaceholder": "Buscar artículos...",
+    "accountAria": "Cuenta",
+    "profile": "Perfil",
+    "saved": "Guardados"
+  },
+  "SiteFooter": {
+    "tagline": "Santuario editorial independiente para ensayos de cultura digital, filosofía contemporánea y pensamiento crítico.",
+    "publication": "Publicación",
+    "platform": "Plataforma",
+    "language": "Idioma:",
+    "github": "Repositorio GitHub",
+    "apiDocs": "Documentación API REST",
+    "privacy": "Privacidad",
+    "terms": "Términos",
+    "copyright": "© 2026 WellDone. Todos los derechos libres."
+  },
+  "SiteSidebar": {
+    "search": "Buscador",
+    "searchAria": "Buscar en el índice",
+    "searchPlaceholder": "Buscar por título",
+    "order": "Orden",
+    "frequentSearches": "Búsquedas frecuentes",
+    "categories": "Categorías",
+    "membershipBadge": "Membresía WellDone",
+    "membershipTitle": "Escribe sin fricción, publica con impacto",
+    "membershipBody": "Conviértete en miembro para publicar artículos enriquecidos con nuestro editor WYSIWYG, gestionar borradores y crear comunidad.",
+    "membershipCta": "Comenzar a escribir gratis"
+  },
+  "SelectOrder": {
+    "placeholder": "Selecciona el orden",
+    "ariaLabel": "Orden",
+    "desc": "Más recientes",
+    "asc": "Más antiguos"
+  },
+  "ArticlesPage": {
+    "emptySearch": "No hay artículos publicados con esta búsqueda.",
+    "emptyPage": "No hay más artículos en esta página.",
+    "paginationAria": "Paginación de artículos",
+    "pageSummary": "Página {page} de {total}",
+    "previous": "Anterior",
+    "next": "Siguiente"
+  },
   "ArticleHero": {
-    "heading": "Última publicación"
+    "heading": "Última publicación",
+    "published": "Publicado {time}",
+    "readMinutes": "{minutes, plural, one {# minuto de lectura} other {# minutos de lectura}}"
+  },
+  "ArticleCard": {
+    "readMinutes": "{minutes, plural, one {# min} other {# min}}",
+    "commentsAria": "Comentarios",
+    "saveAria": "Guardar",
+    "shareAria": "Compartir"
   },
   "CreateArticlePage": {
-    "title": "Escribe tu historia"
+    "title": "Escribe tu historia",
+    "subtitle": "Comparte tus conocimientos con la comunidad.",
+    "breadCrumbsAria": "Migas de pan",
+    "breadCrumbsHome": "Inicio",
+    "breadCrumbsArticles": "Artículos",
+    "breadCrumbsNew": "Nuevo Artículo",
+    "labelTitle": "Título del artículo *",
+    "placeholderTitle": "Ej: Patrones de diseño en React...",
+    "labelIntro": "Introducción *",
+    "placeholderIntro": "Un breve resumen para enganchar al lector...",
+    "labelCategory": "Categoría principal *",
+    "labelStatus": "Estado de publicación *",
+    "statusDraft": "Guardar como Borrador",
+    "statusPublished": "Publicar Inmediatamente",
+    "labelPublishedAt": "Fecha y hora de publicación (Opcional)",
+    "labelFeaturedImage": "URL de Imagen Destacada (Opcional)",
+    "placeholderFeaturedImage": "https://ejemplo.com/imagen.jpg",
+    "labelFeaturedVideo": "URL de Vídeo Destacado (Opcional)",
+    "placeholderFeaturedVideo": "https://ejemplo.com/video.mp4",
+    "labelContent": "Contenido *",
+    "placeholderContent": "Escribe el contenido completo de tu artículo aquí...",
+    "cancel": "Cancelar",
+    "submit": "Guardar Artículo"
   },
   "ArticleDetailPage": {
     "breadCrumbs": {
       "ariaLabel": "Migas de pan",
       "home": "Inicio",
       "articles": "Artículos"
+    },
+    "following": "Siguiendo",
+    "videoUnsupported": "Tu navegador no reproduce este vídeo.",
+    "followers": "{count} seguidores",
+    "follow": "Seguir",
+    "moreStories": "Más historias de {author}",
+    "commentsTitle": "Comentarios",
+    "writeReply": "Escribe una respuesta...",
+    "replyPlaceholder": "Comparte tu conocimiento",
+    "publishReply": "Publicar respuesta",
+    "member": "Miembro",
+    "author": "Autor",
+    "reply": "Responder"
+  },
+  "ArticleNotFound": {
+    "label": "Error 404",
+    "title": "Artículo no encontrado",
+    "description": "El identificador no es válido o el artículo ya no existe.",
+    "backToList": "Volver a la lista de artículos"
+  },
+  "ArticlesError": {
+    "label": "Algo salió mal",
+    "title": "No se pudieron cargar los artículos",
+    "description": "Ocurrió un error inesperado al renderizar esta página. Puedes intentarlo de nuevo o volver al catálogo.",
+    "retry": "Reintentar",
+    "backToArticles": "← Volver a artículos"
+  },
+  "AuthLogin": {
+    "brand": "WellDone",
+    "backToReading": "Volver a la lectura pública",
+    "eyebrow": "Bienvenido a WellDone",
+    "title": "Iniciar sesión",
+    "subtitle": "Accede a tu cuenta para entrar en tu espacio de miembro de WellDone.",
+    "identifierLabel": "Email o nombre de usuario",
+    "identifierPlaceholder": "Email o usuario",
+    "passwordLabel": "Contraseña",
+    "passwordPlaceholder": "Introduce tu contraseña",
+    "required": "Obligatorio",
+    "submit": "Iniciar sesión",
+    "noAccount": "¿Todavía no tienes una cuenta?",
+    "createAccount": "Crear cuenta",
+    "footerCopyright": "© 2025 WELLDONE PRESS",
+    "footerRights": "TODOS LOS DERECHOS RESERVADOS",
+    "footerIssn": "ISSN 2984-118X",
+    "footerProject": "KEEPCODING BOOTCAMP PROYECTO FINAL",
+    "footerTerms": "Términos Editoriales",
+    "footerPrivacy": "Privacidad",
+    "errors": {
+      "invalidCredentials": "El email, nombre de usuario o contraseña son incorrectos.",
+      "loginFailed": "No se ha podido iniciar sesión. Inténtalo de nuevo."
     }
+  },
+  "AuthRegister": {
+    "brand": "WellDone",
+    "backToReading": "Volver a la lectura pública",
+    "eyebrow": "Únete a WellDone",
+    "title": "Crear cuenta",
+    "subtitle": "Crea tu cuenta para participar en la comunidad de WellDone.",
+    "nameLabel": "Nombre",
+    "namePlaceholder": "Tu nombre",
+    "surnameLabel": "Apellidos",
+    "surnamePlaceholder": "Tus apellidos",
+    "usernameLabel": "Nombre de usuario",
+    "usernamePlaceholder": "tu_usuario",
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "tu@email.com",
+    "passwordLabel": "Contraseña",
+    "passwordPlaceholder": "Introduce tu contraseña",
+    "repeatPasswordLabel": "Repetir contraseña",
+    "repeatPasswordPlaceholder": "Repite tu contraseña",
+    "required": "Obligatorio",
+    "submit": "Crear cuenta",
+    "hasAccount": "¿Ya tienes una cuenta?",
+    "signIn": "Iniciar sesión",
+    "footerCopyright": "© 2025 WELLDONE PRESS",
+    "footerRights": "TODOS LOS DERECHOS RESERVADOS",
+    "footerIssn": "ISSN 2984-118X",
+    "footerProject": "KEEPCODING BOOTCAMP PROYECTO FINAL",
+    "footerTerms": "Términos Editoriales",
+    "footerPrivacy": "Privacidad",
+    "errors": {
+      "emailTaken": "Este correo electrónico ya está registrado",
+      "usernameTaken": "Este nombre de usuario ya está en uso"
+    }
+  },
+  "Validation": {
+    "Login": {
+      "identifierRequired": "El email o nombre de usuario es obligatorio",
+      "passwordRequired": "La contraseña es obligatoria"
+    },
+    "Register": {
+      "nameMin": "El nombre debe tener mínimo tres caracteres.",
+      "surnameRequired": "Los apellidos son obligatorios.",
+      "usernameMin": "El nombre de usuario debe tener mínimo tres caracteres.",
+      "usernamePattern": "El nombre de usuario solo puede contener letras, números, puntos y guiones bajos.",
+      "emailRequired": "El correo electrónico es obligatorio.",
+      "emailInvalid": "Introduce un correo electrónico válido.",
+      "passwordRequired": "La contraseña es obligatoria.",
+      "passwordPattern": "Debe tener entre 8 y 15 caracteres, una mayúscula, una minúscula, un número y un carácter especial.",
+      "repeatPasswordRequired": "Debes repetir la contraseña.",
+      "passwordsMismatch": "Las contraseñas no coinciden."
+    }
+  },
+  "Categories": {
+    "1": "Desarrollo Web",
+    "2": "Arquitectura de Software",
+    "3": "Diseño UX/UI",
+    "4": "DevOps",
+    "5": "Inteligencia Artificial",
+    "6": "Seguridad Informática"
   }
 }

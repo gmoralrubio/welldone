@@ -1,13 +1,17 @@
+'use client';
+
 import {
   formatAvatarLetter,
   formatRelativeTime,
   readingMinutes,
 } from '@/app/[locale]/articles/article-presenters';
 import { ArticleDto } from '@/lib/articles.types';
-import { Avatar, Button, Card, Link } from '@heroui/react';
+import { Avatar, Button, Card } from '@heroui/react';
 import { ArrowUpFromSquare, Bookmark, Clock, Comment } from '@gravity-ui/icons';
 import Image from 'next/image';
 import { ArticleCategory } from '@/app/[locale]/components/article/article-category';
+import { Link } from '@/i18n/navigation';
+import { useTranslations } from 'next-intl';
 
 type ArticleCardProps = {
   article: ArticleDto;
@@ -16,6 +20,7 @@ type ArticleCardProps = {
 export function ArticleCard({ article }: ArticleCardProps) {
   const href = `/articles/${article.author.username}/${article.slug}`;
   const minutes = readingMinutes(article.intro, article.content);
+  const t = useTranslations('ArticleCard');
 
   return (
     <Card className="flex flex-col gap-4 bg-white p-6 shadow-xs shadow-accent-dark/30 hover:shadow-md sm:flex-row sm:items-stretch">
@@ -54,7 +59,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
             {article.categories.map((category) => (
               <ArticleCategory
                 key={category.id}
-                name={category.name}
+                categoryId={category.id}
               />
             ))}
             <span className="inline-flex items-center gap-1">
@@ -62,7 +67,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
                 width={12}
                 height={12}
               />
-              {minutes} min
+              {t('readMinutes', { minutes })}
             </span>
           </div>
           <div className="flex items-center">
@@ -70,7 +75,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
               isIconOnly
               variant="ghost"
               size="sm"
-              aria-label="Comentarios"
+              aria-label={t('commentsAria')}
             >
               <Comment
                 width={14}
@@ -81,7 +86,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
               isIconOnly
               variant="ghost"
               size="sm"
-              aria-label="Guardar"
+              aria-label={t('saveAria')}
             >
               <Bookmark
                 width={14}
@@ -92,7 +97,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
               isIconOnly
               variant="ghost"
               size="sm"
-              aria-label="Compartir"
+              aria-label={t('shareAria')}
             >
               <ArrowUpFromSquare
                 width={14}

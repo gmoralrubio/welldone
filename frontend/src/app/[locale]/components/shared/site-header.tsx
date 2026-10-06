@@ -5,20 +5,32 @@ import { SiteHeaderClient } from './site-header-client';
 =======
 'use client';
 
-import { Avatar, Dropdown, Link, SearchField } from '@heroui/react';
+import { Avatar, Dropdown, SearchField } from '@heroui/react';
 import { ChevronDown, Pencil } from '@gravity-ui/icons';
 import { ArticleOrder } from '@/app/[locale]/articles/article-query';
 import LocaleSwitcher from '@/app/[locale]/components/shared/locale-switcher';
+<<<<<<< HEAD
 >>>>>>> 02aba98 (feat: añadido segmento dinámico [locale]):frontend/src/app/[locale]/components/shared/site-header.tsx
+=======
+import { Link, getPathname } from '@/i18n/navigation';
+import { useLocale, useTranslations } from 'next-intl';
+>>>>>>> 0cd3e5a (wip: multiidioma)
 
 type SiteHeaderProps = {
   search: string;
   order: ArticleOrder;
 };
 
+<<<<<<< HEAD
 export async function SiteHeader({ search, order }: SiteHeaderProps) {
   const cookieStore = await cookies();
   const isAuthenticated = cookieStore.has('accessToken');
+=======
+export function SiteHeader({ search, order }: SiteHeaderProps) {
+  const locale = useLocale();
+  const t = useTranslations('SiteHeader');
+  const articlesAction = getPathname({ locale, href: '/articles' });
+>>>>>>> 0cd3e5a (wip: multiidioma)
 
   return (
 <<<<<<< HEAD:frontend/src/app/components/shared/site-header.tsx
@@ -42,11 +54,11 @@ export async function SiteHeader({ search, order }: SiteHeaderProps) {
               <span className="font-serif text-2xl font-semibold pt-1">WellDone</span>
             </Link>
             <form
-              action="/articles"
+              action={articlesAction}
               className="hidden w-80 md:block"
             >
               <SearchField
-                aria-label="Buscar artículos"
+                aria-label={t('searchAria')}
                 className="w-full"
                 defaultValue={search}
                 name="search"
@@ -54,7 +66,7 @@ export async function SiteHeader({ search, order }: SiteHeaderProps) {
                 <SearchField.Group className="h-7 rounded bg-field">
                   <SearchField.SearchIcon />
                   <SearchField.Input
-                    placeholder="Buscar artículos..."
+                    placeholder={t('searchPlaceholder')}
                     className="text-xs"
                   />
                 </SearchField.Group>
@@ -80,12 +92,12 @@ export async function SiteHeader({ search, order }: SiteHeaderProps) {
                 width={15}
                 height={15}
               />
-              Escribir
+              {t('write')}
             </Link>
             <Dropdown>
               <Dropdown.Trigger
                 className="flex items-center gap-1.5 bg-transparent px-1"
-                aria-label="Cuenta"
+                aria-label={t('accountAria')}
               >
                 <Avatar
                   size="sm"
@@ -101,9 +113,9 @@ export async function SiteHeader({ search, order }: SiteHeaderProps) {
                 />
               </Dropdown.Trigger>
               <Dropdown.Popover>
-                <Dropdown.Menu aria-label="Cuenta">
-                  <Dropdown.Item id="profile">Perfil</Dropdown.Item>
-                  <Dropdown.Item id="saved">Guardados</Dropdown.Item>
+                <Dropdown.Menu aria-label={t('accountAria')}>
+                  <Dropdown.Item id="profile">{t('profile')}</Dropdown.Item>
+                  <Dropdown.Item id="saved">{t('saved')}</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown.Popover>
             </Dropdown>

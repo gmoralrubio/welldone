@@ -5,7 +5,8 @@ import {
   parseArticleQuery,
 } from '@/app/[locale]/articles/article-query';
 import { ArticleDto } from '@/lib/articles.types';
-import { redirect } from 'next/navigation';
+import { redirect } from '@/i18n/navigation';
+import { getLocale } from 'next-intl/server';
 import { PaginatedResponse } from '@/lib/pagination.types';
 
 type ArticlesSearchParams = Record<string, string | string[] | undefined>;
@@ -84,6 +85,9 @@ export async function createArticleAction(formData: FormData) {
 
   const { article } = await response.json();
 
-  // Al terminar la creación redirigir al detalle del artículo
-  redirect(`/articles/${article.author.username}/${article.slug}`);
+  const locale = await getLocale();
+  redirect({
+    href: `/articles/${article.author.username}/${article.slug}`,
+    locale,
+  });
 }

@@ -1,17 +1,26 @@
 'use client';
 
 import { useState, type SubmitEvent } from 'react';
-import { useRouter } from 'next/navigation';
 import { loginSchema, type LoginFormData } from './schema';
 import { ArrowLeft, ArrowRight, At, Lock, Person } from '@gravity-ui/icons';
 import { Input, Label, TextField } from '@heroui/react';
-import Link from 'next/link';
 import { loginUser } from './actions';
+import { Link, useRouter } from '@/i18n/navigation';
+import LocaleSwitcher from '@/app/[locale]/components/shared/locale-switcher';
+import { useTranslations } from 'next-intl';
 
-type LoginErrors = Partial<Record<keyof LoginFormData | 'form', string>>;
+type LoginFieldKey = keyof LoginFormData;
+type LoginValidationKey = 'identifierRequired' | 'passwordRequired';
+type LoginFormErrorKey = 'invalidCredentials' | 'loginFailed';
+
+type LoginErrors = Partial<
+  Record<LoginFieldKey, LoginValidationKey> & { form: LoginFormErrorKey }
+>;
 
 export default function LoginPage() {
   const router = useRouter();
+  const t = useTranslations('AuthLogin');
+  const tValidation = useTranslations('Validation.Login');
   const [errors, setErrors] = useState<LoginErrors>({});
 
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
@@ -30,10 +39,10 @@ export default function LoginPage() {
       const validationErrors: LoginErrors = {};
 
       result.error.issues.forEach((issue) => {
-        const field = issue.path[0] as keyof LoginFormData;
+        const field = issue.path[0] as LoginFieldKey;
 
         if (!validationErrors[field]) {
-          validationErrors[field] = issue.message;
+          validationErrors[field] = issue.message as LoginValidationKey;
         }
       });
 
@@ -46,52 +55,43 @@ export default function LoginPage() {
     const response = await loginUser(result.data);
 
     if (response.status === 200) {
-      router.push('/');
+      router.push('/articles');
       return;
     }
 
     if (response.status === 401 || response.status === 404) {
       setErrors({
-        form: 'El email, nombre de usuario o contraseña son incorrectos.',
+        form: 'invalidCredentials',
       });
       return;
     }
 
-    setErrors({ form: 'No se ha podido iniciar sesión. Inténtalo de nuevo.' });
+    setErrors({ form: 'loginFailed' });
   };
 
   return (
     <main className="flex min-h-screen flex-col bg-[#faf9f6] text-[#1a1c1a] antialiased">
-      {/* Header */}
       <header className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        <div className="text-xl font-semibold tracking-tight text-black">WellDone</div>
+        <div className="text-xl font-semibold tracking-tight text-black">{t('brand')}</div>
 
         <div className="flex items-center gap-4">
           <Link
-            href="/"
+            href="/articles"
             className="hidden items-center gap-2 text-sm font-medium text-[#45464d] transition-colors hover:text-black sm:flex"
           >
             <ArrowLeft className="h-4 w-4" />
-            Volver a la lectura pública
+            {t('backToReading')}
           </Link>
 
-          <div className="flex items-center gap-2 rounded-full bg-[#f4f3f1] px-3 py-1.5 text-xs font-semibold shadow-sm">
-            <span className="text-black">ES</span>
-            <span className="text-[#76777d]">/</span>
-            <span className="text-[#76777d]">EN</span>
-            <span className="text-[#76777d]">/</span>
-            <span className="text-[#76777d]">FR</span>
-          </div>
+          <LocaleSwitcher />
         </div>
       </header>
 
-      {/* Contenido */}
       <section className="mx-auto flex w-full max-w-7xl flex-1 items-start justify-center px-4 pb-5 pt-1 sm:px-6 lg:px-8">
         <div className="w-full max-w-xl rounded-xl bg-white p-6 shadow-md sm:p-8">
-          {/* Cabecera */}
           <div className="mb-6">
             <p className="mb-2 text-xs font-semibold uppercase tracking-[0.12em] text-[#006a63]">
-              Bienvenido a WellDone
+              {t('eyebrow')}
             </p>
 
             <div className="flex items-center gap-3">
@@ -101,33 +101,31 @@ export default function LoginPage() {
               />
 
               <h1 className="font-serif text-[30px] font-medium leading-[38px] tracking-tight text-black">
-                Iniciar sesión
+                {t('title')}
               </h1>
             </div>
 
             <p className="mt-2 max-w-md text-[15px] leading-[22px] text-[#45464d]">
-              Accede a tu cuenta para entrar en tu espacio de miembro de WellDone.
+              {t('subtitle')}
             </p>
           </div>
 
-          {/* Formulario */}
           <form
             className="flex flex-col gap-4"
             onSubmit={handleSubmit}
             noValidate
           >
-            {/* Email o nombre de usuario */}
             <TextField>
               <div className="mb-1 flex items-center justify-between">
                 <Label
                   isRequired
                   className="text-[12px] font-semibold text-[#45464d]"
                 >
-                  Email o nombre de usuario
+                  {t('identifierLabel')}
                 </Label>
 
                 <span className="text-[11px] font-medium text-[#76777d]">
-                  Obligatorio
+                  {t('required')}
                 </span>
               </div>
 
@@ -139,29 +137,28 @@ export default function LoginPage() {
 
                 <Input
                   name="identifier"
-                  placeholder="Email o usuario"
+                  placeholder={t('identifierPlaceholder')}
                   className="w-full pl-10"
                 />
               </div>
-              {errors.identifier && (
+              {errors.identifier ? (
                 <p className="mt-1.5 text-xs font-medium text-[#ba1a1a]">
-                  {errors.identifier}
+                  {tValidation(errors.identifier)}
                 </p>
-              )}
+              ) : null}
             </TextField>
 
-            {/* Contraseña */}
             <TextField>
               <div className="mb-1 flex items-center justify-between">
                 <Label
                   isRequired
                   className="text-[12px] font-semibold text-[#45464d]"
                 >
-                  Contraseña
+                  {t('passwordLabel')}
                 </Label>
 
                 <span className="text-[11px] font-medium text-[#76777d]">
-                  Obligatorio
+                  {t('required')}
                 </span>
               </div>
 
@@ -174,33 +171,31 @@ export default function LoginPage() {
                 <Input
                   name="password"
                   type="password"
-                  placeholder="Introduce tu contraseña"
+                  placeholder={t('passwordPlaceholder')}
                   className="w-full pl-10"
                 />
               </div>
-              {errors.password && (
+              {errors.password ? (
                 <p className="mt-1.5 text-xs font-medium text-[#ba1a1a]">
-                  {errors.password}
+                  {tValidation(errors.password)}
                 </p>
-              )}
+              ) : null}
             </TextField>
 
-            {/* Error general (credenciales incorrectas, fallo del servidor) */}
-            {errors.form && (
+            {errors.form ? (
               <p
                 className="text-xs font-medium text-[#ba1a1a]"
                 role="alert"
               >
-                {errors.form}
+                {t(`errors.${errors.form}`)}
               </p>
-            )}
+            ) : null}
 
-            {/* Botón */}
             <button
               type="submit"
               className="mt-1 flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-black px-5 text-sm font-semibold text-white transition-colors hover:bg-[#006a63]"
             >
-              Iniciar sesión
+              {t('submit')}
               <ArrowRight
                 className="h-4 w-4"
                 aria-hidden="true"
@@ -208,16 +203,15 @@ export default function LoginPage() {
             </button>
           </form>
 
-          {/* Registro */}
           <div className="mt-6 border-t border-[#c6c6cd] pt-5">
             <div className="flex items-center justify-center gap-2 text-sm">
-              <p className="text-[#45464d]">¿Todavía no tienes una cuenta?</p>
+              <p className="text-[#45464d]">{t('noAccount')}</p>
 
               <Link
                 href="/register"
                 className="inline-flex items-center gap-1.5 font-semibold text-black transition-colors hover:text-[#006a63]"
               >
-                Crear cuenta
+                {t('createAccount')}
                 <ArrowRight
                   className="h-4 w-4"
                   aria-hidden="true"
@@ -228,29 +222,28 @@ export default function LoginPage() {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-4 px-4 pb-8 pt-2 text-center sm:flex-row sm:px-6 sm:text-left lg:px-8">
         <div className="flex flex-wrap items-center justify-center gap-3 text-[11px] font-bold tracking-[0.06em] text-[#76777d] sm:justify-start">
-          <span>© 2025 WELLDONE PRESS</span>
+          <span>{t('footerCopyright')}</span>
           <span className="text-[#c6c6cd]">•</span>
-          <span>TODOS LOS DERECHOS RESERVADOS</span>
+          <span>{t('footerRights')}</span>
           <span className="text-[#c6c6cd]">•</span>
-          <span>ISSN 2984-118X</span>
+          <span>{t('footerIssn')}</span>
         </div>
         <div className="flex flex-wrap items-center justify-center gap-4 text-[11px] font-bold tracking-[0.06em] text-[#76777d]">
-          <span>KEEPCODING BOOTCAMP PROYECTO FINAL</span>
+          <span>{t('footerProject')}</span>
           <a
             href="#"
             className="transition-colors hover:text-[#000000]"
           >
-            Términos Editoriales
+            {t('footerTerms')}
           </a>
 
           <a
             href="#"
             className="transition-colors hover:text-[#000000]"
           >
-            Privacidad
+            {t('footerPrivacy')}
           </a>
         </div>
       </footer>

@@ -1,8 +1,10 @@
 'use client';
 
-import { ArticleOrder, articlesHref } from '@/app/[locale]/articles/article-query';
+import { articlesListHref } from '@/app/[locale]/articles/article-query';
 import { Pagination } from '@heroui/react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n/navigation';
+import { useTranslations } from 'next-intl';
+import type { ArticleOrder } from '@/app/[locale]/articles/article-query';
 
 type ArticlePaginationProps = {
   page: number;
@@ -18,24 +20,27 @@ export function ArticlePagination({
   order,
 }: ArticlePaginationProps) {
   const router = useRouter();
+  const t = useTranslations('ArticlesPage');
   const totalPages = Math.max(pages, 1);
 
   return (
     <Pagination
-      aria-label="Paginación de artículos"
+      aria-label={t('paginationAria')}
       className="mt-10 items-center justify-between"
     >
       <Pagination.Summary className="text-sm text-muted">
-        Página {page} de {totalPages}
+        {t('pageSummary', { page, total: totalPages })}
       </Pagination.Summary>
       <Pagination.Content>
         <Pagination.Item>
           <Pagination.Previous
             isDisabled={page <= 1}
-            onPress={() => router.push(articlesHref({ page: page - 1, search, order }))}
+            onPress={() =>
+              router.push(articlesListHref({ page: page - 1, search, order }))
+            }
           >
             <Pagination.PreviousIcon />
-            <span>Anterior</span>
+            <span>{t('previous')}</span>
           </Pagination.Previous>
         </Pagination.Item>
         {Array.from({ length: totalPages }, (_, index) => index + 1).map((pageNumber) => (
@@ -43,7 +48,9 @@ export function ArticlePagination({
             <Pagination.Link
               isActive={pageNumber === page}
               onPress={() =>
-                router.push(articlesHref({ page: pageNumber, search, order }))
+                router.push(
+                  articlesListHref({ page: pageNumber, search, order })
+                )
               }
             >
               {pageNumber}
@@ -53,9 +60,11 @@ export function ArticlePagination({
         <Pagination.Item>
           <Pagination.Next
             isDisabled={page >= totalPages}
-            onPress={() => router.push(articlesHref({ page: page + 1, search, order }))}
+            onPress={() =>
+              router.push(articlesListHref({ page: page + 1, search, order }))
+            }
           >
-            <span>Siguiente</span>
+            <span>{t('next')}</span>
             <Pagination.NextIcon />
           </Pagination.Next>
         </Pagination.Item>

@@ -11,21 +11,35 @@ import { SiteFooter } from '@/app/[locale]/components/shared/site-footer';
 import { SiteHeader } from '@/app/[locale]/components/shared/site-header';
 import { EmptyState } from '@heroui/react';
 import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Welldone | Artículos',
-  description:
-    'WellDone es una red de blogging que pretende ser la competencia de Medium.',
-};
+import { hasLocale } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
+import { routing } from '@/i18n/routing';
 
 type ArticlePageProps = {
   searchParams: Promise<Record<string, SearchParamValue>>;
+  params: Promise<{ locale: string }>;
 };
+
+export async function generateMetadata({
+  params,
+}: ArticlePageProps): Promise<Metadata> {
+  const { locale: paramLocale } = await params;
+  const locale = hasLocale(routing.locales, paramLocale)
+    ? paramLocale
+    : routing.defaultLocale;
+  const t = await getTranslations({ locale, namespace: 'AppMetadata' });
+
+  return {
+    title: t('articlesTitle'),
+    description: t('articlesDescription'),
+  };
+}
 
 export default async function ArticlesPage({ searchParams }: ArticlePageProps) {
   const queryParams = await searchParams;
   const criteria = parseArticleQuery(queryParams);
   const { data, meta } = await getArticles(queryParams);
+  const t = await getTranslations('ArticlesPage');
   // Primer articulo como destacado
   const featured = criteria.page === 1 && criteria.search === '' ? data[0] : undefined;
   // Resto de artículos
@@ -43,9 +57,7 @@ export default async function ArticlesPage({ searchParams }: ArticlePageProps) {
           <section className="min-w-0">
             {feed.length === 0 ? (
               <EmptyState className="mt-10 bg-white p-8 text-center text-muted">
-                {data.length === 0
-                  ? 'No hay artículos publicados con esta búsqueda.'
-                  : 'No hay más artículos en esta página.'}
+                {data.length === 0 ? t('emptySearch') : t('emptyPage')}
               </EmptyState>
             ) : (
               <div className="flex flex-col gap-6">
@@ -58,7 +70,7 @@ export default async function ArticlesPage({ searchParams }: ArticlePageProps) {
               </div>
             )}
             <ArticlePagination
-              page={meta.page}
+              page={criteria.page}
               pages={meta.pages}
               search={criteria.search}
               order={criteria.order}

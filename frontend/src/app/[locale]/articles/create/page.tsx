@@ -7,12 +7,21 @@ import { Check } from '@gravity-ui/icons';
 import { createArticleAction } from '../actions';
 import 'react-quill-new/dist/quill.snow.css';
 import { articleCategories } from '@/lib/articles.types';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
+import { getPathname } from '@/i18n/navigation';
 
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 
+type CategoryId = '1' | '2' | '3' | '4' | '5' | '6';
+
 export default function CreateArticlePage() {
   const [content, setContent] = useState('');
+  const locale = useLocale();
+  const t = useTranslations('CreateArticlePage');
+  const tCategories = useTranslations('Categories');
+
+  const homeHref = getPathname({ locale, href: '/' });
+  const articlesHref = getPathname({ locale, href: '/articles' });
 
   const modules = {
     toolbar: [
@@ -24,26 +33,24 @@ export default function CreateArticlePage() {
     ],
   };
 
-  const t = useTranslations('CreateArticlePage');
-
   return (
     <div className="flex flex-1 flex-col bg-background text-foreground">
       <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-6 py-10">
-        <Breadcrumbs aria-label="Migas de pan">
+        <Breadcrumbs aria-label={t('breadCrumbsAria')}>
           <Breadcrumbs.Item
             className="uppercase"
-            href="/"
+            href={homeHref}
           >
-            <span className="text-xs">Inicio</span>
+            <span className="text-xs">{t('breadCrumbsHome')}</span>
           </Breadcrumbs.Item>
           <Breadcrumbs.Item
             className="uppercase"
-            href="/articles"
+            href={articlesHref}
           >
-            <span className="text-xs">Artículos</span>
+            <span className="text-xs">{t('breadCrumbsArticles')}</span>
           </Breadcrumbs.Item>
           <Breadcrumbs.Item className="uppercase">
-            <span className="text-xs">Nuevo Artículo</span>
+            <span className="text-xs">{t('breadCrumbsNew')}</span>
           </Breadcrumbs.Item>
         </Breadcrumbs>
 
@@ -52,7 +59,7 @@ export default function CreateArticlePage() {
             {t('title')}
           </h1>
           <p className="text-lg xs:text-xl leading-7 font-serif text-muted text-balance">
-            Comparte tus conocimientos con la comunidad.
+            {t('subtitle')}
           </p>
         </header>
 
@@ -64,12 +71,12 @@ export default function CreateArticlePage() {
             <CardContent className="flex flex-col gap-6">
               <div className="flex flex-col gap-1">
                 <label className="text-sm font-medium text-foreground ml-1">
-                  Título del artículo *
+                  {t('labelTitle')}
                 </label>
                 <Input
                   required
                   name="title"
-                  placeholder="Ej: Patrones de diseño en React..."
+                  placeholder={t('placeholderTitle')}
                   variant="secondary"
                   className="font-serif text-xl"
                 />
@@ -77,12 +84,12 @@ export default function CreateArticlePage() {
 
               <div className="flex flex-col gap-1">
                 <label className="text-sm font-medium text-foreground ml-1">
-                  Introducción *
+                  {t('labelIntro')}
                 </label>
                 <TextArea
                   required
                   name="intro"
-                  placeholder="Un breve resumen para enganchar al lector..."
+                  placeholder={t('placeholderIntro')}
                   variant="secondary"
                   rows={2}
                   className="font-serif"
@@ -92,7 +99,7 @@ export default function CreateArticlePage() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex flex-col gap-1 w-full sm:w-1/2">
                   <label className="text-sm font-medium text-foreground ml-1">
-                    Categoría principal *
+                    {t('labelCategory')}
                   </label>
                   <select
                     required
@@ -104,7 +111,7 @@ export default function CreateArticlePage() {
                         key={cat.id}
                         value={cat.id}
                       >
-                        {cat.name}
+                        {tCategories(String(cat.id) as CategoryId)}
                       </option>
                     ))}
                   </select>
@@ -112,7 +119,7 @@ export default function CreateArticlePage() {
 
                 <div className="flex flex-col gap-1 w-full sm:w-1/2">
                   <label className="text-sm font-medium text-foreground ml-1">
-                    Estado de publicación *
+                    {t('labelStatus')}
                   </label>
                   <select
                     required
@@ -120,15 +127,15 @@ export default function CreateArticlePage() {
                     defaultValue="DRAFT"
                     className="w-full h-10 px-3 rounded-md bg-surface-secondary border-none font-serif text-foreground outline-none focus:ring-2 focus:ring-accent appearance-none"
                   >
-                    <option value="DRAFT">Guardar como Borrador</option>
-                    <option value="PUBLISHED">Publicar Inmediatamente</option>
+                    <option value="DRAFT">{t('statusDraft')}</option>
+                    <option value="PUBLISHED">{t('statusPublished')}</option>
                   </select>
                 </div>
               </div>
 
               <div className="flex flex-col gap-1">
                 <label className="text-sm font-medium text-foreground ml-1">
-                  Fecha y hora de publicación (Opcional)
+                  {t('labelPublishedAt')}
                 </label>
                 <input
                   type="datetime-local"
@@ -140,22 +147,22 @@ export default function CreateArticlePage() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex flex-col gap-1 w-full sm:w-1/2">
                   <label className="text-sm font-medium text-foreground ml-1">
-                    URL de Imagen Destacada (Opcional)
+                    {t('labelFeaturedImage')}
                   </label>
                   <Input
                     name="featuredImageUrl"
-                    placeholder="https://ejemplo.com/imagen.jpg"
+                    placeholder={t('placeholderFeaturedImage')}
                     variant="secondary"
                     className="w-full"
                   />
                 </div>
                 <div className="flex flex-col gap-1 w-full sm:w-1/2">
                   <label className="text-sm font-medium text-foreground ml-1">
-                    URL de Vídeo Destacado (Opcional)
+                    {t('labelFeaturedVideo')}
                   </label>
                   <Input
                     name="featuredVideoUrl"
-                    placeholder="https://ejemplo.com/video.mp4"
+                    placeholder={t('placeholderFeaturedVideo')}
                     variant="secondary"
                     className="w-full"
                   />
@@ -164,7 +171,7 @@ export default function CreateArticlePage() {
 
               <div className="flex flex-col gap-1">
                 <label className="text-sm font-medium text-foreground ml-1">
-                  Contenido *
+                  {t('labelContent')}
                 </label>
                 <input
                   type="hidden"
@@ -177,7 +184,7 @@ export default function CreateArticlePage() {
                     value={content}
                     onChange={setContent}
                     modules={modules}
-                    placeholder="Escribe el contenido completo de tu artículo aquí..."
+                    placeholder={t('placeholderContent')}
                     className="h-62.5 font-serif"
                   />
                 </div>
@@ -190,13 +197,13 @@ export default function CreateArticlePage() {
               variant="ghost"
               type="button"
             >
-              Cancelar
+              {t('cancel')}
             </Button>
             <Button
               className="bg-black text-white"
               type="submit"
             >
-              <Check width={18} /> Guardar Artículo
+              <Check width={18} /> {t('submit')}
             </Button>
           </div>
         </form>

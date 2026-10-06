@@ -39,8 +39,28 @@ export function articleQueryParams(input: ArticleQuery): URLSearchParams {
   return params;
 }
 
-export function articlesHref(input: Pick<ArticleQuery, 'page' | 'search' | 'order'>) {
+export function articlesListHref(input: Pick<ArticleQuery, 'page' | 'search' | 'order'>) {
   const params = articleQueryParams({ ...input, limit: 0 });
-  const query = params.toString();
-  return query ? `/articles?${query}` : '/articles';
+  const query: Record<string, string> = {};
+  params.forEach((value, key) => {
+    query[key] = value;
+  });
+
+  if (Object.keys(query).length === 0) {
+    return { pathname: '/articles' as const };
+  }
+
+  return {
+    pathname: '/articles' as const,
+    query,
+  };
+}
+
+export function articlesHref(input: Pick<ArticleQuery, 'page' | 'search' | 'order'>) {
+  const href = articlesListHref(input);
+  if (!('query' in href) || !href.query) {
+    return href.pathname;
+  }
+  const params = new URLSearchParams(href.query);
+  return `${href.pathname}?${params.toString()}`;
 }
