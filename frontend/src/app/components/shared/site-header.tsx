@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers';
 import { ArticleOrder } from '@/app/articles/article-query';
 import { SiteHeaderClient } from './site-header-client';
 
@@ -6,11 +7,15 @@ type SiteHeaderProps = {
   order: ArticleOrder;
 };
 
-export function SiteHeader({ search, order }: SiteHeaderProps) {
+export async function SiteHeader({ search, order }: SiteHeaderProps) {
+  const cookieStore = await cookies();
+  const isAuthenticated = cookieStore.has('accessToken');
+
   return (
     <SiteHeaderClient
       search={search}
       order={order}
+      isAuthenticated={isAuthenticated}
     />
   );
 }

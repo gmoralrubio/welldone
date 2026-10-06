@@ -7,9 +7,14 @@ import UserActions from './user-actions';
 type SiteHeaderClientProps = {
   search: string;
   order: ArticleOrder;
+  isAuthenticated: boolean;
 };
 
-export function SiteHeaderClient({ search, order }: SiteHeaderClientProps) {
+export function SiteHeaderClient({
+  search,
+  order,
+  isAuthenticated,
+}: SiteHeaderClientProps) {
   return (
     <header className="sticky top-0 z-20 border-b border-separator bg-background-secondary shadow-accent-dark backdrop-blur-md">
       <div className="mx-auto flex w-full max-w-340 flex-col px-8">
@@ -51,7 +56,7 @@ export function SiteHeaderClient({ search, order }: SiteHeaderClientProps) {
               ) : null}
             </form>
           </div>
-          <UserActions />
+          <UserActions isAuthenticated={isAuthenticated} />
         </div>
       </div>
     </header>
