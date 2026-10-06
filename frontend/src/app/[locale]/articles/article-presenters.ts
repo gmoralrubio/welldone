@@ -33,22 +33,12 @@ export function formatAvatarLetter(authorName: string, authorSurname: string): s
   return authorName.charAt(0).toUpperCase().concat(authorSurname.charAt(0).toUpperCase());
 }
 
-// Formatea el tiempo que ha pasado desde que se publicó un artículo
-export function formatRelativeTime(isoDate: string): string {
-  const elapsedMs = Date.now() - new Date(isoDate).getTime();
-  const minutes = Math.max(1, Math.round(elapsedMs / 60_000));
-
-  if (minutes < 60) return `Hace ${minutes} min`;
-
-  const hours = Math.round(minutes / 60);
-  if (hours < 24) return `Hace ${hours} ${hours === 1 ? 'hora' : 'horas'}`;
-
-  const days = Math.round(hours / 24);
-  return `Hace ${days} ${days === 1 ? 'día' : 'días'}`;
-}
-
 // Cuenta las palabras y calcula el tiempo de lectura (200 palabras = 1 min)
 export function readingMinutes(intro: string, content: string): number {
   const words = `${intro} ${content}`.trim().split(/\s+/).filter(Boolean).length;
   return Math.max(1, Math.round(words / 200));
+}
+
+export function getElapsedMs(isoDate: string): number {
+  return Date.now() - new Date(isoDate).getTime();
 }
