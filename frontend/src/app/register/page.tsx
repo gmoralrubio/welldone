@@ -404,7 +404,7 @@ export default function RegisterPage() {
             <div className="flex items-center justify-center gap-2 text-sm">
               <p className="text-[#45464d]">¿Ya tienes una cuenta?</p>
               <Link
-                href="/users/login"
+                href="/login"
                 className="inline-flex items-center gap-1.5 font-semibold text-black transition-colors hover:text-[#006a63]"
               >
                 Iniciar sesión
