@@ -1,18 +1,23 @@
-import { Link } from '@heroui/react';
+'use client';
+
 import WriteButton from './write-button';
 import UserProfile from './user-profile';
+import { Link } from '@/i18n/navigation';
+import { useTranslations } from 'next-intl';
 
 type UserActionsProps = {
   isAuthenticated: boolean;
 };
 const UserActions = ({ isAuthenticated }: UserActionsProps) => {
+  const t = useTranslations('SiteHeader');
+
   if (!isAuthenticated) {
     return (
       <Link
-        href="/users/login"
+        href="/login"
         className="inline-flex items-center gap-1 text-sm font-semibold text-accent-dark no-underline"
       >
-        Iniciar sesión <span aria-hidden="true">→</span>
+        {t('signIn')} <span aria-hidden="true">→</span>
       </Link>
     );
   }

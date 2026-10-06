@@ -18,7 +18,11 @@
     "searchPlaceholder": "Search articles...",
     "accountAria": "Account",
     "profile": "Profile",
-    "saved": "Saved"
+    "saved": "Saved",
+    "signIn": "Sign in",
+    "dashboard": "Dashboard",
+    "account": "Account",
+    "logout": "Log out"
   },
   "SiteFooter": {
     "tagline": "An independent editorial sanctuary for essays on digital culture, contemporary philosophy, and critical thinking.",
@@ -208,5 +212,19 @@
     "4": "DevOps",
     "5": "Artificial Intelligence",
     "6": "Cybersecurity"
+  },
+  "Dashboard": {
+    "nav": {
+      "articles": "My articles",
+      "favorites": "Favorites",
+      "highlights": "Highlights",
+      "notifications": "Notifications",
+      "account": "Account"
+    },
+    "articlesTitle": "My articles",
+    "favoritesTitle": "Favorites",
+    "highlightsTitle": "Highlights",
+    "notificationsTitle": "Notifications",
+    "accountTitle": "Account"
   }
 }

@@ -1,13 +1,19 @@
+'use client';
+
 import { Avatar, Dropdown } from '@heroui/react';
 import { ChevronDown } from '@gravity-ui/icons';
 import { logout } from './logout-action';
+import { Link } from '@/i18n/navigation';
+import { useTranslations } from 'next-intl';
 
 const UserProfile = () => {
+  const t = useTranslations('SiteHeader');
+
   return (
     <Dropdown>
       <Dropdown.Trigger
         className="flex items-center gap-1.5 bg-transparent px-1"
-        aria-label="Cuenta"
+        aria-label={t('accountAria')}
       >
         <Avatar
           size="sm"
@@ -24,19 +30,33 @@ const UserProfile = () => {
       </Dropdown.Trigger>
 
       <Dropdown.Popover>
-        <Dropdown.Menu aria-label="Cuenta">
-          <Dropdown.Item id="account">Cuenta</Dropdown.Item>
-          <Dropdown.Item id="dashboard">Dashboard</Dropdown.Item>
+        <Dropdown.Menu aria-label={t('accountAria')}>
+          <Dropdown.Item id="account" textValue={t('account')}>
+            <Link
+              href="/dashboard/account"
+              className="block w-full no-underline text-inherit"
+            >
+              {t('account')}
+            </Link>
+          </Dropdown.Item>
+          <Dropdown.Item id="dashboard" textValue={t('dashboard')}>
+            <Link
+              href="/dashboard"
+              className="block w-full no-underline text-inherit"
+            >
+              {t('dashboard')}
+            </Link>
+          </Dropdown.Item>
           <Dropdown.Item
             id="logout"
-            textValue="Cerrar sesión"
+            textValue={t('logout')}
           >
             <form action={logout}>
               <button
                 type="submit"
                 className="w-full text-left"
               >
-                Cerrar sesión
+                {t('logout')}
               </button>
             </form>
           </Dropdown.Item>

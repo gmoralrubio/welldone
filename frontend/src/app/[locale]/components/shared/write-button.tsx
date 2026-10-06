@@ -1,7 +1,12 @@
-import { Link } from '@heroui/react';
+'use client';
+
 import { Pencil } from '@gravity-ui/icons';
+import { Link } from '@/i18n/navigation';
+import { useTranslations } from 'next-intl';
 
 const WriteButton = () => {
+  const t = useTranslations('SiteHeader');
+
   return (
     <Link
       href="/articles/create"
@@ -11,7 +16,7 @@ const WriteButton = () => {
         width={15}
         height={15}
       />
-      Escribir
+      {t('write')}
     </Link>
   );
 };

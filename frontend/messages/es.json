@@ -18,7 +18,11 @@
     "searchPlaceholder": "Buscar artículos...",
     "accountAria": "Cuenta",
     "profile": "Perfil",
-    "saved": "Guardados"
+    "saved": "Guardados",
+    "signIn": "Iniciar sesión",
+    "dashboard": "Dashboard",
+    "account": "Cuenta",
+    "logout": "Cerrar sesión"
   },
   "SiteFooter": {
     "tagline": "Santuario editorial independiente para ensayos de cultura digital, filosofía contemporánea y pensamiento crítico.",
@@ -208,5 +212,19 @@
     "4": "DevOps",
     "5": "Inteligencia Artificial",
     "6": "Seguridad Informática"
+  },
+  "Dashboard": {
+    "nav": {
+      "articles": "Mis artículos",
+      "favorites": "Favoritos",
+      "highlights": "Destacados",
+      "notifications": "Notificaciones",
+      "account": "Cuenta"
+    },
+    "articlesTitle": "Mis artículos",
+    "favoritesTitle": "Favoritos",
+    "highlightsTitle": "Destacados",
+    "notificationsTitle": "Notificaciones",
+    "accountTitle": "Cuenta"
   }
 }

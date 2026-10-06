@@ -1,8 +1,11 @@
 'use client';
 
-import { Link, SearchField } from '@heroui/react';
-import { ArticleOrder } from '@/app/articles/article-query';
+import { SearchField } from '@heroui/react';
+import { ArticleOrder } from '@/app/[locale]/articles/article-query';
 import UserActions from './user-actions';
+import LocaleSwitcher from '@/app/[locale]/components/shared/locale-switcher';
+import { useLocale, useTranslations } from 'next-intl';
+import { Link, getPathname } from '@/i18n/navigation';
 
 type SiteHeaderClientProps = {
   search: string;
@@ -15,6 +18,9 @@ export function SiteHeaderClient({
   order,
   isAuthenticated,
 }: SiteHeaderClientProps) {
+  const locale = useLocale();
+  const t = useTranslations('SiteHeader');
+  const articlesAction = getPathname({ locale, href: '/articles' });
   return (
     <header className="sticky top-0 z-20 border-b border-separator bg-background-secondary shadow-accent-dark backdrop-blur-md">
       <div className="mx-auto flex w-full max-w-340 flex-col px-8">
@@ -30,11 +36,11 @@ export function SiteHeaderClient({
               <span className="font-serif text-2xl font-semibold pt-1">WellDone</span>
             </Link>
             <form
-              action="/articles"
+              action={articlesAction}
               className="hidden w-80 md:block"
             >
               <SearchField
-                aria-label="Buscar artículos"
+                aria-label={t('searchAria')}
                 className="w-full"
                 defaultValue={search}
                 name="search"
@@ -42,7 +48,7 @@ export function SiteHeaderClient({
                 <SearchField.Group className="h-7 rounded bg-field">
                   <SearchField.SearchIcon />
                   <SearchField.Input
-                    placeholder="Buscar artículos..."
+                    placeholder={t('searchPlaceholder')}
                     className="text-xs"
                   />
                 </SearchField.Group>
@@ -55,6 +61,9 @@ export function SiteHeaderClient({
                 />
               ) : null}
             </form>
+          </div>
+          <div>
+            <LocaleSwitcher />
           </div>
           <UserActions isAuthenticated={isAuthenticated} />
         </div>
