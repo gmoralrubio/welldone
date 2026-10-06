@@ -11,22 +11,17 @@ import { SiteFooter } from '@/app/[locale]/components/shared/site-footer';
 import { SiteHeader } from '@/app/[locale]/components/shared/site-header';
 import { EmptyState } from '@heroui/react';
 import { Metadata } from 'next';
-import { hasLocale } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
-import { routing } from '@/i18n/routing';
+import { resolveLocale } from '@/i18n/locale-utils';
 
 type ArticlePageProps = {
   searchParams: Promise<Record<string, SearchParamValue>>;
   params: Promise<{ locale: string }>;
 };
 
-export async function generateMetadata({
-  params,
-}: ArticlePageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
   const { locale: paramLocale } = await params;
-  const locale = hasLocale(routing.locales, paramLocale)
-    ? paramLocale
-    : routing.defaultLocale;
+  const locale = resolveLocale(paramLocale);
   const t = await getTranslations({ locale, namespace: 'AppMetadata' });
 
   return {

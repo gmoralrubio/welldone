@@ -1,11 +1,7 @@
 import { redirect } from '@/i18n/navigation';
-import { hasLocale } from 'next-intl';
-import { routing } from '@/i18n/routing';
+import { getLocale } from 'next-intl/server';
 
-export default async function Home({ params }: PageProps<'/[locale]'>) {
-  const { locale: paramLocale } = await params;
-  const locale = hasLocale(routing.locales, paramLocale)
-    ? paramLocale
-    : routing.defaultLocale;
+export default async function Home() {
+  const locale = await getLocale();
   redirect({ href: '/articles', locale });
 }
