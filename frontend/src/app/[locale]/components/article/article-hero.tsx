@@ -2,7 +2,6 @@
 
 import {
   formatAvatarLetter,
-  formatRelativeTime,
   readingMinutes,
 } from '@/app/[locale]/articles/article-presenters';
 import { ArticleDto } from '@/lib/articles.types';
@@ -12,6 +11,7 @@ import Image from 'next/image';
 import { ArticleCategory } from '@/app/[locale]/components/article/article-category';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
+import { useRelativeTime } from '@/app/[locale]/articles/hooks/useRelativeTime';
 
 type EditorialHeroProps = {
   article: ArticleDto;
@@ -20,7 +20,7 @@ type EditorialHeroProps = {
 export function ArticleHero({ article }: EditorialHeroProps) {
   const href = `/articles/${article.author.username}/${article.slug}`;
   const minutes = readingMinutes(article.intro, article.content);
-  const relativeTime = formatRelativeTime(article.publishedAt);
+  const relativeTime = useRelativeTime(article.publishedAt);
 
   const t = useTranslations('ArticleHero');
 

@@ -2,7 +2,6 @@
 
 import {
   formatAvatarLetter,
-  formatRelativeTime,
   readingMinutes,
 } from '@/app/[locale]/articles/article-presenters';
 import { ArticleDto } from '@/lib/articles.types';
@@ -12,6 +11,7 @@ import Image from 'next/image';
 import { ArticleCategory } from '@/app/[locale]/components/article/article-category';
 import { Link } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
+import { useRelativeTime } from '@/app/[locale]/articles/hooks/useRelativeTime';
 
 type ArticleCardProps = {
   article: ArticleDto;
@@ -42,7 +42,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
               {article.author.name} {article.author.surname}
             </Link>
             <span className="text-muted">|</span>
-            <span>{formatRelativeTime(article.publishedAt)}</span>
+            <span>{useRelativeTime(article.publishedAt)}</span>
           </div>
           <Link
             href={href}

@@ -67,6 +67,11 @@
     "readMinutes": "{minutes, plural, one {# minuto de lectura} other {# minutos de lectura}}"
   },
   "ArticleCard": {
+    "relativeTime": {
+      "minutes": "Hace ${minutes} min",
+      "hours": "Hace {hours, plural, one {# hora} other {# horas} }",
+      "days": "Hace {days, plural, one {# día} other {# días} }"
+    },
     "readMinutes": "{minutes, plural, one {# min} other {# min}}",
     "commentsAria": "Comentarios",
     "saveAria": "Guardar",

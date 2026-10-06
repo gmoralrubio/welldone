@@ -67,6 +67,11 @@
     "readMinutes": "{minutes, plural, one {# minute read} other {# minutes read}}"
   },
   "ArticleCard": {
+    "relativeTime": {
+      "minutes": "${minutes} min ago",
+      "hours": "{hours, plural, one {# hour} other {# hours}} ago",
+      "days": "{days, plural, one {# day} other {# days}} ago"
+    },
     "readMinutes": "{minutes, plural, one {# min} other {# min}}",
     "commentsAria": "Comments",
     "saveAria": "Save",
