@@ -1,5 +1,6 @@
 import { Avatar, Dropdown } from '@heroui/react';
 import { ChevronDown } from '@gravity-ui/icons';
+import { logout } from './logout-action';
 
 const UserProfile = () => {
   return (
@@ -24,8 +25,21 @@ const UserProfile = () => {
 
       <Dropdown.Popover>
         <Dropdown.Menu aria-label="Cuenta">
-          <Dropdown.Item id="profile">Perfil</Dropdown.Item>
-          <Dropdown.Item id="saved">Guardados</Dropdown.Item>
+          <Dropdown.Item id="account">Cuenta</Dropdown.Item>
+          <Dropdown.Item id="dashboard">Dashboard</Dropdown.Item>
+          <Dropdown.Item
+            id="logout"
+            textValue="Cerrar sesión"
+          >
+            <form action={logout}>
+              <button
+                type="submit"
+                className="w-full text-left"
+              >
+                Cerrar sesión
+              </button>
+            </form>
+          </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown.Popover>
     </Dropdown>
