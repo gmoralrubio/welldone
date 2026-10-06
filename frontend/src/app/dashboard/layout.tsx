@@ -17,13 +17,6 @@ export default async function DashboardLayout({
   return (
     <div className="flex min-h-screen bg-background">
       <aside className="w-64 border-r border-separator bg-background-secondary p-6">
-        <Link
-          href="/"
-          className="mb-10 block font-serif text-2xl font-semibold text-foreground no-underline"
-        >
-          WellDone
-        </Link>
-
         <nav className="flex flex-col gap-2">
           <Link href="/dashboard">Mis artículos</Link>
           <Link href="/dashboard/favorites">Favoritos</Link>
