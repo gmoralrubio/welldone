@@ -1,6 +1,7 @@
 import createMiddleware from 'next-intl/middleware';
 import { routing } from './i18n/routing';
 
+// Aplica el prefijo en la url con el middleware
 export default createMiddleware(routing);
 
 export const config = {
