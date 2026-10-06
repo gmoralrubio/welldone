@@ -1,0 +1,230 @@
+{
+  "AppMetadata": {
+    "title": "Welldone",
+    "description": "Keep Coding Web 20 bootcamp final project",
+    "articlesTitle": "Welldone | Articles",
+    "articlesDescription": "WellDone is a blogging network aiming to compete with Medium."
+  },
+  "LocaleSwitcher": {
+    "label": "Language",
+    "options": {
+      "es": "Spanish",
+      "en": "English"
+    }
+  },
+  "SiteHeader": {
+    "write": "Write",
+    "searchAria": "Search articles",
+    "searchPlaceholder": "Search articles...",
+    "accountAria": "Account",
+    "profile": "Profile",
+    "saved": "Saved",
+    "signIn": "Sign in",
+    "dashboard": "Dashboard",
+    "account": "Account",
+    "logout": "Log out"
+  },
+  "SiteFooter": {
+    "tagline": "An independent editorial sanctuary for essays on digital culture, contemporary philosophy, and critical thinking.",
+    "publication": "Publication",
+    "platform": "Platform",
+    "language": "Language:",
+    "github": "GitHub repository",
+    "apiDocs": "REST API documentation",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "copyright": "© 2026 WellDone. All rights reserved."
+  },
+  "SiteSidebar": {
+    "search": "Search",
+    "searchAria": "Search the index",
+    "searchPlaceholder": "Search by title",
+    "order": "Sort",
+    "frequentSearches": "Popular searches",
+    "categories": "Categories",
+    "membershipBadge": "WellDone membership",
+    "membershipTitle": "Write without friction, publish with impact",
+    "membershipBody": "Become a member to publish rich articles with our WYSIWYG editor, manage drafts, and build community.",
+    "membershipCta": "Start writing for free"
+  },
+  "SelectOrder": {
+    "placeholder": "Select order",
+    "ariaLabel": "Order",
+    "desc": "Newest",
+    "asc": "Oldest"
+  },
+  "ArticlesPage": {
+    "emptySearch": "No articles match this search.",
+    "emptyPage": "No more articles on this page.",
+    "paginationAria": "Article pagination",
+    "pageSummary": "Page {page} of {total}",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "ArticleHero": {
+    "heading": "Latest publication",
+    "published": "Published {time}",
+    "readMinutes": "{minutes, plural, one {# minute read} other {# minutes read}}"
+  },
+  "ArticleCard": {
+    "readMinutes": "{minutes, plural, one {# min} other {# min}}",
+    "commentsAria": "Comments",
+    "saveAria": "Save",
+    "shareAria": "Share"
+  },
+  "CreateArticlePage": {
+    "title": "Write your story",
+    "subtitle": "Share your knowledge with the community.",
+    "breadCrumbsAria": "Breadcrumbs",
+    "breadCrumbsHome": "Home",
+    "breadCrumbsArticles": "Articles",
+    "breadCrumbsNew": "New article",
+    "labelTitle": "Article title *",
+    "placeholderTitle": "E.g.: Design patterns in React...",
+    "labelIntro": "Introduction *",
+    "placeholderIntro": "A short summary to hook the reader...",
+    "labelCategory": "Main category *",
+    "labelStatus": "Publication status *",
+    "statusDraft": "Save as draft",
+    "statusPublished": "Publish immediately",
+    "labelPublishedAt": "Publication date and time (optional)",
+    "labelFeaturedImage": "Featured image URL (optional)",
+    "placeholderFeaturedImage": "https://example.com/image.jpg",
+    "labelFeaturedVideo": "Featured video URL (optional)",
+    "placeholderFeaturedVideo": "https://example.com/video.mp4",
+    "labelContent": "Content *",
+    "placeholderContent": "Write the full content of your article here...",
+    "cancel": "Cancel",
+    "submit": "Save article"
+  },
+  "ArticleDetailPage": {
+    "breadCrumbs": {
+      "ariaLabel": "Breadcrumbs",
+      "home": "Home",
+      "articles": "Articles"
+    },
+    "following": "Following",
+    "videoUnsupported": "Your browser cannot play this video.",
+    "followers": "{count} followers",
+    "follow": "Follow",
+    "moreStories": "More stories from {author}",
+    "commentsTitle": "Comments",
+    "writeReply": "Write a reply...",
+    "replyPlaceholder": "Share your knowledge",
+    "publishReply": "Publish reply",
+    "member": "Member",
+    "author": "Author",
+    "reply": "Reply"
+  },
+  "ArticleNotFound": {
+    "label": "Error 404",
+    "title": "Article not found",
+    "description": "The identifier is invalid or the article no longer exists.",
+    "backToList": "Back to the article list"
+  },
+  "ArticlesError": {
+    "label": "Something went wrong",
+    "title": "Could not load articles",
+    "description": "An unexpected error occurred while rendering this page. You can try again or go back to the catalog.",
+    "retry": "Try again",
+    "backToArticles": "← Back to articles"
+  },
+  "AuthLogin": {
+    "brand": "WellDone",
+    "backToReading": "Back to public reading",
+    "eyebrow": "Welcome to WellDone",
+    "title": "Sign in",
+    "subtitle": "Sign in to access your WellDone member space.",
+    "identifierLabel": "Email or username",
+    "identifierPlaceholder": "Email or username",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "required": "Required",
+    "submit": "Sign in",
+    "noAccount": "Don't have an account yet?",
+    "createAccount": "Create account",
+    "footerCopyright": "© 2025 WELLDONE PRESS",
+    "footerRights": "ALL RIGHTS RESERVED",
+    "footerIssn": "ISSN 2984-118X",
+    "footerProject": "KEEPCODING BOOTCAMP FINAL PROJECT",
+    "footerTerms": "Editorial terms",
+    "footerPrivacy": "Privacy",
+    "errors": {
+      "invalidCredentials": "Email, username, or password is incorrect.",
+      "loginFailed": "Could not sign in. Please try again."
+    }
+  },
+  "AuthRegister": {
+    "brand": "WellDone",
+    "backToReading": "Back to public reading",
+    "eyebrow": "Join WellDone",
+    "title": "Create account",
+    "subtitle": "Create your account to join the WellDone community.",
+    "nameLabel": "First name",
+    "namePlaceholder": "Your first name",
+    "surnameLabel": "Last name",
+    "surnamePlaceholder": "Your last name",
+    "usernameLabel": "Username",
+    "usernamePlaceholder": "your_username",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@email.com",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "repeatPasswordLabel": "Repeat password",
+    "repeatPasswordPlaceholder": "Repeat your password",
+    "required": "Required",
+    "submit": "Create account",
+    "hasAccount": "Already have an account?",
+    "signIn": "Sign in",
+    "footerCopyright": "© 2025 WELLDONE PRESS",
+    "footerRights": "ALL RIGHTS RESERVED",
+    "footerIssn": "ISSN 2984-118X",
+    "footerProject": "KEEPCODING BOOTCAMP FINAL PROJECT",
+    "footerTerms": "Editorial terms",
+    "footerPrivacy": "Privacy",
+    "errors": {
+      "emailTaken": "This email is already registered",
+      "usernameTaken": "This username is already taken"
+    }
+  },
+  "Validation": {
+    "Login": {
+      "identifierRequired": "Email or username is required",
+      "passwordRequired": "Password is required"
+    },
+    "Register": {
+      "nameMin": "First name must be at least three characters.",
+      "surnameRequired": "Last name is required.",
+      "usernameMin": "Username must be at least three characters.",
+      "usernamePattern": "Username may only contain letters, numbers, dots, and underscores.",
+      "emailRequired": "Email is required.",
+      "emailInvalid": "Enter a valid email address.",
+      "passwordRequired": "Password is required.",
+      "passwordPattern": "Must be 8–15 characters with uppercase, lowercase, a number, and a special character.",
+      "repeatPasswordRequired": "You must repeat the password.",
+      "passwordsMismatch": "Passwords do not match."
+    }
+  },
+  "Categories": {
+    "1": "Web Development",
+    "2": "Software Architecture",
+    "3": "UX/UI Design",
+    "4": "DevOps",
+    "5": "Artificial Intelligence",
+    "6": "Cybersecurity"
+  },
+  "Dashboard": {
+    "nav": {
+      "articles": "My articles",
+      "favorites": "Favorites",
+      "highlights": "Highlights",
+      "notifications": "Notifications",
+      "account": "Account"
+    },
+    "articlesTitle": "My articles",
+    "favoritesTitle": "Favorites",
+    "highlightsTitle": "Highlights",
+    "notificationsTitle": "Notifications",
+    "accountTitle": "Account"
+  }
+}
