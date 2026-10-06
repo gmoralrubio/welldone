@@ -1,8 +1,8 @@
 'use client';
 
-import { Avatar, Dropdown, Link, SearchField } from '@heroui/react';
-import { ChevronDown, Pencil } from '@gravity-ui/icons';
+import { Link, SearchField } from '@heroui/react';
 import { ArticleOrder } from '@/app/articles/article-query';
+import UserActions from './user-actions';
 
 type SiteHeaderProps = {
   search: string;
@@ -51,43 +51,7 @@ export function SiteHeader({ search, order }: SiteHeaderProps) {
               ) : null}
             </form>
           </div>
-          <div className="flex items-center gap-4">
-            <Link
-              href="/articles/create"
-              className="inline-flex items-center gap-1.5 rounded bg-accent-soft px-3 py-1.5 text-sm font-semibold text-accent-soft-foreground no-underline"
-            >
-              <Pencil
-                width={15}
-                height={15}
-              />
-              Escribir
-            </Link>
-            <Dropdown>
-              <Dropdown.Trigger
-                className="flex items-center gap-1.5 bg-transparent px-1"
-                aria-label="Cuenta"
-              >
-                <Avatar
-                  size="sm"
-                  className="size-8"
-                >
-                  <Avatar.Fallback className="text-xs bg-accent-soft text-accent-soft-foreground">
-                    WD
-                  </Avatar.Fallback>
-                </Avatar>
-                <ChevronDown
-                  width={8}
-                  height={8}
-                />
-              </Dropdown.Trigger>
-              <Dropdown.Popover>
-                <Dropdown.Menu aria-label="Cuenta">
-                  <Dropdown.Item id="profile">Perfil</Dropdown.Item>
-                  <Dropdown.Item id="saved">Guardados</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown.Popover>
-            </Dropdown>
-          </div>
+          <UserActions />
         </div>
       </div>
     </header>
