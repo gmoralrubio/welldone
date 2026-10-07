@@ -68,7 +68,7 @@
   },
   "ArticleCard": {
     "relativeTime": {
-      "minutes": "${minutes} min ago",
+      "minutes": "{minutes} min ago",
       "hours": "{hours, plural, one {# hour} other {# hours}} ago",
       "days": "{days, plural, one {# day} other {# days}} ago"
     },

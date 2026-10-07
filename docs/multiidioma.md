@@ -87,7 +87,7 @@ return <div>{t('heading')}</div>;
 
 ## Obtener el locale
 
-- Para obtener el locale para un componente:
+- Para obtener el locale:
   - En **Client Components**:
 
   ```ts
@@ -96,13 +96,63 @@ return <div>{t('heading')}</div>;
   const locale = useLocale();
   ```
 
-  - En un **Server Component o Server Action**:
+  - En un **Server Component** (page o layout):
 
   ```ts
   import { getLocale } from 'next-intl/server';
 
   const locale = await getLocale();
   ```
+
+  - En una **Server Action** o un **Route Handler**: no uses `getLocale()`. Ver [Server Actions](#server-actions).
+
+## Server Actions
+
+`getLocale()` dentro de una Server Action lanza este error:
+
+```
+Error: `import('next/root-params').locale()` was used inside a Server Action. This is not supported. Functions from 'next/root-params' can only be called in the context of a route.
+```
+
+`getRequestConfig` en `frontend/src/i18n/request.ts` lee el segmento `[locale]` con `next/root-params` cuando no recibe un locale explícito. Esa API solo funciona en una ruta (page, layout). Una Server Action no es ese contexto. Lo mismo pasa en Route Handlers. next-intl lo documenta: el soporte en acciones y handlers llega en una versión posterior de Next.js.
+
+El locale se obtiene en el Client Component con `useLocale()` y se pasa a la action con `bind`. Next entrega `FormData` como último argumento; el locale va primero. Dentro de la action se valida con `resolveLocale` antes del `redirect`, para descartar un valor que no sea `es` o `en`.
+
+```tsx
+'use client';
+
+import { useLocale } from 'next-intl';
+import { createArticleAction } from '../actions';
+
+const locale = useLocale();
+
+<form action={createArticleAction.bind(null, locale)}>{/* ... */}</form>;
+```
+
+```ts
+'use server';
+
+import { redirect } from '@/i18n/navigation';
+import { resolveLocale } from '@/i18n/locale-utils';
+
+export async function createArticleAction(locale: string, formData: FormData) {
+  // ...crear el artículo...
+
+  redirect({
+    href: `/articles/${article.author.username}/${article.slug}`,
+    locale: resolveLocale(locale),
+  });
+}
+```
+
+Si la action necesita textos, pasa ese locale a `getTranslations`. Así `request.ts` no llama a `rootParams.locale()`:
+
+```ts
+const t = await getTranslations({
+  locale: resolveLocale(locale),
+  namespace: 'CreateArticlePage',
+});
+```
 
 ## Navegación
 
@@ -164,7 +214,8 @@ router.push({
 
 ### redirect()
 
-- Al `redirect` hay que pasarle un locale explícito, para obtenerlo se usa `getLocale()`
+- Al `redirect` hay que pasarle un locale explícito.
+- En un Server Component de una ruta, ese locale sale de `getLocale()`:
 
 ```ts
 import { redirect } from '@/i18n/navigation';
@@ -173,6 +224,8 @@ import { getLocale } from 'next-intl/server';
 const locale = await getLocale();
 redirect({ href: '/articles', locale });
 ```
+
+- En una Server Action, `getLocale()` falla. Pasa el locale desde el cliente. Ver [Server Actions](#server-actions).
 
 ### Links HeroUI
 
@@ -212,7 +265,7 @@ const action = getPathname({ locale, href: '/articles' });
 </form>;
 ```
 
-En una Server Action, usa `getLocale()`. En metadata o código que ya recibe `params.locale`, usa `resolveLocale`.
+En una Server Action, pasa el locale desde el cliente y valídalo con `resolveLocale`. Ver [Server Actions](#server-actions). En metadata o código que ya recibe `params.locale`, usa `resolveLocale`.
 
 ## Metadata y generateMetadata()
 

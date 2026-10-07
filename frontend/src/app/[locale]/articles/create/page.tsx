@@ -64,7 +64,7 @@ export default function CreateArticlePage() {
         </header>
 
         <form
-          action={createArticleAction}
+          action={createArticleAction.bind(null, locale)}
           className="flex flex-col gap-6"
         >
           <Card className="p-2 shadow-sm border border-border">

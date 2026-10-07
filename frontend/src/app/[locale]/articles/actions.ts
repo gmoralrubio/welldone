@@ -6,8 +6,9 @@ import {
 } from '@/app/[locale]/articles/article-query';
 import { ArticleDto } from '@/lib/articles.types';
 import { redirect } from '@/i18n/navigation';
-import { getLocale } from 'next-intl/server';
 import { PaginatedResponse } from '@/lib/pagination.types';
+import { cookies } from 'next/headers';
+import { resolveLocale } from '@/i18n/locale-utils';
 
 type ArticlesSearchParams = Record<string, string | string[] | undefined>;
 
@@ -42,22 +43,9 @@ export async function getArticleByAuthorAndSlug(
   return data.article;
 }
 
-export async function createArticleAction(formData: FormData) {
-  // Seed password, solo para pruebas:
-  //Login usuario del seed
-  const loginResponse = await fetch(`${process.env.API_URL}/api/users/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ identifier: 'jdoe', password: 'Seed1234!' }),
-  });
-
-  if (!loginResponse.ok) {
-    //throw new Error('Error de autenticación.');
-    const errorDetails = await loginResponse.text();
-    throw new Error(`Fallo en el backend: ${loginResponse.status} - ${errorDetails}`);
-  }
-
-  const { accessToken } = await loginResponse.json();
+export async function createArticleAction(locale: string, formData: FormData) {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('accessToken')?.value;
 
   const payload = {
     title: formData.get('title'),
@@ -85,9 +73,8 @@ export async function createArticleAction(formData: FormData) {
 
   const { article } = await response.json();
 
-  const locale = await getLocale();
   redirect({
     href: `/articles/${article.author.username}/${article.slug}`,
-    locale,
+    locale: resolveLocale(locale),
   });
 }
