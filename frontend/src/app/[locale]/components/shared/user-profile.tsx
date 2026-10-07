@@ -2,11 +2,12 @@
 
 import { Avatar, Dropdown } from '@heroui/react';
 import { ChevronDown } from '@gravity-ui/icons';
-import { logout } from './logout-action';
 import { Link } from '@/i18n/navigation';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
+import { logout } from '@/app/[locale]/logout/logout-action';
 
 const UserProfile = () => {
+  const locale = useLocale();
   const t = useTranslations('SiteHeader');
 
   return (
@@ -31,7 +32,10 @@ const UserProfile = () => {
 
       <Dropdown.Popover>
         <Dropdown.Menu aria-label={t('accountAria')}>
-          <Dropdown.Item id="account" textValue={t('account')}>
+          <Dropdown.Item
+            id="account"
+            textValue={t('account')}
+          >
             <Link
               href="/dashboard/account"
               className="block w-full no-underline text-inherit"
@@ -39,7 +43,10 @@ const UserProfile = () => {
               {t('account')}
             </Link>
           </Dropdown.Item>
-          <Dropdown.Item id="dashboard" textValue={t('dashboard')}>
+          <Dropdown.Item
+            id="dashboard"
+            textValue={t('dashboard')}
+          >
             <Link
               href="/dashboard"
               className="block w-full no-underline text-inherit"
@@ -51,7 +58,7 @@ const UserProfile = () => {
             id="logout"
             textValue={t('logout')}
           >
-            <form action={logout}>
+            <form action={logout.bind(null, locale)}>
               <button
                 type="submit"
                 className="w-full text-left"

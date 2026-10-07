@@ -1,14 +1,13 @@
 'use server';
 
 import { cookies } from 'next/headers';
-import { getLocale } from 'next-intl/server';
 import { redirect } from '@/i18n/navigation';
+import { resolveLocale } from '@/i18n/locale-utils';
 
-export async function logout() {
+export async function logout(locale: string) {
   const cookieStore = await cookies();
 
   cookieStore.delete('accessToken');
 
-  const locale = await getLocale();
-  redirect({ href: '/articles', locale });
+  redirect({ href: '/articles', locale: resolveLocale(locale) });
 }
