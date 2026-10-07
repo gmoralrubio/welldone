@@ -68,7 +68,7 @@
   },
   "ArticleCard": {
     "relativeTime": {
-      "minutes": "Hace ${minutes} min",
+      "minutes": "Hace {minutes} min",
       "hours": "Hace {hours, plural, one {# hora} other {# horas} }",
       "days": "Hace {days, plural, one {# día} other {# días} }"
     },
