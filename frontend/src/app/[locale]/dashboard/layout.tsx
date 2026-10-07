@@ -20,7 +20,7 @@ export default async function DashboardLayout({
     <div className="flex min-h-screen bg-background">
       <aside className="w-64 border-r border-separator bg-background-secondary p-6">
         <nav className="flex flex-col gap-2">
-          <Link href="/dashboard">{t('nav.articles')}</Link>
+          <Link href="/dashboard/my-articles">{t('nav.articles')}</Link>
           <Link href="/dashboard/favorites">{t('nav.favorites')}</Link>
           <Link href="/dashboard/highlights">{t('nav.highlights')}</Link>
           <Link href="/dashboard/notifications">{t('nav.notifications')}</Link>
