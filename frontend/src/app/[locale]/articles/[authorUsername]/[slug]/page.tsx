@@ -209,6 +209,7 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
         {parseContent(article.content)}
       </article>
 
+
       {/* Otros artículos del autor */}
       <Card
         variant="secondary"
