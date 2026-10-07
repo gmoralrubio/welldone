@@ -1,3 +1,4 @@
+import { sanitizeArticleContent } from '@infrastructure/article/sanitizers/sanitizeArticleContent';
 import { z } from 'zod';
 
 export const ARTICLE_PAGE_SIZE = 6;
@@ -26,7 +27,11 @@ export const articleDetailValidationSchema = z.object({
 
 export const createArticleValidationSchema = z.object({
   title: z.string().min(2, 'El título debe tener al menos 2 caracteres'),
-  content: z.string().min(5, 'El contenido debe tener al menos 5 caracteres'),
+  content: z
+    .string()
+    .min(5, 'El contenido debe tener al menos 5 caracteres')
+    .transform(sanitizeArticleContent)
+    .pipe(z.string().min(5, 'El contenido debe tener al menos 5 caracteres')),
   intro: z
     .string()
     .min(5, 'La introducción es obligatoria, al menos 5 caracteres'),
