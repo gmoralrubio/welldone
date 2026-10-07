@@ -1,11 +1,11 @@
 import { ReactNode } from 'react';
-type ArticleH2Props = {
+type ArticleH3Props = {
   children: ReactNode;
 };
-export function ArticleH3({ children }: ArticleH2Props) {
+export function ArticleH3({ children }: ArticleH3Props) {
   return (
-    <h2 className="font-serif text-2xl font-medium tracking-tight text-balance">
+    <h3 className="font-serif text-2xl font-medium tracking-tight text-balance">
       {children}
-    </h2>
+    </h3>
   );
 }
