@@ -35,6 +35,7 @@ import { PaginationSimplePrevNext } from '@/app/[locale]/components/shared/Pagin
 import { ArticleCategory } from '@/app/[locale]/components/article/article-category';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { getPathname } from '@/i18n/navigation';
+import { parseContent } from '@/app/[locale]/articles/article-content-parser';
 
 interface ArticleDetailPageProps {
   params: Promise<{ authorUsername: string; slug: string }>;
@@ -205,8 +206,8 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
         </Card>
       ) : null}
 
-      <article className="flex flex-col gap-4 text-xl leading-relaxed font-serif">
-        {article.content}
+      <article className="flex flex-col gap-4 text-xl leading-relaxed font-serif ">
+        {parseContent(article.content)}
       </article>
 
       {/* Otros artículos del autor */}
