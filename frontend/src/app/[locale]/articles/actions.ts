@@ -94,6 +94,10 @@ export async function getMyArticlesAction(
   const criteria = parseArticleQuery(searchParams);
   const params = articleQueryParams(criteria);
 
+  if (searchParams.status) {
+    params.append('status', searchParams.status as string);
+  }
+
   const response = await fetch(
     `${process.env.API_URL}/api/articles/me?${params.toString()}`,
     {

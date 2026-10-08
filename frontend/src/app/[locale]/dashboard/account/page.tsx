@@ -52,19 +52,19 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
             href="/dashboard/account?status=PUBLISHED"
             className={currentStatus === 'PUBLISHED' ? activeTabClass : inactiveTabClass}
           >
-            Inicio
+            {t('tabs.home')}
           </Link>
           <Link
             href="/dashboard/account?status=DRAFT"
             className={currentStatus === 'DRAFT' ? activeTabClass : inactiveTabClass}
           >
-            Borradores
+            {t('tabs.drafts')}
           </Link>
           <Link
             href="#"
             className={inactiveTabClass}
           >
-            Acerca de
+            {t('tabs.about')}
           </Link>
         </div>
 
@@ -84,7 +84,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
 
         {meta.pages > 1 && (
           <div className="mt-4">
-            <ArticlePagination page={meta.page} pages={meta.pages} search="" order={order} />
+            <ArticlePagination page={meta.page} pages={meta.pages} search="" order={order} category = ""/>
           </div>
         )}
       </div>
@@ -96,11 +96,11 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
         </Avatar>
         <div className="flex flex-col gap-1">
           <h2 className="text-lg font-bold text-foreground">{user.name} {user.surname}</h2>
-          <span className="text-sm text-muted">{user.followers} seguidores</span>
+          <span className="text-sm text-muted">{user.followers} {t('followers')}</span>
         </div>
         <p className="text-sm italic text-muted">{user.bio}</p>
         <div className="mt-2 flex gap-2">
-          <Button size="sm" className="rounded-full bg-black font-medium text-white">Editar perfil</Button>
+          <Button size="sm" className="rounded-full bg-black font-medium text-white">{t('editProfile')}</Button>
         </div>
       </aside>
     </div>

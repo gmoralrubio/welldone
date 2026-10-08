@@ -230,6 +230,13 @@
     "favoritesTitle": "Favoritos",
     "highlightsTitle": "Destacados",
     "notificationsTitle": "Notificaciones",
-    "accountTitle": "Cuenta"
+    "accountTitle": "Cuenta",
+    "tabs": {
+      "home": "Inicio",
+      "drafts": "Borradores",
+      "about": "Acerca de"
+    },
+    "followers": "seguidores",
+    "editProfile": "Editar perfil"
   }
 }

@@ -230,6 +230,13 @@
     "favoritesTitle": "Favorites",
     "highlightsTitle": "Highlights",
     "notificationsTitle": "Notifications",
-    "accountTitle": "Account"
+    "accountTitle": "Account",
+    "tabs": {
+      "home": "Home",
+      "drafts": "Drafts",
+      "about": "About"
+    },
+    "followers": "followers",
+    "editProfile": "Edit profile"
   }
 }

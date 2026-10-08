@@ -38,7 +38,7 @@ export default async function MyArticlesPage({ searchParams }: MyArticlesPagePro
 
       {meta.pages > 1 && (
         <div className="mt-4">
-          <ArticlePagination page={meta.page} pages={meta.pages} search="" order={order} />
+          <ArticlePagination page={meta.page} pages={meta.pages} search="" order={order} category=""/>
         </div>
       )}
     </div>

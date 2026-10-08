@@ -42,7 +42,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
               {article.author.name} {article.author.surname}
             </Link>
             <span className="text-muted">|</span>
-            <span>{useRelativeTime(article.publishedAt)}</span>
+            <span suppressHydrationWarning>{useRelativeTime(article.publishedAt)}</span>
           </div>
           <Link
             href={href}
