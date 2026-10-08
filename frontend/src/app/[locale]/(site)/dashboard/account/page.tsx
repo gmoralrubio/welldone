@@ -162,6 +162,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
             {user.name} {user.surname}
           </h2>
           <span className="text-sm text-muted">@{user.username}</span>
+
         </div>
 
         <div className="mt-2 flex gap-2">
@@ -173,6 +174,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
               {t('editProfile')}
             </Button>
           </Link>
+
         </div>
       </aside>
     </div>
