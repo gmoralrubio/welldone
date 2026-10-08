@@ -33,6 +33,7 @@
     "typescript": "^5"
   },
   "optionalDependencies": {
-    "@swc/core-linux-x64-gnu": "^1.16.13"
+    "@swc/core-linux-x64-gnu": "^1.16.13",
+    "@swc/core-linux-x64-musl": "^1.16.13"
   }
 }
