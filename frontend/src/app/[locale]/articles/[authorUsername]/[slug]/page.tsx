@@ -59,7 +59,6 @@ export async function generateMetadata({
 
 {
   /* TODO:
-    - Loading
     - Incluir categorías
     - Imagen de Avatar
     - Calcular seguidores
@@ -113,7 +112,7 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
         {article.categories.map((category) => (
           <ArticleCategory
             key={category.id}
-            categoryId={category.id}
+            categorySlug={category.slug}
           />
         ))}
       </div>

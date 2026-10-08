@@ -6,19 +6,17 @@ import { Breadcrumbs, Button, Card, CardContent, Input, TextArea } from '@heroui
 import { Check } from '@gravity-ui/icons';
 import { createArticleAction } from '../actions';
 import 'react-quill-new/dist/quill.snow.css';
-import { articleCategories } from '@/lib/articles.types';
 import { useLocale, useTranslations } from 'next-intl';
 import { getPathname } from '@/i18n/navigation';
+import { CATEGORY_SLUGS } from '@/app/[locale]/category/category.types';
+import { CategorySelector } from '@/app/[locale]/components/article-create/category-selector';
 
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
-
-type CategoryId = '1' | '2' | '3' | '4' | '5' | '6';
 
 export default function CreateArticlePage() {
   const [content, setContent] = useState('');
   const locale = useLocale();
   const t = useTranslations('CreateArticlePage');
-  const tCategories = useTranslations('Categories');
 
   const homeHref = getPathname({ locale, href: '/' });
   const articlesHref = getPathname({ locale, href: '/articles' });
@@ -68,7 +66,7 @@ export default function CreateArticlePage() {
           action={createArticleAction.bind(null, locale)}
           className="flex flex-col gap-6"
         >
-          <Card className="p-2 shadow-sm border border-border">
+          <Card className="p-8 shadow-sm border border-border gap-4">
             <CardContent className="flex flex-col gap-6">
               <div className="flex flex-col gap-1">
                 <label className="text-sm font-medium text-foreground ml-1">
@@ -96,28 +94,11 @@ export default function CreateArticlePage() {
                   className="font-serif"
                 />
               </div>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <CategorySelector slugs={CATEGORY_SLUGS} />
+              </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <div className="flex flex-col gap-1 w-full sm:w-1/2">
-                  <label className="text-sm font-medium text-foreground ml-1">
-                    {t('labelCategory')}
-                  </label>
-                  <select
-                    required
-                    name="categoryId"
-                    className="w-full h-10 px-3 rounded-md bg-surface-secondary border-none font-serif text-foreground outline-none focus:ring-2 focus:ring-accent appearance-none"
-                  >
-                    {articleCategories.map((cat) => (
-                      <option
-                        key={cat.id}
-                        value={cat.id}
-                      >
-                        {tCategories(String(cat.id) as CategoryId)}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
                 <div className="flex flex-col gap-1 w-full sm:w-1/2">
                   <label className="text-sm font-medium text-foreground ml-1">
                     {t('labelStatus')}
@@ -132,17 +113,16 @@ export default function CreateArticlePage() {
                     <option value="PUBLISHED">{t('statusPublished')}</option>
                   </select>
                 </div>
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <label className="text-sm font-medium text-foreground ml-1">
-                  {t('labelPublishedAt')}
-                </label>
-                <input
-                  type="datetime-local"
-                  name="publishedAt"
-                  className="w-full h-10 px-3 rounded-md bg-surface-secondary border-none font-serif text-foreground outline-none focus:ring-2 focus:ring-accent"
-                />
+                <div className="flex flex-col gap-1 w-full sm:w-1/2">
+                  <label className="text-sm font-medium text-foreground ml-1">
+                    {t('labelPublishedAt')}
+                  </label>
+                  <input
+                    type="datetime-local"
+                    name="publishedAt"
+                    className="w-full h-10 px-3 rounded-md bg-surface-secondary border-none font-serif text-foreground outline-none focus:ring-2 focus:ring-accent"
+                  />
+                </div>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">

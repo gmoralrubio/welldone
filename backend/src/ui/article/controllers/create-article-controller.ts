@@ -16,6 +16,7 @@ export const createArticleController = async (
         'Debes estar autenticado para crear un artículo'
       );
     }
+    console.log(req.body);
 
     const validatedData = createArticleValidationSchema.parse(req.body);
 

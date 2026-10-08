@@ -2,6 +2,9 @@ import { EntityProps, Entity } from '@domain/shared/Entity.js';
 
 export type ArticleStatus = 'DRAFT' | 'PUBLISHED';
 
+export const ARTICLE_PAGE_SIZE = 6;
+export const ARTICLE_MAX_PAGE_SIZE = 12;
+
 export interface ArticleAuthor {
   id: number;
   name: string;
@@ -11,8 +14,8 @@ export interface ArticleAuthor {
 
 export interface ArticleCategory {
   id: number;
-  name: string;
   slug: string;
+  name: string;
 }
 
 interface ArticleProps extends EntityProps {

@@ -88,7 +88,7 @@
     "placeholderTitle": "Ej: Patrones de diseño en React...",
     "labelIntro": "Introducción *",
     "placeholderIntro": "Un breve resumen para enganchar al lector...",
-    "labelCategory": "Categoría principal *",
+    "labelCategory": "Categorías *",
     "labelStatus": "Estado de publicación *",
     "statusDraft": "Guardar como Borrador",
     "statusPublished": "Publicar Inmediatamente",
@@ -211,12 +211,12 @@
     }
   },
   "Categories": {
-    "1": "Desarrollo Web",
-    "2": "Arquitectura de Software",
-    "3": "Diseño UX/UI",
-    "4": "DevOps",
-    "5": "Inteligencia Artificial",
-    "6": "Seguridad Informática"
+    "desarrollo-web": "Desarrollo Web",
+    "arquitectura-de-software": "Arquitectura de Software",
+    "diseno-ux-ui": "Diseño UX/UI",
+    "devops": "DevOps",
+    "inteligencia-artificial": "Inteligencia Artificial",
+    "ciberseguridad": "Ciberseguridad"
   },
   "Dashboard": {
     "nav": {

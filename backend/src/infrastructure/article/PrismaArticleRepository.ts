@@ -48,6 +48,9 @@ export class PrismaArticleRepository implements ArticleRepository {
       status: 'PUBLISHED' as const,
       publishedAt: { lt: now },
       ...(criteria.authorId ? { authorId: criteria.authorId } : {}),
+      ...(criteria.category
+        ? { categories: { some: { slug: criteria.category } } }
+        : {}),
       ...(criteria.search
         ? { title: { contains: criteria.search, mode: 'insensitive' as const } }
         : {}),
@@ -70,8 +73,8 @@ export class PrismaArticleRepository implements ArticleRepository {
           categories: {
             select: {
               id: true,
-              name: true,
               slug: true,
+              name: true,
             },
           },
         },
@@ -106,8 +109,8 @@ export class PrismaArticleRepository implements ArticleRepository {
         categories: {
           select: {
             id: true,
-            name: true,
             slug: true,
+            name: true,
           },
         },
       },
@@ -133,14 +136,14 @@ export class PrismaArticleRepository implements ArticleRepository {
         featuredVideoUrl: params.featuredVideoUrl,
         authorId: params.authorId,
         categories: {
-          connect: params.categoryIds.map((id) => ({ id })),
+          connect: params.categorySlugs.map((slug) => ({ slug })),
         },
       },
       include: {
         author: {
           select: { id: true, name: true, surname: true, username: true },
         },
-        categories: { select: { id: true, name: true, slug: true } },
+        categories: { select: { id: true, slug: true, name: true } },
       },
     });
 

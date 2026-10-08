@@ -1,11 +1,11 @@
 'use client';
 
 import { Surface, SearchField } from '@heroui/react';
-import { articleCategories } from '@/lib/articles.types';
 import { SelectOrder } from '@/app/[locale]/components/article/select-order';
 import { ArticleOrder } from '@/app/[locale]/articles/article-query';
 import { Link, getPathname } from '@/i18n/navigation';
 import { useLocale, useTranslations } from 'next-intl';
+import { CATEGORY_SLUGS } from '@/app/[locale]/category/category.types';
 
 type SiteSidebarProps = {
   search: string;
@@ -79,20 +79,22 @@ export function SiteSidebar({ search, order }: SiteSidebarProps) {
 
       <Surface className="bg-surface-tertiary p-6 shadow-accent-dark rounded-3xl">
         <div className="flex items-center justify-between">
-          <h2 className="text-xs font-bold text-muted uppercase mb-4">{t('categories')}</h2>
+          <h2 className="text-xs font-bold text-muted uppercase mb-4">
+            {t('categories')}
+          </h2>
         </div>
         <div className="flex flex-wrap gap-2">
-          {articleCategories.map((category) => (
+          {CATEGORY_SLUGS.map((slug) => (
             <Link
-              key={category.id}
+              key={slug}
               href={{
                 pathname: '/articles',
-                query: { search: String(category.id) },
+                query: { category: slug },
               }}
               className="rounded bg-field px-3 py-1.5 text-sm font-semibold text-foreground no-underline"
             >
               <span className="mr-1 text-muted">#</span>
-              {tCategories(String(category.id) as '1')}
+              {tCategories(slug)}
             </Link>
           ))}
         </div>

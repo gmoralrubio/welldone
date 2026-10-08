@@ -43,7 +43,7 @@ export function ArticleHero({ article }: EditorialHeroProps) {
               {article.categories.map((category) => (
                 <ArticleCategory
                   key={category.id}
-                  categoryId={category.id}
+                  categorySlug={category.slug}
                 />
               ))}
               <span>{t('published', { time: relativeTime.toLowerCase() })}</span>

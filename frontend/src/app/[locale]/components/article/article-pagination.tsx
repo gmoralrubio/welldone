@@ -4,13 +4,17 @@ import { articlesListHref } from '@/app/[locale]/articles/article-query';
 import { Pagination } from '@heroui/react';
 import { useRouter } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
-import type { ArticleOrder } from '@/app/[locale]/articles/article-query';
+import type {
+  ArticleOrder,
+  ArticleQuery,
+} from '@/app/[locale]/articles/article-query';
 
 type ArticlePaginationProps = {
   page: number;
   pages: number;
   search: string;
   order: ArticleOrder;
+  category: ArticleQuery['category'];
 };
 
 export function ArticlePagination({
@@ -18,6 +22,7 @@ export function ArticlePagination({
   pages,
   search,
   order,
+  category,
 }: ArticlePaginationProps) {
   const router = useRouter();
   const t = useTranslations('ArticlesPage');
@@ -36,7 +41,7 @@ export function ArticlePagination({
           <Pagination.Previous
             isDisabled={page <= 1}
             onPress={() =>
-              router.push(articlesListHref({ page: page - 1, search, order }))
+              router.push(articlesListHref({ page: page - 1, search, order, category }))
             }
           >
             <Pagination.PreviousIcon />
@@ -49,7 +54,7 @@ export function ArticlePagination({
               isActive={pageNumber === page}
               onPress={() =>
                 router.push(
-                  articlesListHref({ page: pageNumber, search, order })
+                  articlesListHref({ page: pageNumber, search, order, category })
                 )
               }
             >
@@ -61,7 +66,7 @@ export function ArticlePagination({
           <Pagination.Next
             isDisabled={page >= totalPages}
             onPress={() =>
-              router.push(articlesListHref({ page: page + 1, search, order }))
+              router.push(articlesListHref({ page: page + 1, search, order, category }))
             }
           >
             <span>{t('next')}</span>

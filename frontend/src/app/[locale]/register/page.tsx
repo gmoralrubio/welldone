@@ -139,7 +139,11 @@ export default function RegisterPage() {
 
       setErrors((prev) => ({
         ...prev,
-        [field]: available ? undefined : field === 'email' ? 'emailTaken' : 'usernameTaken',
+        [field]: available
+          ? undefined
+          : field === 'email'
+            ? 'emailTaken'
+            : 'usernameTaken',
       }));
     } else {
       setErrors((prev) => ({
@@ -152,7 +156,9 @@ export default function RegisterPage() {
   return (
     <main className="flex min-h-screen flex-col bg-[#faf9f6] text-[#1a1c1a] antialiased">
       <header className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        <div className="text-xl font-semibold tracking-tight text-black">{t('brand')}</div>
+        <div className="text-xl font-semibold tracking-tight text-black">
+          {t('brand')}
+        </div>
 
         <div className="flex items-center gap-4">
           <Link
@@ -180,14 +186,12 @@ export default function RegisterPage() {
                 aria-hidden="true"
               />
 
-              <h1 className="font-serif text-[30px] font-medium leading-[38px] tracking-tight text-black">
+              <h1 className="font-serif text-[30px] font-medium tracking-tight text-black">
                 {t('title')}
               </h1>
             </div>
 
-            <p className="mt-2 max-w-md text-[15px] leading-[22px] text-[#45464d]">
-              {t('subtitle')}
-            </p>
+            <p className="mt-2 max-w-md text-[15px]  text-[#45464d]">{t('subtitle')}</p>
           </div>
 
           <form
@@ -199,7 +203,7 @@ export default function RegisterPage() {
               <TextField>
                 <Label
                   isRequired
-                  className="mb-1 text-[12px] font-semibold text-[#45464d]"
+                  className="mb-1 text-xs font-semibold text-[#45464d]"
                 >
                   {t('nameLabel')}
                 </Label>
@@ -227,7 +231,7 @@ export default function RegisterPage() {
               <TextField>
                 <Label
                   isRequired
-                  className="mb-1 text-[12px] font-semibold text-[#45464d]"
+                  className="mb-1 text-xs font-semibold text-[#45464d]"
                 >
                   {t('surnameLabel')}
                 </Label>
@@ -257,7 +261,7 @@ export default function RegisterPage() {
               <div className="mb-1 flex items-center justify-between">
                 <Label
                   isRequired
-                  className="text-[12px] font-semibold text-[#45464d]"
+                  className="text-xs font-semibold text-[#45464d]"
                 >
                   {t('usernameLabel')}
                 </Label>
@@ -291,7 +295,7 @@ export default function RegisterPage() {
               <div className="mb-1 flex items-center justify-between">
                 <Label
                   isRequired
-                  className="text-[12px] font-semibold text-[#45464d]"
+                  className="text-xs font-semibold text-[#45464d]"
                 >
                   {t('emailLabel')}
                 </Label>
@@ -325,7 +329,7 @@ export default function RegisterPage() {
               <div className="mb-1 flex items-center justify-between">
                 <Label
                   isRequired
-                  className="text-[12px] font-semibold text-[#45464d]"
+                  className="text-xs font-semibold text-[#45464d]"
                 >
                   {t('passwordLabel')}
                 </Label>
@@ -361,7 +365,7 @@ export default function RegisterPage() {
               <div className="mb-1 flex items-center justify-between">
                 <Label
                   isRequired
-                  className="text-[12px] font-semibold text-[#45464d]"
+                  className="text-xs font-semibold text-[#45464d]"
                 >
                   {t('repeatPasswordLabel')}
                 </Label>

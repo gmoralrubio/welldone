@@ -59,7 +59,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
             {article.categories.map((category) => (
               <ArticleCategory
                 key={category.id}
-                categoryId={category.id}
+                categorySlug={category.slug}
               />
             ))}
             <span className="inline-flex items-center gap-1">
