@@ -97,7 +97,7 @@ export async function getMyArticlesAction(
   if (searchParams.status) {
     params.append('status', searchParams.status as string);
   }
-  
+
   const response = await fetch(
     `${process.env.API_URL}/api/articles/me?${params.toString()}`,
     {

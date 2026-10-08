@@ -33,7 +33,7 @@ export function ArticleHero({ article }: EditorialHeroProps) {
             {t('heading')}
           </span>
           <span className="text-muted">|</span>
-          <span className="font-medium text-muted">{relativeTime}</span>
+          <span className="font-medium text-muted" suppressHydrationWarning>{relativeTime}</span>
         </div>
       </div>
       <Card className="mt-4 grid gap-10 bg-white p-6 shadow-xs shadow-accent-dark/30 md:p-10 lg:grid-cols-12 hover:shadow-md">
@@ -46,7 +46,7 @@ export function ArticleHero({ article }: EditorialHeroProps) {
                   categorySlug={category.slug}
                 />
               ))}
-              <span>{t('published', { time: relativeTime.toLowerCase() })}</span>
+              <span suppressHydrationWarning>{t('published', { time: relativeTime.toLowerCase() })}</span>
               <span className="text-muted">|</span>
               <span className="inline-flex items-center gap-1 text-muted">
                 <Clock

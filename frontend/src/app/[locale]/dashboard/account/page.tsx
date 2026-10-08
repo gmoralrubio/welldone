@@ -134,6 +134,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
           <div className="mt-4">
 
             <ArticlePagination page={meta.page} pages={meta.pages} search="" order={order} category="" />
+
           </div>
         )}
       </div>
@@ -145,6 +146,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
         <div className="flex flex-col gap-1">
           <h2 className="text-lg font-bold text-foreground">{user.name} {user.surname}</h2>
           <span className="text-sm text-muted">@{user.username}</span>
+
         </div>
         
         <div className="mt-2 flex gap-2">
@@ -153,6 +155,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
               {t('editProfile')}
             </Button>
           </Link>
+
         </div>
       </aside>
     </div>
