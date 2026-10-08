@@ -88,7 +88,7 @@
     "placeholderTitle": "E.g.: Design patterns in React...",
     "labelIntro": "Introduction *",
     "placeholderIntro": "A short summary to hook the reader...",
-    "labelCategory": "Main category *",
+    "labelCategory": "Categories *",
     "labelStatus": "Publication status *",
     "statusDraft": "Save as draft",
     "statusPublished": "Publish immediately",
@@ -205,18 +205,18 @@
       "emailRequired": "Email is required.",
       "emailInvalid": "Enter a valid email address.",
       "passwordRequired": "Password is required.",
-      "passwordPattern": "Must be 8–15 characters with uppercase, lowercase, a number, and a special character.",
+      "passwordPattern": "Must be 8-15 characters with uppercase, lowercase, a number, and a special character.",
       "repeatPasswordRequired": "You must repeat the password.",
       "passwordsMismatch": "Passwords do not match."
     }
   },
   "Categories": {
-    "1": "Web Development",
-    "2": "Software Architecture",
-    "3": "UX/UI Design",
-    "4": "DevOps",
-    "5": "Artificial Intelligence",
-    "6": "Cybersecurity"
+    "desarrollo-web": "Web Development",
+    "arquitectura-de-software": "Software Architecture",
+    "diseno-ux-ui": "UX/UI Design",
+    "devops": "DevOps",
+    "inteligencia-artificial": "Artificial Intelligence",
+    "ciberseguridad": "Cybersecurity"
   },
   "Dashboard": {
     "nav": {
