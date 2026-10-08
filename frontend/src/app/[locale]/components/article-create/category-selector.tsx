@@ -5,7 +5,7 @@ import { Checkbox, CheckboxGroup, Label } from '@heroui/react';
 import { useTranslations } from 'next-intl';
 
 type CategorySelectorProps = {
-  slugs: CategorySlug[];
+  slugs: readonly CategorySlug[];
 };
 
 export function CategorySelector({ slugs }: CategorySelectorProps) {

@@ -4,8 +4,8 @@ import { Surface, SearchField } from '@heroui/react';
 import { SelectOrder } from '@/app/[locale]/components/article/select-order';
 import { ArticleOrder } from '@/app/[locale]/articles/article-query';
 import { Link, getPathname } from '@/i18n/navigation';
-import { useLocale, useMessages, useTranslations } from 'next-intl';
-import { CategorySlug } from '@/app/[locale]/category/category.types';
+import { useLocale, useTranslations } from 'next-intl';
+import { CATEGORY_SLUGS } from '@/app/[locale]/category/category.types';
 
 type SiteSidebarProps = {
   search: string;
@@ -18,8 +18,6 @@ export function SiteSidebar({ search, order }: SiteSidebarProps) {
   const locale = useLocale();
   const t = useTranslations('SiteSidebar');
   const tCategories = useTranslations('Categories');
-  const messages = useMessages();
-  const slugs = Object.keys(messages.Categories) as CategorySlug[];
   const articlesAction = getPathname({ locale, href: '/articles' });
 
   return (
@@ -86,7 +84,7 @@ export function SiteSidebar({ search, order }: SiteSidebarProps) {
           </h2>
         </div>
         <div className="flex flex-wrap gap-2">
-          {slugs.map((slug) => (
+          {CATEGORY_SLUGS.map((slug) => (
             <Link
               key={slug}
               href={{

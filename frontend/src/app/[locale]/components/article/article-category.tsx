@@ -10,7 +10,6 @@ type ArticleCategoryProps = {
 
 export function ArticleCategory({ categorySlug }: ArticleCategoryProps) {
   const t = useTranslations('Categories');
-  const key = String(categorySlug) as CategorySlug;
 
   return (
     <Link
@@ -20,7 +19,7 @@ export function ArticleCategory({ categorySlug }: ArticleCategoryProps) {
       }}
       className="rounded-sm bg-accent/50 px-2 py-0.5 text-xs font-bold text-accent-foreground uppercase"
     >
-      {t(key)}
+      {t(categorySlug)}
     </Link>
   );
 }

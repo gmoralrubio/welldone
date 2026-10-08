@@ -12,7 +12,6 @@ import { ArticleCategory } from '@/app/[locale]/components/article/article-categ
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { useRelativeTime } from '@/app/[locale]/articles/hooks/useRelativeTime';
-import { CategorySlug } from '@/app/[locale]/category/category.types';
 
 type EditorialHeroProps = {
   article: ArticleDto;
@@ -44,7 +43,7 @@ export function ArticleHero({ article }: EditorialHeroProps) {
               {article.categories.map((category) => (
                 <ArticleCategory
                   key={category.id}
-                  categorySlug={category.slug as CategorySlug}
+                  categorySlug={category.slug}
                 />
               ))}
               <span>{t('published', { time: relativeTime.toLowerCase() })}</span>

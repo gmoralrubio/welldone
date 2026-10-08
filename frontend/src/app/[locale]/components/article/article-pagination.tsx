@@ -4,15 +4,17 @@ import { articlesListHref } from '@/app/[locale]/articles/article-query';
 import { Pagination } from '@heroui/react';
 import { useRouter } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
-import type { ArticleOrder } from '@/app/[locale]/articles/article-query';
-import { CategorySlug } from '@/app/[locale]/category/category.types';
+import type {
+  ArticleOrder,
+  ArticleQuery,
+} from '@/app/[locale]/articles/article-query';
 
 type ArticlePaginationProps = {
   page: number;
   pages: number;
   search: string;
   order: ArticleOrder;
-  category: CategorySlug;
+  category: ArticleQuery['category'];
 };
 
 export function ArticlePagination({

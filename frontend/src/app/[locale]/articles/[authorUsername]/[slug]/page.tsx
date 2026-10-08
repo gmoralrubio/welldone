@@ -36,7 +36,6 @@ import { ArticleCategory } from '@/app/[locale]/components/article/article-categ
 import { getLocale, getTranslations } from 'next-intl/server';
 import { getPathname } from '@/i18n/navigation';
 import { parseContent } from '@/app/[locale]/articles/article-content-parser';
-import { CategorySlug } from '@/app/[locale]/category/category.types';
 
 interface ArticleDetailPageProps {
   params: Promise<{ authorUsername: string; slug: string }>;
@@ -113,7 +112,7 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
         {article.categories.map((category) => (
           <ArticleCategory
             key={category.id}
-            categorySlug={category.slug as CategorySlug}
+            categorySlug={category.slug}
           />
         ))}
       </div>

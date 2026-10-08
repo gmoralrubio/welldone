@@ -6,9 +6,9 @@ import { Breadcrumbs, Button, Card, CardContent, Input, TextArea } from '@heroui
 import { Check } from '@gravity-ui/icons';
 import { createArticleAction } from '../actions';
 import 'react-quill-new/dist/quill.snow.css';
-import { useLocale, useMessages, useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { getPathname } from '@/i18n/navigation';
-import { CategorySlug } from '@/app/[locale]/category/category.types';
+import { CATEGORY_SLUGS } from '@/app/[locale]/category/category.types';
 import { CategorySelector } from '@/app/[locale]/components/article-create/category-selector';
 
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
@@ -17,8 +17,6 @@ export default function CreateArticlePage() {
   const [content, setContent] = useState('');
   const locale = useLocale();
   const t = useTranslations('CreateArticlePage');
-  const messages = useMessages();
-  const slugs = Object.keys(messages.Categories) as CategorySlug[];
 
   const homeHref = getPathname({ locale, href: '/' });
   const articlesHref = getPathname({ locale, href: '/articles' });
@@ -97,7 +95,7 @@ export default function CreateArticlePage() {
                 />
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
-                <CategorySelector slugs={slugs} />
+                <CategorySelector slugs={CATEGORY_SLUGS} />
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">

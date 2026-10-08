@@ -1,3 +1,5 @@
+import type { CategorySlug } from '@/app/[locale]/category/category.types';
+
 export enum ArticleStatus {
   DRAFT = 'DRAFT',
   PUBLISHED = 'PUBLISHED',
@@ -6,7 +8,7 @@ export enum ArticleStatus {
 type ArticleCategories = {
   id: number;
   name: string;
-  slug: string;
+  slug: CategorySlug;
 };
 
 type ArticleAuthor = {

@@ -1,8 +1,7 @@
-import { CategorySlug } from '@/app/[locale]/category/category.types';
+import { CategorySlug, isCategorySlug } from '@/app/[locale]/category/category.types';
 
 export type SearchParamValue = string | string[] | undefined;
 
-// TODO: Añadir category
 export type ArticleOrder = 'asc' | 'desc';
 
 export type ArticleQuery = {
@@ -10,7 +9,7 @@ export type ArticleQuery = {
   page: number;
   limit: number;
   order: ArticleOrder;
-  category: CategorySlug;
+  category: CategorySlug | '';
 };
 
 function first(value: SearchParamValue): string {
@@ -24,7 +23,8 @@ export function parseArticleQuery(
   const page = Number(first(queryParams.page));
   const limit = Number(first(queryParams.limit));
   const order = first(queryParams.order) === 'asc' ? 'asc' : 'desc';
-  const category = first(queryParams.category) as CategorySlug;
+  const rawCategory = first(queryParams.category);
+  const category = isCategorySlug(rawCategory) ? rawCategory : '';
 
   return {
     search,
@@ -41,7 +41,7 @@ export function articleQueryParams(input: ArticleQuery): URLSearchParams {
   if (input.page > 1) params.set('page', String(input.page));
   if (input.limit) params.set('limit', String(input.limit));
   if (input.order === 'asc') params.set('order', input.order);
-  if (input.category) params.set('category', String(input.category));
+  if (input.category) params.set('category', input.category);
 
   return params;
 }

@@ -12,7 +12,6 @@ import { ArticleCategory } from '@/app/[locale]/components/article/article-categ
 import { Link } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
 import { useRelativeTime } from '@/app/[locale]/articles/hooks/useRelativeTime';
-import { CategorySlug } from '@/app/[locale]/category/category.types';
 
 type ArticleCardProps = {
   article: ArticleDto;
@@ -60,7 +59,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
             {article.categories.map((category) => (
               <ArticleCategory
                 key={category.id}
-                categorySlug={category.slug as CategorySlug}
+                categorySlug={category.slug}
               />
             ))}
             <span className="inline-flex items-center gap-1">
