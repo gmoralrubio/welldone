@@ -52,10 +52,12 @@ export async function createArticleAction(locale: string, formData: FormData) {
     intro: formData.get('intro'),
     content: formData.get('content'),
     status: formData.get('status'),
-    categoryIds: [Number(formData.get('categoryId'))],
+    categorySlugs: formData.getAll('categorySlugs'),
     featuredImageUrl: formData.get('featuredImageUrl') || null,
     featuredVideoUrl: formData.get('featuredVideoUrl') || null,
   };
+
+  console.log(payload);
 
   const response = await fetch(`${process.env.API_URL}/api/articles`, {
     method: 'POST',

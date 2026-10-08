@@ -5,6 +5,7 @@ import { ListBox, Select, type Key } from '@heroui/react';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
+import { CategorySlug } from '@/app/[locale]/category/category.types';
 
 export function SelectOrder() {
   const t = useTranslations('SelectOrder');
@@ -24,11 +25,17 @@ export function SelectOrder() {
   const searchParams = useSearchParams();
   const order = searchParams.get('order') as ArticleOrder;
   const search = searchParams.get('search');
+  const category = searchParams.get('category') as CategorySlug;
 
   const handleOnChange = (value: Key | null) => {
     const nextOrder = value === 'asc' ? 'asc' : 'desc';
     router.push(
-      articlesListHref({ page: 1, search: search ?? '', order: nextOrder })
+      articlesListHref({
+        page: 1,
+        search: search ?? '',
+        order: nextOrder,
+        category: category ?? '',
+      })
     );
   };
 

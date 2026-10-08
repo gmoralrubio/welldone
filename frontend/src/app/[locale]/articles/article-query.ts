@@ -1,12 +1,16 @@
+import { CategorySlug } from '@/app/[locale]/category/category.types';
+
 export type SearchParamValue = string | string[] | undefined;
 
 // TODO: Añadir category
 export type ArticleOrder = 'asc' | 'desc';
+
 export type ArticleQuery = {
   search: string;
   page: number;
   limit: number;
   order: ArticleOrder;
+  category: CategorySlug;
 };
 
 function first(value: SearchParamValue): string {
@@ -20,12 +24,14 @@ export function parseArticleQuery(
   const page = Number(first(queryParams.page));
   const limit = Number(first(queryParams.limit));
   const order = first(queryParams.order) === 'asc' ? 'asc' : 'desc';
+  const category = first(queryParams.category) as CategorySlug;
 
   return {
     search,
     page: !Number.isFinite(page) || page < 1 ? 1 : page,
     limit,
     order,
+    category,
   };
 }
 
@@ -35,11 +41,14 @@ export function articleQueryParams(input: ArticleQuery): URLSearchParams {
   if (input.page > 1) params.set('page', String(input.page));
   if (input.limit) params.set('limit', String(input.limit));
   if (input.order === 'asc') params.set('order', input.order);
+  if (input.category) params.set('category', String(input.category));
 
   return params;
 }
 
-export function articlesListHref(input: Pick<ArticleQuery, 'page' | 'search' | 'order'>) {
+export function articlesListHref(
+  input: Pick<ArticleQuery, 'page' | 'search' | 'order' | 'category'>
+) {
   const params = articleQueryParams({ ...input, limit: 0 });
   const query: Record<string, string> = {};
   params.forEach((value, key) => {
@@ -54,13 +63,4 @@ export function articlesListHref(input: Pick<ArticleQuery, 'page' | 'search' | '
     pathname: '/articles' as const,
     query,
   };
-}
-
-export function articlesHref(input: Pick<ArticleQuery, 'page' | 'search' | 'order'>) {
-  const href = articlesListHref(input);
-  if (!('query' in href) || !href.query) {
-    return href.pathname;
-  }
-  const params = new URLSearchParams(href.query);
-  return `${href.pathname}?${params.toString()}`;
 }

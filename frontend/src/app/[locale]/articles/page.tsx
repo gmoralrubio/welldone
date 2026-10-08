@@ -36,7 +36,10 @@ export default async function ArticlesPage({ searchParams }: ArticlePageProps) {
   const { data, meta } = await getArticles(queryParams);
   const t = await getTranslations('ArticlesPage');
   // Primer articulo como destacado
-  const featured = criteria.page === 1 && criteria.search === '' ? data[0] : undefined;
+  const featured =
+    criteria.page === 1 && criteria.search === '' && criteria.category.length === 0
+      ? data[0]
+      : undefined;
   // Resto de artículos
   const feed = featured ? data.slice(1) : data;
 
@@ -69,6 +72,7 @@ export default async function ArticlesPage({ searchParams }: ArticlePageProps) {
               pages={meta.pages}
               search={criteria.search}
               order={criteria.order}
+              category={criteria.category}
             />
           </section>
           <SiteSidebar
