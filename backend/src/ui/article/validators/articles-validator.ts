@@ -1,8 +1,10 @@
+import {
+  ARTICLE_MAX_PAGE_SIZE,
+  ARTICLE_PAGE_SIZE,
+} from '@domain/article/Article';
+import { CATEGORY_SLUGS } from '@domain/category/categories';
 import { sanitizeArticleContent } from '@infrastructure/article/sanitizers/sanitizeArticleContent';
 import { z } from 'zod';
-
-export const ARTICLE_PAGE_SIZE = 6;
-export const ARTICLE_MAX_PAGE_SIZE = 12;
 
 export const findArticlesValidationSchema = z.object({
   page: z.coerce.number('Invalid page. Must be a number').positive().default(1),
@@ -12,7 +14,7 @@ export const findArticlesValidationSchema = z.object({
     .max(ARTICLE_MAX_PAGE_SIZE)
     .default(ARTICLE_PAGE_SIZE),
   search: z.string().min(3).optional(),
-  category: z.coerce.number().positive().max(3).optional(),
+  category: z.enum(CATEGORY_SLUGS).optional(),
   order: z.enum(['asc', 'desc']).default('desc').catch('desc'),
 });
 
@@ -48,7 +50,7 @@ export const createArticleValidationSchema = z.object({
     .url('Debe ser una URL válida')
     .optional()
     .nullable(),
-  categoryIds: z
-    .array(z.number())
+  categorySlugs: z
+    .array(z.enum(CATEGORY_SLUGS))
     .min(1, 'Debes seleccionar al menos una categoría'),
 });

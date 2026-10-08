@@ -15,15 +15,15 @@ export const findPublishedArticlesController = async (
   );
 
   try {
-    const { page, limit, search, order } = findArticlesValidationSchema.parse(
-      req.query
-    );
+    const { page, limit, search, order, category } =
+      findArticlesValidationSchema.parse(req.query);
 
     const { articles, total } = await findArticlesUseCase.execute({
       page,
       limit,
       search,
       order,
+      category,
     });
 
     const url = `${req.protocol}://${req.get('host')}${req.baseUrl}`;

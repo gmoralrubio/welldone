@@ -5,7 +5,7 @@ import { Pagination } from '@domain/shared/Pagination';
 interface ArticleFilterQuery {
   authorId?: number;
   search?: string;
-  category?: number;
+  category?: string;
   order: 'asc' | 'desc';
 }
 

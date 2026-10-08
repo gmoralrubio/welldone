@@ -1,6 +1,7 @@
 import { Article, ArticleStatus } from '@domain/article/Article';
 import { FindArticlesResponse } from '@domain/article/types/FindArticlesResponse';
 import { FindPublishedArticlesUseCaseInput } from '@domain/article/use-cases/find-published-articles';
+import { CategorySlug } from '@domain/category/categories';
 
 export interface CreateArticleParams {
   title: string;
@@ -12,7 +13,7 @@ export interface CreateArticleParams {
   featuredImageUrl: string | null;
   featuredVideoUrl: string | null;
   authorId: number;
-  categoryIds: number[];
+  categorySlugs: CategorySlug[];
 }
 
 export interface ArticleRepository {
