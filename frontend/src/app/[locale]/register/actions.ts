@@ -1,5 +1,7 @@
 'use server';
 
+import { loginUser } from '../login/actions';
+
 interface RegisterUserData {
   name: string;
   surname: string;
@@ -18,6 +20,22 @@ export async function registerUser(data: RegisterUserData) {
   });
 
   const responseData = await response.json();
+
+  if (response.status === 201) {
+    const loginResponse = await loginUser({
+      identifier: data.email,
+      password: data.password,
+    });
+
+    if (loginResponse.status !== 200) {
+      return {
+        status: 500,
+        data: {
+          message: 'El usuario se ha registrado, pero no se ha podido iniciar sesión.',
+        },
+      };
+    }
+  }
 
   return {
     status: response.status,
