@@ -167,4 +167,7 @@ export class PrismaArticleRepository implements ArticleRepository {
       commentCount: prismaArticle._count.comments,
     });
   }
+  
 }
+
+

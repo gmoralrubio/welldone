@@ -26,6 +26,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
   const t = await getTranslations('Dashboard');
   const locale = await getLocale();
 
+
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
 
@@ -128,7 +129,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
             <p className="text-lg text-muted">
               {currentStatus === 'DRAFT'
                 ? t('emptyStates.drafts')
-                : t('emptyStates.published')}
+               : t('emptyStates.published')}
             </p>
           )}
         </div>
@@ -144,7 +145,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
               pathname="/dashboard/account"
               status={currentStatus === 'DRAFT' ? 'DRAFT' : 'PUBLISHED'}
             />
-          </div>
+         </div>
         )}
       </div>
 

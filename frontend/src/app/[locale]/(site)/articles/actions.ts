@@ -220,6 +220,7 @@ export async function getMyArticlesAction(
   const criteria = parseArticleQuery(searchParams);
   const params = articleQueryParams(criteria);
 
+
   if (searchParams.status) {
     params.append('status', searchParams.status as string);
   }
@@ -237,6 +238,7 @@ export async function getMyArticlesAction(
   if (!response.ok) throw new Error('No se pudieron cargar tus artículos');
 
   return await response.json();
+
 }
 
 export async function getMyArticleBySlug(slug: string): Promise<ArticleDto | null> {

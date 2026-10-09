@@ -16,5 +16,6 @@ export interface ArticleRepository {
   ): Promise<Article | null>;
   findArticleBy(criteria: FindMyArticleUseCaseInput): Promise<Article | null>;
 
+
   create(criteria: CreateArticleUseCaseInput): Promise<Article>;
 }
