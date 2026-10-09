@@ -149,6 +149,7 @@ const anaArticles: SeedArticle[] = [
       'El número de visitas describe el distribuidor. No describe si el texto merecía quedarse.',
     content: `<p>Una métrica responde a una pregunta concreta: ¿alguien abrió la página? No responde si entendió el argumento, si volvió o si el texto cambió una decisión pequeña.</p><p>Señales que sí importan:</p><ul><li>Un comentario que cita una frase</li><li>Una respuesta que discute el punto</li><li>Una relectura tuya a los tres meses</li></ul><p>Cómo no dejar que el panel elija el siguiente título:</p><ol><li>Decidir la señal antes de publicar</li><li>Mirar visitas como acompañamiento, no como veredicto</li><li>Repetir un formato solo si la idea lo pide</li></ol>`,
     slug: 'lectores-no-metricas',
+
     status: 'PUBLISHED',
     publishedAt: new Date('2026-06-21T17:40:00.000Z'),
     categorySlugs: ['diseno-ux-ui'],
@@ -218,6 +219,7 @@ async function main() {
   await prisma.article.deleteMany();
   await prisma.category.deleteMany();
   await prisma.user.deleteMany();
+  await prisma.comment.deleteMany();
 
   await prisma.$executeRaw`ALTER SEQUENCE "Category_id_seq" RESTART WITH 1`;
 
@@ -252,9 +254,12 @@ async function main() {
     ...anaArticles.map((article) => ({ ...article, authorId: ana.id })),
   ];
 
+  let johnFirstArticleId: number | null = null;
+  let anaFirstArticleId: number | null = null;
+
   for (const article of articles) {
     const { categorySlugs, content, ...data } = article;
-    await prisma.article.create({
+    const created = await prisma.article.create({
       data: {
         ...data,
         content: sanitizeArticleContent(content),
@@ -264,7 +269,44 @@ async function main() {
         },
       },
     });
+
+    if (created.slug === johnArticles[0].slug && created.authorId === john.id) {
+      johnFirstArticleId = created.id;
+    }
+
+    if (created.slug === anaArticles[0].slug && created.authorId === ana.id) {
+      anaFirstArticleId = created.id;
+    }
   }
+
+  if (johnFirstArticleId === null || anaFirstArticleId === null) {
+    throw new Error('Seed articles were not created');
+  }
+
+  const johnArticleComment = await prisma.comment.create({
+    data: {
+      message: 'I am a root comment',
+      userId: ana.id,
+      articleId: johnFirstArticleId,
+    },
+  });
+
+  await prisma.comment.create({
+    data: {
+      parentId: johnArticleComment.id,
+      message: 'I am a nested comment',
+      userId: john.id,
+      articleId: johnFirstArticleId,
+    },
+  });
+
+  await prisma.comment.create({
+    data: {
+      message: 'I am another root comment',
+      userId: john.id,
+      articleId: anaFirstArticleId,
+    },
+  });
 }
 
 main()
