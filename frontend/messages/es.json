@@ -231,5 +231,27 @@
     "highlightsTitle": "Destacados",
     "notificationsTitle": "Notificaciones",
     "accountTitle": "Cuenta"
+  },
+  "Account": {
+    "title": "Mi cuenta",
+    "subtitle": "Consulta y actualiza tus datos personales.",
+    "nameLabel": "Nombre",
+    "surnameLabel": "Apellidos",
+    "usernameLabel": "Nombre de usuario",
+    "emailLabel": "Correo electrónico",
+    "save": "Guardar cambios",
+    "saving": "Guardando...",
+    "success": "Tus datos se han actualizado correctamente.",
+    "personalInfo": "Información personal",
+    "edit": "Editar datos",
+    "editTitle": "Editar información personal",
+    "editSubtitle": "Modifica los campos que quieras actualizar.",
+    "cancel": "Cancelar",
+    "errors": {
+      "emailInUse": "Este correo electrónico ya está en uso.",
+      "usernameInUse": "Este nombre de usuario ya está en uso.",
+      "updateFailed": "No se han podido guardar los cambios. Inténtalo de nuevo.",
+      "sessionExpired": "Tu sesión ha caducado. Vuelve a iniciar sesión."
+    }
   }
 }

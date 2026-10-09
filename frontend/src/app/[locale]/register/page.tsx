@@ -139,7 +139,11 @@ export default function RegisterPage() {
 
       setErrors((prev) => ({
         ...prev,
-        [field]: available ? undefined : field === 'email' ? 'emailTaken' : 'usernameTaken',
+        [field]: available
+          ? undefined
+          : field === 'email'
+            ? 'emailTaken'
+            : 'usernameTaken',
       }));
     } else {
       setErrors((prev) => ({
@@ -152,7 +156,9 @@ export default function RegisterPage() {
   return (
     <main className="flex min-h-screen flex-col bg-[#faf9f6] text-[#1a1c1a] antialiased">
       <header className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        <div className="text-xl font-semibold tracking-tight text-black">{t('brand')}</div>
+        <div className="text-xl font-semibold tracking-tight text-black">
+          {t('brand')}
+        </div>
 
         <div className="flex items-center gap-4">
           <Link

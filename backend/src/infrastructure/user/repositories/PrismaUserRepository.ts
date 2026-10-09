@@ -5,7 +5,6 @@ import {
 } from "../../../domain/user/repositories/UserRepository";
 import { CreateUserUseCaseInput } from "../../../domain/user/use-cases/register-user";
 import { User } from "../../../domain/user/User";
-import { BusinessConflictError } from "../../../domain/errors/BusinessConflictError";
 
 type PrismaUser = {
   id: number;
@@ -79,38 +78,12 @@ export class PrismaUserRepository implements UserRepository {
   }
 
   async update(id: number, params: UpdateUserData): Promise<User> {
-    try {
-      const updatedUser = await this.prismaClient.user.update({
-        where: { id },
-        data: params,
-      });
+    const updatedUser = await this.prismaClient.user.update({
+      where: { id },
+      data: params,
+    });
 
-      return this.restore(updatedUser);
-    } catch (error) {
-      if (
-        error instanceof Prisma.PrismaClientKnownRequestError &&
-        error.code === "P2002"
-      ) {
-        const target = error.meta?.target;
-
-        const fields = Array.isArray(target) ? target : [];
-
-        if (fields.includes("email")) {
-          throw new BusinessConflictError("Email already in use", "email");
-        }
-
-        if (fields.includes("username")) {
-          throw new BusinessConflictError(
-            "Username already in use",
-            "username",
-          );
-        }
-
-        throw new BusinessConflictError("User data already in use");
-      }
-
-      throw error;
-    }
+    return this.restore(updatedUser);
   }
 
   private restore(prismaUser: PrismaUser): User {

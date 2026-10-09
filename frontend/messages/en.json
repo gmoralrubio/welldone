@@ -231,5 +231,27 @@
     "highlightsTitle": "Highlights",
     "notificationsTitle": "Notifications",
     "accountTitle": "Account"
+  },
+  "Account": {
+    "title": "My account",
+    "subtitle": "View and update your personal information.",
+    "nameLabel": "First name",
+    "surnameLabel": "Last name",
+    "usernameLabel": "Username",
+    "emailLabel": "Email address",
+    "save": "Save changes",
+    "saving": "Saving...",
+    "success": "Your information has been updated successfully.",
+    "personalInfo": "Personal information",
+    "edit": "Edit details",
+    "editTitle": "Edit personal information",
+    "editSubtitle": "Update the information you want to change.",
+    "cancel": "Cancel",
+    "errors": {
+      "emailInUse": "This email address is already in use.",
+      "usernameInUse": "This username is already in use.",
+      "updateFailed": "Your changes could not be saved. Please try again.",
+      "sessionExpired": "Your session has expired. Please sign in again."
+    }
   }
 }
