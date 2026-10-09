@@ -230,7 +230,17 @@
     "favoritesTitle": "Favoritos",
     "highlightsTitle": "Destacados",
     "notificationsTitle": "Notificaciones",
-    "accountTitle": "Cuenta"
+    "accountTitle": "Cuenta",
+    "tabs": {
+      "home": "Inicio",
+      "drafts": "Borradores",
+      "about": "Acerca de"
+    },
+    "emptyStates": {
+      "drafts": "No tienes ningún borrador guardado.",
+      "published": "Aún no has publicado ningún artículo."
+    },
+    "editProfile": "Editar perfil"
   },
   "Account": {
     "title": "Mi cuenta",
