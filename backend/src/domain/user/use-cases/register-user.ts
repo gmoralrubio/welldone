@@ -1,9 +1,9 @@
-import { BadSyntaxError } from "../../errors/BadSyntaxError";
-import { BusinessConflictError } from "../../errors/BusinessConflictError";
-import { ValidationError } from "../../errors/ValidationError";
-import { UserRepository } from "../repositories/UserRepository";
-import { SecurityService } from "../services/SecurityService";
-import { User } from "../User";
+import { BadSyntaxError } from '../../errors/BadSyntaxError';
+import { BusinessConflictError } from '../../errors/BusinessConflictError';
+import { ValidationError } from '../../errors/ValidationError';
+import { UserRepository } from '../repositories/UserRepository';
+import { SecurityService } from '../services/SecurityService';
+import { User } from '../User';
 
 export interface CreateUserUseCaseInput {
   email: string;
@@ -19,7 +19,7 @@ export class CreateUserUseCase {
 
   constructor(
     userRepository: UserRepository,
-    securityService: SecurityService,
+    securityService: SecurityService
   ) {
     this.userRepository = userRepository;
     this.securityService = securityService;
@@ -29,14 +29,14 @@ export class CreateUserUseCase {
     // 1. Compruebas que el email no existía
     const existingEmail = await this.userRepository.findByEmail(input.email);
     const existingUsername = await this.userRepository.findByUsername(
-      input.username,
+      input.username
     );
 
     if (existingEmail) {
-      throw new BusinessConflictError("Email already in use", "email");
+      throw new BusinessConflictError('Email already in use', 'email');
     }
     if (existingUsername) {
-      throw new BusinessConflictError("Username already in use", "username");
+      throw new BusinessConflictError('Username already in use', 'username');
     }
     // 2. Validas contraseña
     this.validatePassword(input.password);
@@ -44,10 +44,10 @@ export class CreateUserUseCase {
     this.validateEmail(input.email);
     // 4. Validas que rellenen name y surname
     if (!input.name) {
-      throw new ValidationError("Name is required");
+      throw new ValidationError('Name is required');
     }
     if (!input.surname) {
-      throw new ValidationError("Surname is required");
+      throw new ValidationError('Surname is required');
     }
     // 5. Hasheas contraseña
     const hashedPassword = await this.securityService.hash(input.password);
@@ -65,13 +65,13 @@ export class CreateUserUseCase {
   private validatePassword(password: string) {
     // Expresión regular para validar la password
     const validPasswordRegEx = new RegExp(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,15}$/,
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,15}$/
     );
     // Testeo de que la password cumple
     // la expresión regular y por lo tanto es válida
     if (!validPasswordRegEx.test(password)) {
       throw new BadSyntaxError(
-        "Invalid password syntax, password is not strong enough",
+        'Invalid password syntax, password is not strong enough'
       );
     }
   }
@@ -80,12 +80,12 @@ export class CreateUserUseCase {
   private validateEmail(email: string) {
     // Expresión regular para validar el email
     const validEmailRegEx = new RegExp(
-      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
     );
     // Testeo de que el email cumple
     // la expresión regular y por lo tanto es válido
     if (!validEmailRegEx.test(email)) {
-      throw new BadSyntaxError("Invalid email syntax");
+      throw new BadSyntaxError('Invalid email syntax');
     }
   }
 }

@@ -1,10 +1,10 @@
-import { prisma } from "../../prisma-client";
+import { prisma } from '../../prisma-client';
 import {
   UserRepository,
   UpdateUserData,
-} from "../../../domain/user/repositories/UserRepository";
-import { CreateUserUseCaseInput } from "../../../domain/user/use-cases/register-user";
-import { User } from "../../../domain/user/User";
+} from '../../../domain/user/repositories/UserRepository';
+import { CreateUserUseCaseInput } from '../../../domain/user/use-cases/register-user';
+import { User } from '../../../domain/user/User';
 
 type PrismaUser = {
   id: number;
