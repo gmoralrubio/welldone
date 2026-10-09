@@ -93,7 +93,8 @@ export default function RegisterPage() {
     });
 
     if (response.status === 201) {
-      router.push('/articles');
+      router.replace('/');
+      router.refresh();
       return;
     }
 
