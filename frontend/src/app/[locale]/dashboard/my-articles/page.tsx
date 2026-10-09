@@ -20,7 +20,7 @@ export default async function MyArticlesPage({ searchParams }: MyArticlesPagePro
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-8">
       <header className="border-b border-separator pb-4">
         <h1 className="font-serif text-4xl font-bold text-foreground sm:text-5xl">
-          Mis artículos
+          {t('articlesTitle')}
         </h1>
       </header>
 
@@ -38,7 +38,7 @@ export default async function MyArticlesPage({ searchParams }: MyArticlesPagePro
 
       {meta.pages > 1 && (
         <div className="mt-4">
-          <ArticlePagination page={meta.page} pages={meta.pages} search="" order={order} />
+          <ArticlePagination page={meta.page} pages={meta.pages} search="" order={order} category=""/>
         </div>
       )}
     </div>
