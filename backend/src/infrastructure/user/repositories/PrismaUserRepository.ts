@@ -1,5 +1,8 @@
 import { prisma } from "../../prisma-client";
-import { UserRepository } from "../../../domain/user/repositories/UserRepository";
+import {
+  UserRepository,
+  UpdateUserData,
+} from "../../../domain/user/repositories/UserRepository";
 import { CreateUserUseCaseInput } from "../../../domain/user/use-cases/register-user";
 import { User } from "../../../domain/user/User";
 
@@ -72,6 +75,15 @@ export class PrismaUserRepository implements UserRepository {
     // Devuelves un nuevo Usuario
     // con los valores que pusiste a la tabla de prisma
     return this.restore(user);
+  }
+
+  async update(id: number, params: UpdateUserData): Promise<User> {
+    const updatedUser = await this.prismaClient.user.update({
+      where: { id },
+      data: params,
+    });
+
+    return this.restore(updatedUser);
   }
 
   private restore(prismaUser: PrismaUser): User {
