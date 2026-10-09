@@ -26,7 +26,6 @@ export default async function MyArticlesPage({ searchParams }: MyArticlesPagePro
       <header className="border-b border-separator pb-4">
         <h1 className="font-serif text-4xl font-bold text-foreground sm:text-5xl">
           {t('articlesTitle')}
-
         </h1>
       </header>
 
