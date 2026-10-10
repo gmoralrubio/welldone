@@ -1,11 +1,9 @@
 import { Article } from '../Article';
-import {
-  ArticleRepository,
-  CreateArticleParams,
-} from '../repositories/ArticleRepository';
+import { ArticleRepository } from '../repositories/ArticleRepository';
 import { UserRepository } from '../../user/repositories/UserRepository';
 import { EntityNotFoundError } from '../../errors/EntityNotFoundError';
 import { ValidationError } from '../../errors/ValidationError';
+import { CreateArticleParams } from '@domain/article/types/CreateArticleParams';
 
 export type CreateArticleUseCaseInput = CreateArticleParams;
 
