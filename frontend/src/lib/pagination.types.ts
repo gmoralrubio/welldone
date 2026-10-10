@@ -5,11 +5,5 @@ export interface PaginatedResponse<T> {
     pages: number;
     per_page: number;
     total_items: number;
-    urls: {
-      first: string;
-      prev: string;
-      next: string;
-      last: string;
-    };
   };
 }
