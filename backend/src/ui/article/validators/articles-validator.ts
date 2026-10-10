@@ -1,10 +1,8 @@
-import {
-  ARTICLE_MAX_PAGE_SIZE,
-  ARTICLE_PAGE_SIZE,
-} from '@domain/article/Article';
 import { CATEGORY_SLUGS } from '@domain/category/categories';
 import { sanitizeArticleContent } from '@infrastructure/article/sanitizers/sanitizeArticleContent';
 import { z } from 'zod';
+export const ARTICLE_PAGE_SIZE = 6;
+export const ARTICLE_MAX_PAGE_SIZE = 12;
 
 export const findArticlesValidationSchema = z.object({
   page: z.coerce
