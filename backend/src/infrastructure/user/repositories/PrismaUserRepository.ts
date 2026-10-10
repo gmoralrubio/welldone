@@ -1,4 +1,4 @@
-import { prisma } from '../../prisma-client';
+import prismaClient from '@infrastructure/shared/prisma-client';
 import {
   UserRepository,
   UpdateUserData,
@@ -18,7 +18,7 @@ type PrismaUser = {
 };
 
 export class PrismaUserRepository implements UserRepository {
-  private readonly prismaClient = prisma;
+  private readonly prismaClient = prismaClient;
 
   async findByUsername(username: string): Promise<User | null> {
     const prismaUser = await this.prismaClient.user.findUnique({
