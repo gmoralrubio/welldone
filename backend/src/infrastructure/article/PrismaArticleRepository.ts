@@ -91,7 +91,7 @@ export class PrismaArticleRepository implements ArticleRepository {
     authorUsername: string,
     slug: string
   ): Promise<Article | null> {
-    const prismaArticle = await this.prisma.article.findFirst({
+    const articlesPrisma = await this.prisma.article.findFirst({
       where: {
         status: 'PUBLISHED',
         author: { username: authorUsername },
@@ -100,10 +100,10 @@ export class PrismaArticleRepository implements ArticleRepository {
       include: articleInclude,
     });
 
-    if (!prismaArticle) {
+    if (!articlesPrisma) {
       return null;
     } else {
-      return this.restore(prismaArticle);
+      return this.restore(articlesPrisma);
     }
   }
 
