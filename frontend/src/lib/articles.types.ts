@@ -32,4 +32,5 @@ export type ArticleDto = {
   updatedAt: string;
   author: ArticleAuthor;
   categories: ArticleCategories[];
+  commentCount: number;
 };

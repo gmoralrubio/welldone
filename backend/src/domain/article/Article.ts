@@ -30,6 +30,7 @@ interface ArticleProps extends EntityProps {
   authorId: number;
   author: ArticleAuthor;
   categories?: ArticleCategory[];
+  commentCount: number;
 }
 
 export class Article extends Entity {
@@ -44,6 +45,7 @@ export class Article extends Entity {
   readonly authorId: number;
   readonly author: ArticleAuthor;
   readonly categories: ArticleCategory[];
+  readonly commentCount: number;
 
   constructor(props: ArticleProps) {
     super({
@@ -63,5 +65,6 @@ export class Article extends Entity {
     this.authorId = props.authorId;
     this.author = props.author;
     this.categories = props.categories || [];
+    this.commentCount = props.commentCount;
   }
 }
