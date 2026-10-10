@@ -12,6 +12,8 @@ import {
 import { FindArticlesResponse } from '@domain/article/types/FindArticlesResponse';
 import { FindPublishedArticlesUseCaseInput } from '@domain/article/use-cases/find-published-articles';
 
+import { Prisma, ArticleStatus as PrismaArticleStatus } from "@prisma/client";
+
 interface PrismaArticleAuthor {
   id: number;
   name: string;
@@ -173,4 +175,31 @@ export class PrismaArticleRepository implements ArticleRepository {
       categories: prismaArticle.categories || [],
     });
   }
+
+  async findMyArticles(authorId: number, skip: number, take: number, status?: ArticleStatus) {
+    
+    const whereClause: Prisma.ArticleWhereInput = { authorId };
+
+    if (status) {
+      whereClause.status = status as unknown as PrismaArticleStatus;
+    }
+
+    const [prismaArticles, total] = await this.prisma.$transaction([
+      this.prisma.article.findMany({
+        where: whereClause,
+        include: { author: true, categories: true },
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take,
+      }),
+      this.prisma.article.count({ where: whereClause }),
+    ]);
+
+    const articles = prismaArticles.map((article: PrismaArticle) => this.restore(article));
+
+    return { articles, total };
+  }
+  
 }
+
+

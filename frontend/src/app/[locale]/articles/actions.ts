@@ -80,3 +80,35 @@ export async function createArticleAction(locale: string, formData: FormData) {
     locale: resolveLocale(locale),
   });
 }
+
+export async function getMyArticlesAction(
+  searchParams: ArticlesSearchParams
+): Promise<PaginatedResponse<ArticleDto>> {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('accessToken')?.value;
+
+  if (!accessToken) {
+    throw new Error('No autorizado');
+  }
+
+  const criteria = parseArticleQuery(searchParams);
+  const params = articleQueryParams(criteria);
+
+  if (searchParams.status) {
+    params.append('status', searchParams.status as string);
+  }
+
+  const response = await fetch(
+    `${process.env.API_URL}/api/articles/me?${params.toString()}`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      cache: 'no-store',
+    }
+  );
+
+  if (!response.ok) throw new Error('No se pudieron cargar tus artículos');
+
+  return await response.json();
+}

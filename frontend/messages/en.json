@@ -230,7 +230,17 @@
     "favoritesTitle": "Favorites",
     "highlightsTitle": "Highlights",
     "notificationsTitle": "Notifications",
-    "accountTitle": "Account"
+    "accountTitle": "Account",
+    "tabs": {
+      "home": "Home",
+      "drafts": "Drafts",
+      "about": "About"
+    },
+    "emptyStates": {
+      "drafts": "You have no saved drafts.",
+      "published": "You haven't published any articles yet."
+    },
+    "editProfile": "Edit profile"
   },
   "Account": {
     "title": "My account",
@@ -253,5 +263,6 @@
       "updateFailed": "Your changes could not be saved. Please try again.",
       "sessionExpired": "Your session has expired. Please sign in again."
     }
+
   }
 }

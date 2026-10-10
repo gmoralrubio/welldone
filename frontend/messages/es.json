@@ -230,7 +230,17 @@
     "favoritesTitle": "Favoritos",
     "highlightsTitle": "Destacados",
     "notificationsTitle": "Notificaciones",
-    "accountTitle": "Cuenta"
+    "accountTitle": "Cuenta",
+    "tabs": {
+      "home": "Inicio",
+      "drafts": "Borradores",
+      "about": "Acerca de"
+    },
+    "emptyStates": {
+      "drafts": "No tienes ningún borrador guardado.",
+      "published": "Aún no has publicado ningún artículo."
+    },
+    "editProfile": "Editar perfil"
   },
   "Account": {
     "title": "Mi cuenta",
@@ -253,5 +263,6 @@
       "updateFailed": "No se han podido guardar los cambios. Inténtalo de nuevo.",
       "sessionExpired": "Tu sesión ha caducado. Vuelve a iniciar sesión."
     }
+
   }
 }
