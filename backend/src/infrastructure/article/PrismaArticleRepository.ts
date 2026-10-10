@@ -1,42 +1,26 @@
 import prismaClient from '@infrastructure/shared/prisma-client';
-import {
-  ArticleRepository,
-  CreateArticleParams,
-} from '@domain/article/repositories/ArticleRepository';
-import {
-  Article,
-  ArticleStatus,
-  ArticleCategory,
-} from '@domain/article/Article';
-
+import { ArticleRepository } from '@domain/article/repositories/ArticleRepository';
+import { Article } from '@domain/article/Article';
 import { FindArticlesResponse } from '@domain/article/types/FindArticlesResponse';
 import { FindPublishedArticlesUseCaseInput } from '@domain/article/use-cases/find-published-articles';
+import { CreateArticleParams } from '@domain/article/types/CreateArticleParams';
+import { FindUserArticlesUseCaseInput } from '@domain/article/use-cases/find-user-articles';
+import {
+  PrismaArticle,
+  PrismaArticleInclude,
+} from '@infrastructure/article/PrismaArticle.types';
 
-import { Prisma, ArticleStatus as PrismaArticleStatus } from "@prisma/client";
-
-interface PrismaArticleAuthor {
-  id: number;
-  name: string;
-  surname: string;
-  username: string;
-}
-
-interface PrismaArticle {
-  id: number;
-  authorId: number;
-  title: string;
-  content: string;
-  intro: string;
-  slug: string;
-  status: ArticleStatus;
-  publishedAt: Date;
-  featuredImageUrl: string | null;
-  featuredVideoUrl: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-  author: PrismaArticleAuthor;
-  categories: ArticleCategory[];
-}
+const articleInclude = {
+  author: {
+    select: { id: true, name: true, surname: true, username: true },
+  },
+  categories: {
+    select: { id: true, slug: true, name: true },
+  },
+  _count: {
+    select: { comments: true },
+  },
+} satisfies PrismaArticleInclude;
 
 export class PrismaArticleRepository implements ArticleRepository {
   private readonly prisma = prismaClient;
@@ -49,7 +33,6 @@ export class PrismaArticleRepository implements ArticleRepository {
     const where = {
       status: 'PUBLISHED' as const,
       publishedAt: { lt: now },
-      ...(criteria.authorId ? { authorId: criteria.authorId } : {}),
       ...(criteria.category
         ? { categories: { some: { slug: criteria.category } } }
         : {}),
@@ -63,23 +46,38 @@ export class PrismaArticleRepository implements ArticleRepository {
         skip: (page - 1) * limit,
         take: limit,
         orderBy: { publishedAt: criteria.order },
-        include: {
-          author: {
-            select: {
-              id: true,
-              name: true,
-              surname: true,
-              username: true,
-            },
-          },
-          categories: {
-            select: {
-              id: true,
-              slug: true,
-              name: true,
-            },
-          },
-        },
+        include: articleInclude,
+      }),
+      this.prisma.article.count({ where }),
+    ]);
+    const articles = articlesPrisma.map((article) => this.restore(article));
+    return {
+      articles,
+      total: articlesCount,
+    };
+  }
+
+  async findUserArticles(
+    criteria: FindUserArticlesUseCaseInput
+  ): Promise<FindArticlesResponse> {
+    const { page, limit } = criteria;
+    const where = {
+      authorId: criteria.authorId,
+      ...(criteria.status ? { status: criteria.status } : {}),
+      ...(criteria.category
+        ? { categories: { some: { slug: criteria.category } } }
+        : {}),
+      ...(criteria.search
+        ? { title: { contains: criteria.search, mode: 'insensitive' as const } }
+        : {}),
+    };
+    const [articlesPrisma, articlesCount] = await Promise.all([
+      this.prisma.article.findMany({
+        where,
+        skip: (page - 1) * limit,
+        take: limit,
+        orderBy: { createdAt: 'desc' },
+        include: articleInclude,
       }),
       this.prisma.article.count({ where }),
     ]);
@@ -99,23 +97,7 @@ export class PrismaArticleRepository implements ArticleRepository {
         author: { username: authorUsername },
         slug,
       },
-      include: {
-        author: {
-          select: {
-            id: true,
-            name: true,
-            surname: true,
-            username: true,
-          },
-        },
-        categories: {
-          select: {
-            id: true,
-            slug: true,
-            name: true,
-          },
-        },
-      },
+      include: articleInclude,
     });
 
     if (!prismaArticle) {
@@ -141,12 +123,7 @@ export class PrismaArticleRepository implements ArticleRepository {
           connect: params.categorySlugs.map((slug) => ({ slug })),
         },
       },
-      include: {
-        author: {
-          select: { id: true, name: true, surname: true, username: true },
-        },
-        categories: { select: { id: true, slug: true, name: true } },
-      },
+      include: articleInclude,
     });
 
     return this.restore(prismaArticle);
@@ -173,33 +150,7 @@ export class PrismaArticleRepository implements ArticleRepository {
         username: prismaArticle.author.username,
       },
       categories: prismaArticle.categories || [],
+      commentCount: prismaArticle._count.comments,
     });
   }
-
-  async findMyArticles(authorId: number, skip: number, take: number, status?: ArticleStatus) {
-    
-    const whereClause: Prisma.ArticleWhereInput = { authorId };
-
-    if (status) {
-      whereClause.status = status as unknown as PrismaArticleStatus;
-    }
-
-    const [prismaArticles, total] = await this.prisma.$transaction([
-      this.prisma.article.findMany({
-        where: whereClause,
-        include: { author: true, categories: true },
-        orderBy: { createdAt: 'desc' },
-        skip,
-        take,
-      }),
-      this.prisma.article.count({ where: whereClause }),
-    ]);
-
-    const articles = prismaArticles.map((article: PrismaArticle) => this.restore(article));
-
-    return { articles, total };
-  }
-  
 }
-
-

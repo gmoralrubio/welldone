@@ -3,13 +3,13 @@ import { findPublishedArticlesController } from '@ui/article/controllers/find-ar
 import { Router } from 'express';
 import { createArticleController } from '@ui/article/controllers/create-article-controller';
 import { authenticationMiddleware } from '@ui/user/middlewares/authentication-middleware';
-import { getMyArticlesController } from "../controllers/get-my-articles-controller";
+import { findUserArticlesController } from '../controllers/find-user-articles-controller';
 
 export const articlesRouter = Router();
 
 articlesRouter.get('/', findPublishedArticlesController);
 
-articlesRouter.get("/me", authenticationMiddleware, getMyArticlesController)
+articlesRouter.get('/me', authenticationMiddleware, findUserArticlesController);
 
 // Detalle artículo por authorName y slug
 articlesRouter.get('/:authorUsername/:slug', articleDetailController);
