@@ -1,22 +1,17 @@
 import { FindCommentsResponse } from '@domain/comment/types/FindCommentsResponse';
 import { Comment } from '@domain/comment/Comment';
 import { CommentRepository } from '@domain/comment/repositories/CommentRepository';
-import { FindCommentsUseCaseInput } from '@domain/comment/use-cases/find-comments';
 import { PrismaComment } from '@infrastructure/comment/PrismaComment.types';
 import prismaClient from '@infrastructure/shared/prisma-client';
+import { FindCommentsByArticleParams } from '@domain/comment/types/FindCommentsByArticleParams';
 
 export class PrismaCommentRepository implements CommentRepository {
   private readonly prisma = prismaClient;
   async findComments(
-    criteria: FindCommentsUseCaseInput
+    criteria: FindCommentsByArticleParams
   ): Promise<FindCommentsResponse> {
-    const { page, limit, authorUsername, slug } = criteria;
-    const where = {
-      article: {
-        author: { username: authorUsername },
-        slug,
-      },
-    };
+    const { page, limit, articleId } = criteria;
+    const where = { articleId };
 
     const [commentsPrisma, commentsCount] = await Promise.all([
       this.prisma.comment.findMany({

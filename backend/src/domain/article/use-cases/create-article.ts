@@ -1,11 +1,22 @@
-import { Article } from '../Article';
+import { Article, ArticleStatus } from '../Article';
 import { ArticleRepository } from '../repositories/ArticleRepository';
 import { UserRepository } from '../../user/repositories/UserRepository';
 import { EntityNotFoundError } from '../../errors/EntityNotFoundError';
 import { ValidationError } from '../../errors/ValidationError';
-import { CreateArticleParams } from '@domain/article/types/CreateArticleParams';
+import { CategorySlug } from '@domain/category/categories';
 
-export type CreateArticleUseCaseInput = CreateArticleParams;
+export type CreateArticleUseCaseInput = {
+  title: string;
+  content: string;
+  intro: string;
+  slug: string;
+  status: ArticleStatus;
+  publishedAt: Date;
+  featuredImageUrl: string | null;
+  featuredVideoUrl: string | null;
+  authorId: number;
+  categorySlugs: CategorySlug[];
+};
 
 export class CreateArticleUseCase {
   constructor(

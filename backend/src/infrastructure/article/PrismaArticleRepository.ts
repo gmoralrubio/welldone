@@ -3,12 +3,12 @@ import { ArticleRepository } from '@domain/article/repositories/ArticleRepositor
 import { Article } from '@domain/article/Article';
 import { FindArticlesResponse } from '@domain/article/types/FindArticlesResponse';
 import { FindPublishedArticlesUseCaseInput } from '@domain/article/use-cases/find-published-articles';
-import { CreateArticleParams } from '@domain/article/types/CreateArticleParams';
 import { FindUserArticlesUseCaseInput } from '@domain/article/use-cases/find-user-articles';
 import {
   PrismaArticle,
   PrismaArticleInclude,
 } from '@infrastructure/article/PrismaArticle.types';
+import { CreateArticleUseCaseInput } from '@domain/article/use-cases/create-article';
 
 const articleInclude = {
   author: {
@@ -107,20 +107,20 @@ export class PrismaArticleRepository implements ArticleRepository {
     }
   }
 
-  async create(params: CreateArticleParams): Promise<Article> {
+  async create(criteria: CreateArticleUseCaseInput): Promise<Article> {
     const prismaArticle = await this.prisma.article.create({
       data: {
-        title: params.title,
-        content: params.content,
-        intro: params.intro,
-        slug: params.slug,
-        status: params.status,
-        publishedAt: params.publishedAt,
-        featuredImageUrl: params.featuredImageUrl,
-        featuredVideoUrl: params.featuredVideoUrl,
-        authorId: params.authorId,
+        title: criteria.title,
+        content: criteria.content,
+        intro: criteria.intro,
+        slug: criteria.slug,
+        status: criteria.status,
+        publishedAt: criteria.publishedAt,
+        featuredImageUrl: criteria.featuredImageUrl,
+        featuredVideoUrl: criteria.featuredVideoUrl,
+        authorId: criteria.authorId,
         categories: {
-          connect: params.categorySlugs.map((slug) => ({ slug })),
+          connect: criteria.categorySlugs.map((slug) => ({ slug })),
         },
       },
       include: articleInclude,

@@ -40,6 +40,10 @@ export class FindCommentsUseCase {
       throw new BusinessConflictError(`Article has not been published.`);
     }
 
-    return this.commentRepository.findComments(params);
+    return this.commentRepository.findComments({
+      articleId: article.id,
+      page: params.page,
+      limit: params.limit,
+    });
   }
 }
