@@ -7,15 +7,37 @@ import { sanitizeArticleContent } from '@infrastructure/article/sanitizers/sanit
 import { z } from 'zod';
 
 export const findArticlesValidationSchema = z.object({
-  page: z.coerce.number('Invalid page. Must be a number').positive().default(1),
+  page: z.coerce
+    .number('Invalid page. Must be a number')
+    .int()
+    .positive()
+    .default(1),
   limit: z.coerce
     .number('Invalid limit. Must be a number')
+    .int()
     .positive()
     .max(ARTICLE_MAX_PAGE_SIZE)
     .default(ARTICLE_PAGE_SIZE),
   search: z.string().min(3).optional(),
   category: z.enum(CATEGORY_SLUGS).optional(),
   order: z.enum(['asc', 'desc']).default('desc').catch('desc'),
+});
+export const findArticlesUserValidationSchema = z.object({
+  page: z.coerce
+    .number('Invalid page. Must be a number')
+    .int()
+    .positive()
+    .default(1),
+  limit: z.coerce
+    .number('Invalid limit. Must be a number')
+    .int()
+    .positive()
+    .max(ARTICLE_MAX_PAGE_SIZE)
+    .default(ARTICLE_PAGE_SIZE),
+  search: z.string().min(3).optional(),
+  category: z.enum(CATEGORY_SLUGS).optional(),
+  order: z.enum(['asc', 'desc']).default('desc').catch('desc'),
+  status: z.enum(['PUBLISHED', 'DRAFT']).optional(),
 });
 
 export const articleDetailValidationSchema = z.object({
@@ -38,7 +60,7 @@ export const createArticleValidationSchema = z.object({
     .string()
     .min(5, 'La introducción es obligatoria, al menos 5 caracteres'),
   slug: z.string().optional(),
-  status: z.enum(['DRAFT', 'PUBLISHED']),
+  status: z.enum(['PUBLISHED', 'DRAFT']),
   publishedAt: z.string().optional().nullable(),
   featuredImageUrl: z
     .string()
