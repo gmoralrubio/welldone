@@ -24,6 +24,7 @@ model User {
   updatedAt DateTime @updatedAt
 
   articles Article[]
+  comments Comment[]
 }
 
 enum ArticleStatus {
@@ -45,11 +46,13 @@ model Article {
   featuredVideoUrl String?
 
   authorId Int
-  author   User @relation(fields: [authorId], references: [id])
+  author   User @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   categories Category[]
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+  comments   Comment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // WHERE 
   @@unique([authorId, slug])
@@ -64,4 +67,22 @@ model Category {
   slug String @unique
 
   articles Article[]
+}
+
+model Comment {
+  id      Int    @id @default(autoincrement())
+  message String
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  articleId Int
+
+  parent   Comment?  @relation("ParentChild", fields: [parentId], references: [id], onDelete: Cascade)
+  children Comment[] @relation("ParentChild")
+  parentId Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

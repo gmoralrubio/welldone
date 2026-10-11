@@ -1,6 +1,6 @@
 'use client';
 
-import { CategorySlug } from '@/app/[locale]/category/category.types';
+import { CategorySlug } from '@/lib/category/category.types';
 import { Link } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
 

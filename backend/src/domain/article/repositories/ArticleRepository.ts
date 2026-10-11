@@ -1,38 +1,18 @@
-import { Article, ArticleStatus } from '@domain/article/Article';
+import { Article } from '@domain/article/Article';
 import { FindArticlesResponse } from '@domain/article/types/FindArticlesResponse';
+import { CreateArticleUseCaseInput } from '@domain/article/use-cases/create-article';
 import { FindPublishedArticlesUseCaseInput } from '@domain/article/use-cases/find-published-articles';
-import { CategorySlug } from '@domain/category/categories';
-
-
-export interface CreateArticleParams {
-  title: string;
-  content: string;
-  intro: string;
-  slug: string;
-  status: ArticleStatus;
-  publishedAt: Date;
-  featuredImageUrl: string | null;
-  featuredVideoUrl: string | null;
-  authorId: number;
-  categorySlugs: CategorySlug[];
-}
+import { FindMyArticlesUseCaseInput } from '@domain/article/use-cases/find-my-articles';
 
 export interface ArticleRepository {
   findPublishedArticles(
     criteria: FindPublishedArticlesUseCaseInput
   ): Promise<FindArticlesResponse>;
+  findMyArticles(criteria: FindMyArticlesUseCaseInput): Promise<FindArticlesResponse>;
   findPublishedByAuthorAndSlug(
     authorUsername: string,
     slug: string
   ): Promise<Article | null>;
 
-  create(params: CreateArticleParams): Promise<Article>;
-
-  findMyArticles(
-    authorId: number, 
-    skip: number, 
-    take: number, 
-    status?: ArticleStatus 
-  ): Promise<{ articles: Article[]; total: number }>;
-
+  create(criteria: CreateArticleUseCaseInput): Promise<Article>;
 }

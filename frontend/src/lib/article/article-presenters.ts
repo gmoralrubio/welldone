@@ -29,16 +29,8 @@ export function slugify(input: string): string {
   return slug;
 }
 
-export function formatAvatarLetter(authorName: string, authorSurname: string): string {
-  return authorName.charAt(0).toUpperCase().concat(authorSurname.charAt(0).toUpperCase());
-}
-
 // Cuenta las palabras y calcula el tiempo de lectura (200 palabras = 1 min)
 export function readingMinutes(intro: string, content: string): number {
   const words = `${intro} ${content}`.trim().split(/\s+/).filter(Boolean).length;
   return Math.max(1, Math.round(words / 200));
-}
-
-export function getElapsedMs(isoDate: string): number {
-  return Date.now() - new Date(isoDate).getTime();
 }

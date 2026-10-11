@@ -1,4 +1,3 @@
-import { getElapsedMs } from '@/app/[locale]/articles/article-presenters';
 import { useTranslations } from 'next-intl';
 
 // Formatea el tiempo que ha pasado desde que se publicó un artículo
@@ -15,4 +14,8 @@ export function useRelativeTime(isoDate: string): string {
 
   const days = Math.round(hours / 24);
   return t('relativeTime.days', { days: days });
+}
+
+function getElapsedMs(isoDate: string): number {
+  return Date.now() - new Date(isoDate).getTime();
 }

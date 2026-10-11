@@ -25,12 +25,6 @@ export class FindArticleDetailUseCase {
       throw new EntityNotFoundError('Article', params.slug);
     }
 
-    if (article.status === 'DRAFT') {
-      throw new BusinessConflictError(
-        `Article status is ${article.status}, is not accesible`
-      );
-    }
-
     const now = new Date();
 
     if (article.publishedAt > now) {

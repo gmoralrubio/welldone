@@ -26,14 +26,11 @@ export const findPublishedArticlesController = async (
       category,
     });
 
-    const url = `${req.protocol}://${req.get('host')}${req.baseUrl}`;
-
     const response = buildPaginatedResponse({
       data: articles,
       total,
       page,
       limit,
-      url,
     });
     res.status(200).json(response);
   } catch (error) {

@@ -1,17 +1,15 @@
 'use client';
 
-import {
-  formatAvatarLetter,
-  readingMinutes,
-} from '@/app/[locale]/articles/article-presenters';
-import { ArticleDto } from '@/lib/articles.types';
+import { readingMinutes } from '@/lib/article/article-presenters';
+import { ArticleDto } from '@/lib/article/articles.types';
 import { Avatar, Button, Card } from '@heroui/react';
 import { ArrowUpFromSquare, Bookmark, Clock, Comment } from '@gravity-ui/icons';
 import Image from 'next/image';
 import { ArticleCategory } from '@/app/[locale]/components/article/article-category';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
-import { useRelativeTime } from '@/app/[locale]/articles/hooks/useRelativeTime';
+import { useRelativeTime } from '@/app/[locale]/hooks/useRelativeTime';
+import { formatAvatarLetter } from '@/lib/shared/format-avatar-letter';
 
 type EditorialHeroProps = {
   article: ArticleDto;
@@ -33,7 +31,12 @@ export function ArticleHero({ article }: EditorialHeroProps) {
             {t('heading')}
           </span>
           <span className="text-muted">|</span>
-          <span className="font-medium text-muted" suppressHydrationWarning>{relativeTime}</span>
+          <span
+            className="font-medium text-muted"
+            suppressHydrationWarning
+          >
+            {relativeTime}
+          </span>
         </div>
       </div>
       <Card className="mt-4 grid gap-10 bg-white p-6 shadow-xs shadow-accent-dark/30 md:p-10 lg:grid-cols-12 hover:shadow-md">
@@ -46,7 +49,9 @@ export function ArticleHero({ article }: EditorialHeroProps) {
                   categorySlug={category.slug}
                 />
               ))}
-              <span suppressHydrationWarning>{t('published', { time: relativeTime.toLowerCase() })}</span>
+              <span suppressHydrationWarning>
+                {t('published', { time: relativeTime.toLowerCase() })}
+              </span>
               <span className="text-muted">|</span>
               <span className="inline-flex items-center gap-1 text-muted">
                 <Clock

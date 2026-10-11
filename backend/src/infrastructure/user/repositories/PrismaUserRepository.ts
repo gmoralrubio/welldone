@@ -1,10 +1,10 @@
-import { prisma } from "../../prisma-client";
+import prismaClient from '@infrastructure/shared/prisma-client';
 import {
   UserRepository,
   UpdateUserData,
-} from "../../../domain/user/repositories/UserRepository";
-import { CreateUserUseCaseInput } from "../../../domain/user/use-cases/register-user";
-import { User } from "../../../domain/user/User";
+} from '../../../domain/user/repositories/UserRepository';
+import { CreateUserUseCaseInput } from '../../../domain/user/use-cases/register-user';
+import { User } from '../../../domain/user/User';
 
 type PrismaUser = {
   id: number;
@@ -18,7 +18,7 @@ type PrismaUser = {
 };
 
 export class PrismaUserRepository implements UserRepository {
-  private readonly prismaClient = prisma;
+  private readonly prismaClient = prismaClient;
 
   async findByUsername(username: string): Promise<User | null> {
     const prismaUser = await this.prismaClient.user.findUnique({

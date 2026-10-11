@@ -1,11 +1,11 @@
 'use client';
 
-import { articlesListHref } from '@/app/[locale]/articles/article-query';
+import { articlesListHref } from '@/lib/article/article-query';
 import { ListBox, Select, type Key } from '@heroui/react';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
-import { isCategorySlug } from '@/app/[locale]/category/category.types';
+import { isCategorySlug } from '@/lib/category/category.types';
 
 export function SelectOrder() {
   const t = useTranslations('SelectOrder');

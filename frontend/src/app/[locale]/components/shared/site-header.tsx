@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers';
-import { ArticleOrder } from '@/app/[locale]/articles/article-query';
+import { ArticleOrder } from '@/lib/article/article-query';
 import { SiteHeaderClient } from './site-header-client';
 
 type SiteHeaderProps = {

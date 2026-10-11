@@ -8,7 +8,7 @@ import { createArticleAction } from '../actions';
 import 'react-quill-new/dist/quill.snow.css';
 import { useLocale, useTranslations } from 'next-intl';
 import { getPathname } from '@/i18n/navigation';
-import { CATEGORY_SLUGS } from '@/app/[locale]/category/category.types';
+import { CATEGORY_SLUGS } from '@/lib/category/category.types';
 import { CategorySelector } from '@/app/[locale]/components/article-create/category-selector';
 
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });

@@ -1,18 +1,19 @@
-import { UserRepository } from "../repositories/UserRepository";
-import { EntityNotFoundError } from "../../errors/EntityNotFoundError";
+import { UserRepository } from '../repositories/UserRepository';
+import { EntityNotFoundError } from '../../errors/EntityNotFoundError';
 
 export class GetProfileUseCase {
   constructor(private readonly userRepository: UserRepository) {}
 
   async execute(id: number) {
     const user = await this.userRepository.findById(id);
-    
+
     if (!user) {
-      throw new EntityNotFoundError("User", String(id));
+      throw new EntityNotFoundError('User', String(id));
     }
-    
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...userWithoutPassword } = user;
-    
+
     return userWithoutPassword;
   }
 }

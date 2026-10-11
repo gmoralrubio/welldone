@@ -1,6 +1,6 @@
-import { CategorySlug, isCategorySlug } from '@/app/[locale]/category/category.types';
-
-export type SearchParamValue = string | string[] | undefined;
+import { getFirstParam, validatePage } from '@/lib/shared/query-utils';
+import { SearchParamValue } from '@/lib/shared/searchParam.types';
+import { CategorySlug, isCategorySlug } from '@/lib/category/category.types';
 
 export type ArticleOrder = 'asc' | 'desc';
 
@@ -12,23 +12,19 @@ export type ArticleQuery = {
   category: CategorySlug | '';
 };
 
-function first(value: SearchParamValue): string {
-  return Array.isArray(value) ? (value[0] ?? '') : (value ?? '');
-}
-
 export function parseArticleQuery(
   queryParams: Record<string, SearchParamValue>
 ): ArticleQuery {
-  const search = first(queryParams.search).trim();
-  const page = Number(first(queryParams.page));
-  const limit = Number(first(queryParams.limit));
-  const order = first(queryParams.order) === 'asc' ? 'asc' : 'desc';
-  const rawCategory = first(queryParams.category);
+  const search = getFirstParam(queryParams.search).trim();
+  const page = Number(getFirstParam(queryParams.page));
+  const limit = Number(getFirstParam(queryParams.limit));
+  const order = getFirstParam(queryParams.order) === 'asc' ? 'asc' : 'desc';
+  const rawCategory = getFirstParam(queryParams.category);
   const category = isCategorySlug(rawCategory) ? rawCategory : '';
 
   return {
     search,
-    page: !Number.isFinite(page) || page < 1 ? 1 : page,
+    page: validatePage(page),
     limit,
     order,
     category,

@@ -117,9 +117,16 @@
     "writeReply": "Write a reply...",
     "replyPlaceholder": "Share your knowledge",
     "publishReply": "Publish reply",
+    "loginToComment": "Sign in to comment",
+    "commentError": "The comment could not be published.",
     "member": "Member",
     "author": "Author",
-    "reply": "Reply"
+    "reply": "Reply",
+    "commentsEmpty": "This article has no comments yet.",
+    "commentsPaginationAria": "Comments pagination",
+    "commentsPageSummary": "Page {page} of {total}",
+    "commentsPrevious": "Previous",
+    "commentsNext": "Next"
   },
   "ArticleNotFound": {
     "label": "Error 404",

@@ -1,4 +1,4 @@
-import { type EntityProps, Entity } from "../shared/Entity.js";
+import { type EntityProps, Entity } from '../shared/Entity';
 
 interface UserProps extends EntityProps {
   email: string;

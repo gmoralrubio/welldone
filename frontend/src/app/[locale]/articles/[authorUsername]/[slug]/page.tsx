@@ -1,10 +1,9 @@
-import { getArticleByAuthorAndSlug } from '@/app/[locale]/articles/actions';
 import {
-  formatAvatarLetter,
-  formatDate,
-  slugify,
-  truncateSlug,
-} from '@/app/[locale]/articles/article-presenters';
+  getArticleByAuthorAndSlug,
+  getArticleComments,
+  getCommentAuthor,
+} from '@/app/[locale]/articles/actions';
+import { formatDate, slugify, truncateSlug } from '@/lib/article/article-presenters';
 import {
   Avatar,
   Breadcrumbs,
@@ -12,9 +11,7 @@ import {
   Card,
   CardContent,
   CardFooter,
-  CardHeader,
   Chip,
-  TextArea,
 } from '@heroui/react';
 import {
   Check,
@@ -23,21 +20,25 @@ import {
   BookmarkFill,
   ArrowUpFromSquare,
   PersonPlus,
-  Bold,
-  QuoteOpen,
-  Code,
 } from '@gravity-ui/icons';
 import { Metadata } from 'next';
 import Image from 'next/image';
+import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { PaginationBasic } from '@/app/[locale]/components/shared/PaginationBasic';
-import { PaginationSimplePrevNext } from '@/app/[locale]/components/shared/PaginationSimplePrevNext';
 import { ArticleCategory } from '@/app/[locale]/components/article/article-category';
+import { CommentPagination } from '@/app/[locale]/components/comment/comment-pagination';
+
 import { getLocale, getTranslations } from 'next-intl/server';
-import { getPathname } from '@/i18n/navigation';
+import { getPathname, Link } from '@/i18n/navigation';
 import { parseContent } from '@/app/[locale]/articles/article-content-parser';
+import { parseCommentsQuery } from '@/lib/comment/comment-query';
+import { CommentCard } from '@/app/[locale]/components/comment/comment-card';
+import { CommentForm } from '@/app/[locale]/components/comment/comment-form';
+import { formatAvatarLetter } from '@/lib/shared/format-avatar-letter';
 
 interface ArticleDetailPageProps {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
   params: Promise<{ authorUsername: string; slug: string }>;
 }
 
@@ -59,22 +60,24 @@ export async function generateMetadata({
 
 {
   /* TODO:
-    - Incluir categorías
     - Imagen de Avatar
     - Calcular seguidores
-    - Calcular comentarios
     - Funcionalidad seguir
     - Funcionalidad guardar como favorito
     - Funcionalidad compartir en redes
     - Otros artículos del autor (paginados)
-    - Comentarios (paginados)
     - Responder con otro artículo
     - Subrayado
   */
 }
 
-export default async function ArticleDetailPage({ params }: ArticleDetailPageProps) {
+export default async function ArticleDetailPage({
+  params,
+  searchParams,
+}: ArticleDetailPageProps) {
   const { authorUsername, slug } = await params;
+  const queryParams = await searchParams;
+  const commentsPage = parseCommentsQuery(queryParams.commentsPage);
 
   const article = await getArticleByAuthorAndSlug(authorUsername, slug);
 
@@ -82,8 +85,17 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
     notFound();
   }
 
+  const { data: comments, meta: commentsMeta } = await getArticleComments(
+    authorUsername,
+    slug,
+    commentsPage
+  );
+
   const t = await getTranslations('ArticleDetailPage');
   const locale = await getLocale();
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('accessToken')?.value;
+  const currentUser = accessToken ? await getCommentAuthor(accessToken) : null;
   const homeHref = getPathname({ locale, href: '/' });
   const articlesHref = getPathname({ locale, href: '/articles' });
   const authorName = `${article.author.name} ${article.author.surname}`;
@@ -164,7 +176,7 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
             </div>
             <div className="flex gap-1 items-center px-3">
               <Comment />
-              <span className="text-sm">24</span>
+              <span className="text-sm">{article.commentCount}</span>
             </div>
             <div className="flex gap-1 items-center px-3">
               <BookmarkFill className="text-success" />
@@ -208,7 +220,6 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
       <article className="flex flex-col gap-4 text-xl leading-relaxed font-serif ">
         {parseContent(article.content)}
       </article>
-
 
       {/* Otros artículos del autor */}
       <Card
@@ -296,162 +307,50 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
             color="accent"
             className="rounded-xl"
           >
-            20
+            {article.commentCount}
           </Chip>
         </div>
-        <Card>
-          <CardHeader className="flex flex-row items-center gap-2">
-            <Avatar
-              size="md"
-              variant="soft"
-              color="accent"
-            >
-              <Avatar.Fallback>
-                {formatAvatarLetter(article.author.name, article.author.surname)}
-              </Avatar.Fallback>
-            </Avatar>
-            <span>{t('writeReply')}</span>
-          </CardHeader>
-          <CardContent>
-            <TextArea
-              fullWidth
-              placeholder={t('replyPlaceholder')}
-              variant="secondary"
-            />
-          </CardContent>
-          <CardFooter>
-            <div className="flex flex-row items-center gap-4">
-              <Bold className="text-muted hover:text-black" />
-              <QuoteOpen className="text-muted hover:text-black" />
-              <Code className="text-muted hover:text-black" />
-            </div>
-            <Button className="bg-black text-white ml-auto mt-2">
-              {t('publishReply')}
-            </Button>
-          </CardFooter>
-        </Card>
-        <div className="space-y-4">
+        {currentUser ? (
+          <CommentForm
+            authorUsername={authorUsername}
+            slug={slug}
+            user={currentUser}
+          />
+        ) : (
           <Card>
-            <CardHeader>
-              <div className="flex flex-row gap-2">
-                <Avatar
-                  size="md"
-                  variant="soft"
-                  color="accent"
-                >
-                  <Avatar.Fallback>
-                    {formatAvatarLetter(article.author.name, article.author.surname)}
-                  </Avatar.Fallback>
-                </Avatar>
-                <div className="flex flex-col">
-                  <div className="flex gap-2">
-                    <span className="text-sm font-semibold">Jane Doe</span>
-                    <Chip size="sm">{t('member')}</Chip>
-                  </div>
-                  <div>
-                    <span className="text-xs leading-0">hace 2 horas</span>
-                  </div>
-                </div>
-              </div>
-            </CardHeader>
             <CardContent>
-              <p className="font-serif text-lg">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum accusamus
-                fugit rem soluta optio praesentium explicabo, vero rerum in tempora? Ex
-                sunt mollitia, repudiandae autem sint ducimus natus ratione. Beatae
-                corrupti quod tempore consequuntur porro dolorem explicabo quidem, nostrum
-                amet illo sunt, numquam omnis! Esse labore ducimus vitae ipsam
-                exercitationem!
-              </p>
+              <Link
+                href="/login"
+                className="font-serif text-lg underline"
+              >
+                {t('loginToComment')}
+              </Link>
             </CardContent>
-            <CardFooter className="gap-4">
-              <div className="flex flex-row items-center gap-1">
-                <ThumbsUp className="text-muted hover:text-foreground" />
-                <span className="text-sm text-muted">24</span>
-              </div>
-              <span className="text-sm text-muted">{t('reply')}</span>
-            </CardFooter>
           </Card>
-          <Card>
-            <CardHeader>
-              <div className="flex flex-row gap-2">
-                <Avatar
-                  size="md"
-                  variant="soft"
-                  color="accent"
-                >
-                  <Avatar.Fallback>
-                    {formatAvatarLetter(article.author.name, article.author.surname)}
-                  </Avatar.Fallback>
-                </Avatar>
-                <div className="flex flex-col">
-                  <div className="flex gap-2">
-                    <span className="text-sm font-semibold">Jane Doe</span>
-                    <Chip size="sm">{t('member')}</Chip>
-                  </div>
-                  <div>
-                    <span className="text-xs leading-0">hace 2 horas</span>
-                  </div>
-                </div>
+        )}
+        {comments.length === 0 && commentsMeta.total_items === 0 ? (
+          <p className="text-muted">{t('commentsEmpty')}</p>
+        ) : (
+          <div className="space-y-4">
+            {comments.map((comment) => (
+              <CommentCard
+                key={comment.id}
+                comment={comment}
+                articleAuthorId={article.author.id}
+              />
+            ))}
+            {commentsMeta.total_items > 0 ? (
+              <div className="flex justify-center">
+                <CommentPagination
+                  authorUsername={authorUsername}
+                  slug={slug}
+                  page={commentsPage}
+                  pages={commentsMeta.pages}
+                />
               </div>
-            </CardHeader>
-            <CardContent>
-              <p className="font-serif text-lg">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum accusamus
-              </p>
-            </CardContent>
-            <CardFooter className="gap-4">
-              <div className="flex flex-row items-center gap-1">
-                <ThumbsUp className="text-muted hover:text-foreground" />
-                <span className="text-sm text-muted">24</span>
-              </div>
-              <span className="text-sm text-muted">{t('reply')}</span>
-            </CardFooter>
-            <div className="w-15/16 ml-auto">
-              <Card variant="tertiary">
-                <CardHeader>
-                  <div className="flex flex-row gap-2">
-                    <Avatar
-                      size="md"
-                      variant="soft"
-                      color="accent"
-                    >
-                      <Avatar.Fallback>
-                        {formatAvatarLetter(article.author.name, article.author.surname)}
-                      </Avatar.Fallback>
-                    </Avatar>
-                    <div className="flex flex-col">
-                      <div className="flex gap-2">
-                        <span className="text-sm font-semibold">Jane Doe</span>
-                        <Chip
-                          size="sm"
-                          color="success"
-                          variant="soft"
-                        >
-                          {t('author')}
-                        </Chip>
-                      </div>
-                      <div>
-                        <span className="text-xs leading-0">hace 1 hora</span>
-                      </div>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="font-serif text-lg">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum accusamus
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-          </Card>
-          <div className="flex justify-center">
-            {/* Center the pagination */}
-            <div className="flex justify-center">
-              <PaginationSimplePrevNext />
-            </div>
+            ) : null}
           </div>
-        </div>
+        )}
       </section>
     </main>
   );
