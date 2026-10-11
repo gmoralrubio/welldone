@@ -1,12 +1,10 @@
 'use server';
 
-import {
-  articleQueryParams,
-  parseArticleQuery,
-} from '@/app/[locale]/articles/article-query';
-import { ArticleDto } from '@/lib/articles.types';
+import { articleQueryParams, parseArticleQuery } from '@/lib/article/article-query';
+import { ArticleDto } from '@/lib/article/articles.types';
+import { CommentDto } from '@/lib/comment/comments.types';
 import { redirect } from '@/i18n/navigation';
-import { PaginatedResponse } from '@/lib/pagination.types';
+import { PaginatedResponse } from '@/lib/shared/pagination.types';
 import { cookies } from 'next/headers';
 import { resolveLocale } from '@/i18n/locale-utils';
 
@@ -41,6 +39,21 @@ export async function getArticleByAuthorAndSlug(
   if (!response.ok) throw new Error('No se pudo cargar el artículo');
   const data: { article: ArticleDto } = await response.json();
   return data.article;
+}
+
+export async function getArticleComments(
+  authorUsername: string,
+  slug: string,
+  page: number
+): Promise<PaginatedResponse<CommentDto>> {
+  const params = new URLSearchParams({ page: String(page) });
+  const response = await fetch(
+    `${process.env.API_URL}/api/articles/${authorUsername}/${slug}/comments?${params.toString()}`
+  );
+
+  if (!response.ok) throw new Error('No se pudieron cargar los comentarios');
+
+  return response.json();
 }
 
 export async function createArticleAction(locale: string, formData: FormData) {
