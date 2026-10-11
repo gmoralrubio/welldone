@@ -2,10 +2,10 @@
 
 import { Surface, SearchField } from '@heroui/react';
 import { SelectOrder } from '@/app/[locale]/components/article/select-order';
-import { ArticleOrder } from '@/app/[locale]/articles/article-query';
+import { ArticleOrder } from '@/lib/article/article-query';
 import { Link, getPathname } from '@/i18n/navigation';
 import { useLocale, useTranslations } from 'next-intl';
-import { CATEGORY_SLUGS } from '@/app/[locale]/category/category.types';
+import { CATEGORY_SLUGS } from '@/lib/category/category.types';
 
 type SiteSidebarProps = {
   search: string;

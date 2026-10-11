@@ -1,17 +1,15 @@
 'use client';
 
-import {
-  formatAvatarLetter,
-  readingMinutes,
-} from '@/app/[locale]/articles/article-presenters';
-import { ArticleDto } from '@/lib/articles.types';
+import { ArticleDto } from '@/lib/article/articles.types';
 import { Avatar, Button, Card } from '@heroui/react';
 import { ArrowUpFromSquare, Bookmark, Clock, Comment } from '@gravity-ui/icons';
 import Image from 'next/image';
 import { ArticleCategory } from '@/app/[locale]/components/article/article-category';
 import { Link } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
-import { useRelativeTime } from '@/app/[locale]/articles/hooks/useRelativeTime';
+import { readingMinutes } from '@/lib/article/article-presenters';
+import { formatAvatarLetter } from '@/lib/shared/format-avatar-letter';
+import { useRelativeTime } from '@/app/[locale]/hooks/useRelativeTime';
 
 type ArticleCardProps = {
   article: ArticleDto;

@@ -1,7 +1,7 @@
 'use client';
 
 import { SearchField } from '@heroui/react';
-import { ArticleOrder } from '@/app/[locale]/articles/article-query';
+import { ArticleOrder } from '@/lib/article/article-query';
 import UserActions from './user-actions';
 import LocaleSwitcher from '@/app/[locale]/components/shared/locale-switcher';
 import { useLocale, useTranslations } from 'next-intl';

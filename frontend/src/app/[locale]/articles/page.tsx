@@ -1,8 +1,5 @@
 import { getArticles } from '@/app/[locale]/articles/actions';
-import {
-  parseArticleQuery,
-  type SearchParamValue,
-} from '@/app/[locale]/articles/article-query';
+import { parseArticleQuery } from '@/lib/article/article-query';
 import { ArticleCard } from '@/app/[locale]/components/article/article-card';
 import { ArticleHero } from '@/app/[locale]/components/article/article-hero';
 import { ArticlePagination } from '@/app/[locale]/components/article/article-pagination';
@@ -13,6 +10,7 @@ import { EmptyState } from '@heroui/react';
 import { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { resolveLocale } from '@/i18n/locale-utils';
+import { SearchParamValue } from '@/lib/shared/searchParam.types';
 
 type ArticlePageProps = {
   searchParams: Promise<Record<string, SearchParamValue>>;

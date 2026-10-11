@@ -1,4 +1,4 @@
-import type { CategorySlug } from '@/app/[locale]/category/category.types';
+import type { CategorySlug } from '@/lib/category/category.types';
 
 export enum ArticleStatus {
   DRAFT = 'DRAFT',

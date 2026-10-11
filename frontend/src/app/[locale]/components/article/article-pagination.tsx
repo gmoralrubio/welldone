@@ -1,13 +1,10 @@
 'use client';
 
-import { articlesListHref } from '@/app/[locale]/articles/article-query';
+import { articlesListHref } from '@/lib/article/article-query';
 import { Pagination } from '@heroui/react';
 import { useRouter } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
-import type {
-  ArticleOrder,
-  ArticleQuery,
-} from '@/app/[locale]/articles/article-query';
+import type { ArticleOrder, ArticleQuery } from '@/lib/article/article-query';
 
 type ArticlePaginationProps = {
   page: number;
