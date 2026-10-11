@@ -119,7 +119,12 @@
     "publishReply": "Publicar respuesta",
     "member": "Miembro",
     "author": "Autor",
-    "reply": "Responder"
+    "reply": "Responder",
+    "commentsEmpty": "Este artículo todavía no tiene comentarios.",
+    "commentsPaginationAria": "Paginación de comentarios",
+    "commentsPageSummary": "Página {page} de {total}",
+    "commentsPrevious": "Anterior",
+    "commentsNext": "Siguiente"
   },
   "ArticleNotFound": {
     "label": "Error 404",
