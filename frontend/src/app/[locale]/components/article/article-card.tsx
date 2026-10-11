@@ -15,12 +15,14 @@ import {
 import { UserAvatar } from '@/app/[locale]/components/user/user-avatar';
 import { useRelativeTime } from '@/app/[locale]/hooks/useRelativeTime';
 import { ArticleCardPublishedActions } from '@/app/[locale]/components/article/article-card-published-actions';
+import { ArticleActionsMenu } from './article-actions-menu';
 
 type ArticleCardProps = {
   article: ArticleDto;
+  showActions?: boolean;
 };
 
-export function ArticleCard({ article }: ArticleCardProps) {
+export function ArticleCard({ article, showActions = false }: ArticleCardProps) {
   const href = articleHref(article);
   const minutes = readingMinutes(article.intro, article.content);
   const t = useTranslations('ArticleCard');
@@ -73,11 +75,23 @@ export function ArticleCard({ article }: ArticleCardProps) {
               {t('readMinutes', { minutes })}
             </span>
           </div>
-          {article.status === 'PUBLISHED' ? (
-            <ArticleCardPublishedActions />
-          ) : (
-            <Chip className="text-muted">DRAFT</Chip>
-          )}
+          
+          <div className="flex items-center gap-2">
+            {article.status === 'PUBLISHED' ? (
+              <ArticleCardPublishedActions />
+            ) : (
+              <Chip className="text-muted bg-surface-secondary border-none" size="sm">DRAFT</Chip>
+            )}
+
+            {showActions && (
+              <ArticleActionsMenu 
+                articleId={article.id} 
+                editLabel={t('edit')} 
+                deleteLabel={t('delete')} 
+              />
+            )}
+          </div>
+
         </div>
       </div>
       <div className="relative aspect-3/2 w-full shrink-0 overflow-hidden rounded bg-surface-secondary sm:aspect-auto sm:w-48 sm:self-stretch">

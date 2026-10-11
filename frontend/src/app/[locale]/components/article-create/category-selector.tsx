@@ -6,9 +6,10 @@ import { useTranslations } from 'next-intl';
 
 type CategorySelectorProps = {
   slugs: readonly CategorySlug[];
+  initialValues?: string[];
 };
 
-export function CategorySelector({ slugs }: CategorySelectorProps) {
+export function CategorySelector({ slugs, initialValues = [] }: CategorySelectorProps) {
   const t = useTranslations('CreateArticlePage');
   const tCategories = useTranslations('Categories');
 
@@ -21,6 +22,7 @@ export function CategorySelector({ slugs }: CategorySelectorProps) {
         name="categorySlugs"
         className="flex flex-row flex-wrap space-x-2"
         isRequired
+        defaultValue={initialValues}
       >
         {slugs.map((slug) => (
           <Checkbox

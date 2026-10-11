@@ -24,7 +24,8 @@
     "signIn": "Sign in",
     "dashboard": "Dashboard",
     "account": "Account",
-    "logout": "Log out"
+    "logout": "Log out",
+    "saveButton": "Save"
   },
   "SiteFooter": {
     "tagline": "An independent editorial sanctuary for essays on digital culture, contemporary philosophy, and critical thinking.",
@@ -78,7 +79,9 @@
     "readMinutes": "{minutes, plural, one {# min} other {# min}}",
     "commentsAria": "Comments",
     "saveAria": "Save",
-    "shareAria": "Share"
+    "shareAria": "Share",
+    "edit": "Edit article",
+    "delete": "Delete article"
   },
   "CreateArticlePage": {
     "title": "Write your story",
@@ -102,10 +105,18 @@
     "cancel": "Cancel",
     "submit": "Save article"
   },
+
   "Breadcrumbs": {
     "ariaLabel": "Breadcrumbs",
     "home": "Home",
     "articles": "Articles"
+  },
+  "EditArticlePage": {
+    "breadCrumbsDashboard": "Dashboard",
+    "breadCrumbsMyArticles": "My Articles",
+    "breadCrumbsEdit": "Edit",
+    "title": "Edit Article",
+    "subtitle": "You are modifying the article: {title}"
   },
   "ArticleDetailPage": {
     "following": "Following",

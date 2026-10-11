@@ -262,3 +262,53 @@ export async function getMyArticleBySlug(slug: string): Promise<ArticleDto | nul
   const data: { article: ArticleDto } = await response.json();
   return data.article;
 }
+
+export async function getArticleById(id: string): Promise<ArticleDto> {
+  const response = await fetch(`${process.env.API_URL}/api/articles/${id}`, {
+    cache: 'no-store',
+  });
+
+  if (!response.ok) throw new Error('No se pudo cargar el artículo para editar');
+  
+  const data = await response.json();
+
+  return data.article || data; 
+}
+
+export async function updateArticleAction(locale: string, articleId: string, formData: FormData) {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('accessToken')?.value;
+
+  if (!accessToken) {
+    throw new Error('No autorizado');
+  }
+
+  const payload = {
+    title: formData.get('title'),
+    intro: formData.get('intro'),
+    content: formData.get('content'),
+    status: formData.get('status'),
+    categorySlugs: formData.getAll('categorySlugs'),
+    featuredImageUrl: formData.get('featuredImageUrl') || null,
+    featuredVideoUrl: formData.get('featuredVideoUrl') || null,
+  };
+
+  const response = await fetch(`${process.env.API_URL}/api/articles/${articleId}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.error || 'Error al actualizar el artículo');
+  }
+
+  redirect({
+    href: '/dashboard/my-articles',
+    locale: resolveLocale(locale),
+  });
+}

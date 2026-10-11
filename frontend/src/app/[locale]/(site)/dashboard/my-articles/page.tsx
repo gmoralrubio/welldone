@@ -35,6 +35,7 @@ export default async function MyArticlesPage({ searchParams }: MyArticlesPagePro
             <ArticleCard
               key={article.id}
               article={article}
+              showActions={true}
             />
           ))
         ) : (

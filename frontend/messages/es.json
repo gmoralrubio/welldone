@@ -24,7 +24,8 @@
     "signIn": "Iniciar sesión",
     "dashboard": "Dashboard",
     "account": "Cuenta",
-    "logout": "Cerrar sesión"
+    "logout": "Cerrar sesión",
+    "saveButton": "Guardar"
   },
   "SiteFooter": {
     "tagline": "Santuario editorial independiente para ensayos de cultura digital, filosofía contemporánea y pensamiento crítico.",
@@ -78,7 +79,9 @@
     "readMinutes": "{minutes, plural, one {# min} other {# min}}",
     "commentsAria": "Comentarios",
     "saveAria": "Guardar",
-    "shareAria": "Compartir"
+    "shareAria": "Compartir",
+    "edit": "Editar artículo",
+    "delete": "Borrar artículo"
   },
   "CreateArticlePage": {
     "title": "Escribe tu historia",
@@ -102,10 +105,18 @@
     "cancel": "Cancelar",
     "submit": "Guardar Artículo"
   },
+
   "Breadcrumbs": {
     "ariaLabel": "Migas de pan",
     "home": "Inicio",
     "articles": "Artículos"
+  },
+  "EditArticlePage": {
+    "breadCrumbsDashboard": "Panel",
+    "breadCrumbsMyArticles": "Mis Artículos",
+    "breadCrumbsEdit": "Editar",
+    "title": "Editar Artículo",
+    "subtitle": "Estás modificando el artículo: {title}"
   },
   "ArticleDetailPage": {
     "following": "Siguiendo",

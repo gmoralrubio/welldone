@@ -123,6 +123,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
               <ArticleCard
                 key={article.id}
                 article={article}
+                showActions={true} 
               />
             ))
           ) : (

@@ -5,6 +5,7 @@ import { SiteHeaderClient } from './site-header-client';
 type SiteHeaderProps = {
   search: string;
   order: ArticleOrder;
+  isEditorMode?: boolean;
 };
 
 type HeaderUser = {

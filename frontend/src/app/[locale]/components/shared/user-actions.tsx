@@ -10,9 +10,11 @@ type UserActionsProps = {
     name: string;
     username: string;
   } | null;
+  isEditorMode?: boolean;
 };
 
-const UserActions = ({ user }: UserActionsProps) => {
+
+const UserActions = ({ user, isEditorMode = false }: UserActionsProps) => {
   const t = useTranslations('SiteHeader');
 
   if (!user) {
@@ -27,7 +29,7 @@ const UserActions = ({ user }: UserActionsProps) => {
   }
   return (
     <div className="flex items-center gap-4">
-      <WriteButton />
+      {!isEditorMode && <WriteButton />}
       <UserProfile
         name={user.name}
         username={user.username}
