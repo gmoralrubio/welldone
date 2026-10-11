@@ -117,6 +117,8 @@
     "writeReply": "Write a reply...",
     "replyPlaceholder": "Share your knowledge",
     "publishReply": "Publish reply",
+    "loginToComment": "Sign in to comment",
+    "commentError": "The comment could not be published.",
     "member": "Member",
     "author": "Author",
     "reply": "Reply",

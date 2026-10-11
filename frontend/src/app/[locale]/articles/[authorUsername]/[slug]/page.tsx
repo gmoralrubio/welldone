@@ -1,6 +1,7 @@
 import {
   getArticleByAuthorAndSlug,
   getArticleComments,
+  getCommentAuthor,
 } from '@/app/[locale]/articles/actions';
 import { formatDate, slugify, truncateSlug } from '@/lib/article/article-presenters';
 import {
@@ -10,9 +11,7 @@ import {
   Card,
   CardContent,
   CardFooter,
-  CardHeader,
   Chip,
-  TextArea,
 } from '@heroui/react';
 import {
   Check,
@@ -21,22 +20,21 @@ import {
   BookmarkFill,
   ArrowUpFromSquare,
   PersonPlus,
-  Bold,
-  QuoteOpen,
-  Code,
 } from '@gravity-ui/icons';
 import { Metadata } from 'next';
 import Image from 'next/image';
+import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { PaginationBasic } from '@/app/[locale]/components/shared/PaginationBasic';
 import { ArticleCategory } from '@/app/[locale]/components/article/article-category';
 import { CommentPagination } from '@/app/[locale]/components/comment/comment-pagination';
 
 import { getLocale, getTranslations } from 'next-intl/server';
-import { getPathname } from '@/i18n/navigation';
+import { getPathname, Link } from '@/i18n/navigation';
 import { parseContent } from '@/app/[locale]/articles/article-content-parser';
 import { parseCommentsQuery } from '@/lib/comment/comment-query';
 import { CommentCard } from '@/app/[locale]/components/comment/comment-card';
+import { CommentForm } from '@/app/[locale]/components/comment/comment-form';
 import { formatAvatarLetter } from '@/lib/shared/format-avatar-letter';
 
 interface ArticleDetailPageProps {
@@ -95,6 +93,9 @@ export default async function ArticleDetailPage({
 
   const t = await getTranslations('ArticleDetailPage');
   const locale = await getLocale();
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('accessToken')?.value;
+  const currentUser = accessToken ? await getCommentAuthor(accessToken) : null;
   const homeHref = getPathname({ locale, href: '/' });
   const articlesHref = getPathname({ locale, href: '/articles' });
   const authorName = `${article.author.name} ${article.author.surname}`;
@@ -309,37 +310,24 @@ export default async function ArticleDetailPage({
             {article.commentCount}
           </Chip>
         </div>
-        <Card>
-          <CardHeader className="flex flex-row items-center gap-2">
-            <Avatar
-              size="md"
-              variant="soft"
-              color="accent"
-            >
-              <Avatar.Fallback>
-                {formatAvatarLetter(article.author.name, article.author.surname)}
-              </Avatar.Fallback>
-            </Avatar>
-            <span>{t('writeReply')}</span>
-          </CardHeader>
-          <CardContent>
-            <TextArea
-              fullWidth
-              placeholder={t('replyPlaceholder')}
-              variant="secondary"
-            />
-          </CardContent>
-          <CardFooter>
-            <div className="flex flex-row items-center gap-4">
-              <Bold className="text-muted hover:text-black" />
-              <QuoteOpen className="text-muted hover:text-black" />
-              <Code className="text-muted hover:text-black" />
-            </div>
-            <Button className="bg-black text-white ml-auto mt-2">
-              {t('publishReply')}
-            </Button>
-          </CardFooter>
-        </Card>
+        {currentUser ? (
+          <CommentForm
+            authorUsername={authorUsername}
+            slug={slug}
+            user={currentUser}
+          />
+        ) : (
+          <Card>
+            <CardContent>
+              <Link
+                href="/login"
+                className="font-serif text-lg underline"
+              >
+                {t('loginToComment')}
+              </Link>
+            </CardContent>
+          </Card>
+        )}
         {comments.length === 0 && commentsMeta.total_items === 0 ? (
           <p className="text-muted">{t('commentsEmpty')}</p>
         ) : (

@@ -117,6 +117,8 @@
     "writeReply": "Escribe una respuesta...",
     "replyPlaceholder": "Comparte tu conocimiento",
     "publishReply": "Publicar respuesta",
+    "loginToComment": "Inicia sesión para comentar",
+    "commentError": "No se pudo publicar el comentario.",
     "member": "Miembro",
     "author": "Autor",
     "reply": "Responder",
