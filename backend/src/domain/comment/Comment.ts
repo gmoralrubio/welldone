@@ -13,6 +13,7 @@ interface CommentProps extends EntityProps {
   articleId: number;
   parentId: number | null;
   user: CommentUser;
+  children?: Comment[];
 }
 
 export class Comment extends Entity {
@@ -21,6 +22,7 @@ export class Comment extends Entity {
   readonly articleId: number;
   readonly parentId: number | null;
   readonly user: CommentUser;
+  readonly children: Comment[];
 
   constructor(props: CommentProps) {
     super({
@@ -33,5 +35,6 @@ export class Comment extends Entity {
     this.articleId = props.articleId;
     this.parentId = props.parentId;
     this.user = props.user;
+    this.children = props.children ?? [];
   }
 }
