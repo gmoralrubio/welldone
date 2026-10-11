@@ -1,28 +1,24 @@
 import { Request, Response, NextFunction } from 'express';
 import { PrismaArticleRepository } from '@infrastructure/article/PrismaArticleRepository';
-import { FindUserArticlesUseCase } from '@domain/article/use-cases/find-user-articles';
+import { FindMyArticlesUseCase } from '@domain/article/use-cases/find-my-articles';
 import { UnauthorizedError } from '@domain/errors/UnauthorizedError';
-import { findArticlesUserValidationSchema } from '@ui/article/validators/articles-validator';
+import { findMyArticlesValidationSchema } from '@ui/article/validators/articles-validator';
 import { buildPaginatedResponse } from '@ui/shared/presenters/paginated-response';
 
-export const findUserArticlesController = async (
+export const findMyArticlesController = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   const articleRepository = new PrismaArticleRepository();
-  const findUserArticlesUseCase = new FindUserArticlesUseCase(
-    articleRepository
-  );
+  const findUserArticlesUseCase = new FindMyArticlesUseCase(articleRepository);
 
   try {
     const { page, limit, search, order, category, status } =
-      findArticlesUserValidationSchema.parse(req.query);
+      findMyArticlesValidationSchema.parse(req.query);
 
     if (!req.authorId) {
-      throw new UnauthorizedError(
-        'Debes estar autenticado para ver tus artículos'
-      );
+      throw new UnauthorizedError('Debes estar autenticado para ver tus artículos');
     }
 
     // Ahora le estamos pasando un Enum real, no un string

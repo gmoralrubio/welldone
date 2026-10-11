@@ -3,7 +3,7 @@ import { ArticleRepository } from '@domain/article/repositories/ArticleRepositor
 import { Article } from '@domain/article/Article';
 import { FindArticlesResponse } from '@domain/article/types/FindArticlesResponse';
 import { FindPublishedArticlesUseCaseInput } from '@domain/article/use-cases/find-published-articles';
-import { FindUserArticlesUseCaseInput } from '@domain/article/use-cases/find-user-articles';
+import { FindMyArticlesUseCaseInput } from '@domain/article/use-cases/find-my-articles';
 import {
   PrismaArticle,
   PrismaArticleInclude,
@@ -33,9 +33,7 @@ export class PrismaArticleRepository implements ArticleRepository {
     const where = {
       status: 'PUBLISHED' as const,
       publishedAt: { lt: now },
-      ...(criteria.category
-        ? { categories: { some: { slug: criteria.category } } }
-        : {}),
+      ...(criteria.category ? { categories: { some: { slug: criteria.category } } } : {}),
       ...(criteria.search
         ? { title: { contains: criteria.search, mode: 'insensitive' as const } }
         : {}),
@@ -57,16 +55,14 @@ export class PrismaArticleRepository implements ArticleRepository {
     };
   }
 
-  async findUserArticles(
-    criteria: FindUserArticlesUseCaseInput
+  async findMyArticles(
+    criteria: FindMyArticlesUseCaseInput
   ): Promise<FindArticlesResponse> {
     const { page, limit } = criteria;
     const where = {
       authorId: criteria.authorId,
       ...(criteria.status ? { status: criteria.status } : {}),
-      ...(criteria.category
-        ? { categories: { some: { slug: criteria.category } } }
-        : {}),
+      ...(criteria.category ? { categories: { some: { slug: criteria.category } } } : {}),
       ...(criteria.search
         ? { title: { contains: criteria.search, mode: 'insensitive' as const } }
         : {}),
