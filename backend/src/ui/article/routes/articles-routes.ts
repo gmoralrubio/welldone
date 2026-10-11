@@ -5,6 +5,7 @@ import { createArticleController } from '@ui/article/controllers/create-article-
 import { authenticationMiddleware } from '@ui/user/middlewares/authentication-middleware';
 import { findMyArticlesController } from '../controllers/find-my-articles-controller';
 import { articleCommentsController } from '@ui/article/controllers/article-comments-controller';
+import { createCommentController } from '@ui/article/controllers/create-comment-controller';
 
 export const articlesRouter = Router();
 
@@ -14,3 +15,8 @@ articlesRouter.get('/me', authenticationMiddleware, findMyArticlesController);
 
 articlesRouter.get('/:authorUsername/:slug', articleDetailController);
 articlesRouter.get('/:authorUsername/:slug/comments', articleCommentsController);
+articlesRouter.post(
+  '/:authorUsername/:slug/comments',
+  authenticationMiddleware,
+  createCommentController
+);

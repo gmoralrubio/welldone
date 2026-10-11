@@ -4,6 +4,7 @@ import { CommentRepository } from '@domain/comment/repositories/CommentRepositor
 import { PrismaComment } from '@infrastructure/comment/PrismaComment.types';
 import prismaClient from '@infrastructure/shared/prisma-client';
 import { FindCommentsByArticleParams } from '@domain/comment/types/FindCommentsByArticleParams';
+import { CreateCommentParams } from '@domain/comment/types/CreateCommentParams';
 
 const commentUserSelect = {
   id: true,
@@ -48,6 +49,20 @@ export class PrismaCommentRepository implements CommentRepository {
       comments,
       total,
     };
+  }
+
+  async create(params: CreateCommentParams): Promise<Comment> {
+    const prismaComment = await this.prisma.comment.create({
+      data: {
+        message: params.message,
+        userId: params.userId,
+        articleId: params.articleId,
+        parentId: params.parentId,
+      },
+      include: { user: { select: commentUserSelect } },
+    });
+
+    return this.restore(prismaComment);
   }
 
   private async findReplies(

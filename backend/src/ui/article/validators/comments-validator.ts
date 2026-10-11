@@ -10,6 +10,14 @@ export const findCommentValidationSchema = z.object({
     .string('Slug is required')
     .min(3, 'Minimum slug length is 3 characters'),
 });
+export const createCommentValidationSchema = z.object({
+  message: z
+    .string('Message is required')
+    .trim()
+    .min(1, 'El comentario no puede estar vacío')
+    .max(2000, 'El comentario no puede superar los 2000 caracteres'),
+});
+
 export const commentPaginationValidationSchema = z.object({
   page: z.coerce
     .number('Invalid page. Must be a number')
