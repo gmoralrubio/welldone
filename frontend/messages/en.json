@@ -231,13 +231,15 @@
       "favorites": "Favorites",
       "highlights": "Highlights",
       "notifications": "Notifications",
-      "account": "Account"
+      "account": "Account",
+      "settings": "Settings"
     },
     "articlesTitle": "My articles",
     "favoritesTitle": "Favorites",
     "highlightsTitle": "Highlights",
     "notificationsTitle": "Notifications",
     "accountTitle": "Account",
+    "settingsTitle": "Settings",
     "tabs": {
       "home": "Home",
       "drafts": "Drafts",
@@ -270,6 +272,5 @@
       "updateFailed": "Your changes could not be saved. Please try again.",
       "sessionExpired": "Your session has expired. Please sign in again."
     }
-
   }
 }
