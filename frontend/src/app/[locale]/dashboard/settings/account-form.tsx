@@ -1,17 +1,29 @@
 'use client';
 
-import { useState, type SubmitEvent } from 'react';
+import { useState, type SubmitEvent, type FocusEvent } from 'react';
 import { Input, Label, TextField } from '@heroui/react';
 import { ArrowRight, Person, At, Envelope } from '@gravity-ui/icons';
 import { useTranslations } from 'next-intl';
 import { accountSchema, type AccountFormData } from './schema';
-import { updateAccount } from './actions';
+import { updateAccount, checkAccountAvailability } from './actions';
 
 type AccountField = keyof AccountFormData;
 
-type AccountErrors = Partial<Record<AccountField, string>>;
+type AccountValidationKey =
+  | 'nameMin'
+  | 'surnameRequired'
+  | 'usernameMin'
+  | 'usernamePattern'
+  | 'emailRequired'
+  | 'emailInvalid';
 
-type FormError = 'emailInUse' | 'usernameInUse' | 'updateFailed' | 'sessionExpired';
+type AccountConflictKey = 'emailInUse' | 'usernameInUse';
+
+type AccountErrors = Partial<
+  Record<AccountField, AccountValidationKey | AccountConflictKey>
+>;
+
+type FormError = 'updateFailed' | 'sessionExpired';
 
 interface AccountFormProps {
   user: AccountFormData;
@@ -42,6 +54,62 @@ export default function AccountForm({ user }: AccountFormProps) {
     setIsEditing(false);
   };
 
+  const handleOnBlur = async (event: FocusEvent<HTMLInputElement>) => {
+    const field = event.currentTarget.name as AccountField;
+    const value = event.currentTarget.value.trim();
+
+    const fieldSchema = accountSchema.shape[field];
+
+    if (!fieldSchema) return;
+
+    const result = fieldSchema.safeParse(value);
+
+    if (!result.success) {
+      setErrors((prev) => ({
+        ...prev,
+        [field]: result.error.issues[0].message as AccountValidationKey,
+      }));
+      return;
+    }
+
+    if (field === 'username' || field === 'email') {
+      // No comprobar disponibilidad si es el dato que ya pertenece al usuario.
+      if (value === currentUser[field]) {
+        setErrors((prev) => ({
+          ...prev,
+          [field]: undefined,
+        }));
+        return;
+      }
+
+      const input = event.currentTarget;
+
+      try {
+        const available = await checkAccountAvailability(field, value);
+
+        if (input.value.trim() !== value) return;
+
+        setErrors((prev) => ({
+          ...prev,
+          [field]: available
+            ? undefined
+            : field === 'email'
+              ? 'emailInUse'
+              : 'usernameInUse',
+        }));
+      } catch {
+        if (input.value.trim() === value) {
+          setFormError('updateFailed');
+        }
+      }
+    } else {
+      setErrors((prev) => ({
+        ...prev,
+        [field]: undefined,
+      }));
+    }
+  };
+
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -66,7 +134,7 @@ export default function AccountForm({ user }: AccountFormProps) {
         const field = issue.path[0] as AccountField;
 
         if (!validationErrors[field]) {
-          validationErrors[field] = issue.message;
+          validationErrors[field] = issue.message as AccountValidationKey;
         }
       });
 
@@ -86,9 +154,17 @@ export default function AccountForm({ user }: AccountFormProps) {
         setIsEditing(false);
       } else if (response.status === 409) {
         if (response.data.field === 'email') {
-          setFormError('emailInUse');
+          setErrors((prev) => ({
+            ...prev,
+
+            email: 'emailInUse',
+          }));
         } else if (response.data.field === 'username') {
-          setFormError('usernameInUse');
+          setErrors((prev) => ({
+            ...prev,
+
+            username: 'usernameInUse',
+          }));
         } else {
           setFormError('updateFailed');
         }
@@ -109,15 +185,11 @@ export default function AccountForm({ user }: AccountFormProps) {
 
     if (!error) return null;
 
-    return tValidation(
-      error as
-        | 'nameMin'
-        | 'surnameRequired'
-        | 'usernameMin'
-        | 'usernamePattern'
-        | 'emailRequired'
-        | 'emailInvalid'
-    );
+    if (error === 'emailInUse' || error === 'usernameInUse') {
+      return t(`errors.${error}`);
+    }
+
+    return tValidation(error);
   };
 
   // VISTA DE CONSULTA
@@ -274,7 +346,11 @@ export default function AccountForm({ user }: AccountFormProps) {
                 className="pointer-events-none absolute left-3 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-[#76777d]"
                 aria-hidden="true"
               />
-              <Input className="w-full pl-10" />
+              <Input
+                name="name"
+                className="w-full pl-10"
+                onBlur={handleOnBlur}
+              />
             </div>
 
             {errors.name && (
@@ -300,7 +376,11 @@ export default function AccountForm({ user }: AccountFormProps) {
                 className="pointer-events-none absolute left-3 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-[#76777d]"
                 aria-hidden="true"
               />
-              <Input className="w-full pl-10" />
+              <Input
+                name="surname"
+                className="w-full pl-10"
+                onBlur={handleOnBlur}
+              />
             </div>
 
             {errors.surname && (
@@ -327,7 +407,11 @@ export default function AccountForm({ user }: AccountFormProps) {
               className="pointer-events-none absolute left-3 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-[#76777d]"
               aria-hidden="true"
             />
-            <Input className="w-full pl-10" />
+            <Input
+              name="username"
+              className="w-full pl-10"
+              onBlur={handleOnBlur}
+            />
           </div>
 
           {errors.username && (
@@ -354,7 +438,11 @@ export default function AccountForm({ user }: AccountFormProps) {
               className="pointer-events-none absolute left-3 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-[#76777d]"
               aria-hidden="true"
             />
-            <Input className="w-full pl-10" />
+            <Input
+              name="email"
+              className="w-full pl-10"
+              onBlur={handleOnBlur}
+            />
           </div>
 
           {errors.email && (

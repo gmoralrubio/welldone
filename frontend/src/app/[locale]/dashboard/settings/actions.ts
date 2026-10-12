@@ -28,11 +28,29 @@ export async function updateAccount(data: AccountFormData) {
   const responseData = await response.json();
 
   if (response.ok) {
-    revalidatePath('/[locale]/dashboard/account', 'page');
+    revalidatePath('/[locale]/dashboard/settings', 'page');
   }
 
   return {
     status: response.status,
     data: responseData,
   };
+}
+
+export async function checkAccountAvailability(
+  field: 'username' | 'email',
+  value: string
+): Promise<boolean> {
+  const response = await fetch(
+    `${process.env.API_URL}/api/users/availability?field=${field}&value=${encodeURIComponent(value)}`,
+    { cache: 'no-store' }
+  );
+
+  if (!response.ok) {
+    throw new Error('Could not check account availability');
+  }
+
+  const data: { available: boolean } = await response.json();
+
+  return data.available;
 }
