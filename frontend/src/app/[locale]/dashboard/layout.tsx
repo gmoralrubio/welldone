@@ -19,7 +19,10 @@ export default async function DashboardLayout({
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <SiteHeader search="" order="desc" />
+      <SiteHeader
+        search=""
+        order="desc"
+      />
 
       <div className="flex flex-1">
         <aside className="w-64 border-r border-separator bg-background-secondary p-6">
@@ -29,6 +32,7 @@ export default async function DashboardLayout({
             <Link href="/dashboard/highlights">{t('nav.highlights')}</Link>
             <Link href="/dashboard/notifications">{t('nav.notifications')}</Link>
             <Link href="/dashboard/account">{t('nav.account')}</Link>
+            <Link href="/dashboard/settings">{t('nav.settings')}</Link>
           </nav>
         </aside>
 

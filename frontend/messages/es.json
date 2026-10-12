@@ -231,13 +231,15 @@
       "favorites": "Favoritos",
       "highlights": "Destacados",
       "notifications": "Notificaciones",
-      "account": "Cuenta"
+      "account": "Cuenta",
+      "settings": "Configuración"
     },
     "articlesTitle": "Mis artículos",
     "favoritesTitle": "Favoritos",
     "highlightsTitle": "Destacados",
     "notificationsTitle": "Notificaciones",
     "accountTitle": "Cuenta",
+    "settingsTitle": "Configuración",
     "tabs": {
       "home": "Inicio",
       "drafts": "Borradores",
@@ -270,6 +272,5 @@
       "updateFailed": "No se han podido guardar los cambios. Inténtalo de nuevo.",
       "sessionExpired": "Tu sesión ha caducado. Vuelve a iniciar sesión."
     }
-
   }
 }
