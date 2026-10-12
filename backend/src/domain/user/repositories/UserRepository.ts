@@ -1,5 +1,5 @@
-import { CreateUserUseCaseInput } from "../use-cases/register-user";
-import { User } from "../User";
+import { CreateUserUseCaseInput } from '../use-cases/register-user';
+import { User } from '../User';
 
 export interface UpdateUserData {
   name?: string;
@@ -14,4 +14,5 @@ export interface UserRepository {
   findById: (id: number) => Promise<User | null>;
   create: (params: CreateUserUseCaseInput) => Promise<User>;
   update: (id: number, params: UpdateUserData) => Promise<User>;
+  delete: (id: number) => Promise<void>;
 }
