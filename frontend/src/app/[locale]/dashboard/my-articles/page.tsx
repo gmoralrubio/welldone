@@ -53,6 +53,7 @@ export default async function MyArticlesPage({ searchParams }: MyArticlesPagePro
             search=""
             order={order}
             category=""
+            pathname="/dashboard/my-articles"
           />
         </div>
       )}

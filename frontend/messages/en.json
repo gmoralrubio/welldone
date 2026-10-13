@@ -250,7 +250,11 @@
       "drafts": "You have no saved drafts.",
       "published": "You haven't published any articles yet."
     },
-    "editProfile": "Edit profile"
+    "editProfile": "Edit profile",
+    "backToArticles": "Back to My articles",
+    "statusDraft": "Draft",
+    "statusPublished": "Published",
+    "videoUnsupported": "Your browser cannot play this video."
   },
   "Account": {
     "title": "My account",

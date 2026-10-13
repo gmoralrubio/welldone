@@ -120,7 +120,7 @@ export default async function ArticleDetailPage({
         </Breadcrumbs.Item>
       </Breadcrumbs>
 
-      <div className="flex gap-2">
+      <div className="flex items-center gap-2">
         {article.categories.map((category) => (
           <ArticleCategory
             key={category.id}
@@ -297,7 +297,6 @@ export default async function ArticleDetailPage({
         </Card.Content>
       </Card>
 
-      {/* Comentarios */}
       <section
         id="comments"
         className="mt-4 space-y-6"

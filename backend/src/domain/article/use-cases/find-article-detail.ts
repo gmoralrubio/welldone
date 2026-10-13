@@ -15,21 +15,17 @@ export class FindArticleDetailUseCase {
     this.articleRepository = articleRepository;
   }
 
-  async execute(params: FindArticleDetailUseCaseInput): Promise<Article> {
-    const article = await this.articleRepository.findPublishedByAuthorAndSlug(
-      params.authorUsername,
-      params.slug
-    );
+  async execute(criteria: FindArticleDetailUseCaseInput): Promise<Article> {
+    const article = await this.articleRepository.findPublishedArticleBy(criteria);
 
-    if (!article) {
-      throw new EntityNotFoundError('Article', params.slug);
+    if (!article || article.status !== 'PUBLISHED') {
+      throw new EntityNotFoundError('Article', criteria.slug);
     }
 
-    const now = new Date();
-
-    if (article.publishedAt > now) {
+    if (article.publishedAt > new Date()) {
       throw new BusinessConflictError(`Article has not been published.`);
     }
+
     return article;
   }
 }

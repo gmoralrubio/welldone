@@ -1,22 +1,23 @@
 'use client';
 
 import { ArticleDto } from '@/lib/article/articles.types';
-import { Avatar, Button, Card } from '@heroui/react';
-import { ArrowUpFromSquare, Bookmark, Clock, Comment } from '@gravity-ui/icons';
+import { Avatar, Card, Chip } from '@heroui/react';
+import { Clock } from '@gravity-ui/icons';
 import Image from 'next/image';
 import { ArticleCategory } from '@/app/[locale]/components/article/article-category';
 import { Link } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
-import { readingMinutes } from '@/lib/article/article-presenters';
+import { articleHref, readingMinutes } from '@/lib/article/article-presenters';
 import { formatAvatarLetter } from '@/lib/shared/format-avatar-letter';
 import { useRelativeTime } from '@/app/[locale]/hooks/useRelativeTime';
+import { ArticleCardPublishedActions } from '@/app/[locale]/components/article/article-card-published-actions';
 
 type ArticleCardProps = {
   article: ArticleDto;
 };
 
 export function ArticleCard({ article }: ArticleCardProps) {
-  const href = `/articles/${article.author.username}/${article.slug}`;
+  const href = articleHref(article);
   const minutes = readingMinutes(article.intro, article.content);
   const t = useTranslations('ArticleCard');
 
@@ -68,41 +69,11 @@ export function ArticleCard({ article }: ArticleCardProps) {
               {t('readMinutes', { minutes })}
             </span>
           </div>
-          <div className="flex items-center">
-            <Button
-              isIconOnly
-              variant="ghost"
-              size="sm"
-              aria-label={t('commentsAria')}
-            >
-              <Comment
-                width={14}
-                height={14}
-              />
-            </Button>
-            <Button
-              isIconOnly
-              variant="ghost"
-              size="sm"
-              aria-label={t('saveAria')}
-            >
-              <Bookmark
-                width={14}
-                height={14}
-              />
-            </Button>
-            <Button
-              isIconOnly
-              variant="ghost"
-              size="sm"
-              aria-label={t('shareAria')}
-            >
-              <ArrowUpFromSquare
-                width={14}
-                height={14}
-              />
-            </Button>
-          </div>
+          {article.status === 'PUBLISHED' ? (
+            <ArticleCardPublishedActions />
+          ) : (
+            <Chip className="text-muted">DRAFT</Chip>
+          )}
         </div>
       </div>
       <div className="relative aspect-3/2 w-full shrink-0 overflow-hidden rounded bg-surface-secondary sm:aspect-auto sm:w-48 sm:self-stretch">
