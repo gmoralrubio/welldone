@@ -16,7 +16,6 @@ export const articleDetailController = async (
     const article = await findArticleUseCase.execute({
       authorUsername,
       slug,
-      userId: req.authorId,
     });
     res.status(200).json({ article });
   } catch (error) {
