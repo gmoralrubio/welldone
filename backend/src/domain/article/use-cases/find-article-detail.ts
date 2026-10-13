@@ -6,7 +6,6 @@ import { EntityNotFoundError } from '@domain/errors/EntityNotFoundError';
 export interface FindArticleDetailUseCaseInput {
   authorUsername: string;
   slug: string;
-  userId?: number;
 }
 
 export class FindArticleDetailUseCase {
@@ -17,23 +16,16 @@ export class FindArticleDetailUseCase {
   }
 
   async execute(criteria: FindArticleDetailUseCaseInput): Promise<Article> {
-    const article = await this.articleRepository.findByAuthorAndSlug(criteria);
+    const article = await this.articleRepository.findPublishedArticleBy(criteria);
 
-    if (!article) {
+    if (!article || article.status !== 'PUBLISHED') {
       throw new EntityNotFoundError('Article', criteria.slug);
     }
 
-    if (article.status === 'PUBLISHED') {
-      if (article.publishedAt > new Date()) {
-        throw new BusinessConflictError(`Article has not been published.`);
-      }
-      return article;
+    if (article.publishedAt > new Date()) {
+      throw new BusinessConflictError(`Article has not been published.`);
     }
 
-    if (article.status === 'DRAFT' && criteria.userId === article.authorId) {
-      return article;
-    }
-
-    throw new EntityNotFoundError('Article', criteria.slug);
+    return article;
   }
 }

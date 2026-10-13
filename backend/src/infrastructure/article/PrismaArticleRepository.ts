@@ -4,6 +4,7 @@ import { Article } from '@domain/article/Article';
 import { FindArticlesResponse } from '@domain/article/types/FindArticlesResponse';
 import { FindPublishedArticlesUseCaseInput } from '@domain/article/use-cases/find-published-articles';
 import { FindMyArticlesUseCaseInput } from '@domain/article/use-cases/find-my-articles';
+import { FindMyArticleUseCaseInput } from '@domain/article/use-cases/find-my-article';
 import {
   PrismaArticle,
   PrismaArticleInclude,
@@ -84,7 +85,7 @@ export class PrismaArticleRepository implements ArticleRepository {
       total: articlesCount,
     };
   }
-  async findByAuthorAndSlug(
+  async findPublishedArticleBy(
     criteria: FindArticleDetailUseCaseInput
   ): Promise<Article | null> {
     const { authorUsername, slug } = criteria;
@@ -101,6 +102,22 @@ export class PrismaArticleRepository implements ArticleRepository {
     } else {
       return this.restore(articlesPrisma);
     }
+  }
+
+  async findArticleBy(criteria: FindMyArticleUseCaseInput): Promise<Article | null> {
+    const articlesPrisma = await this.prisma.article.findFirst({
+      where: {
+        authorId: criteria.authorId,
+        slug: criteria.slug,
+      },
+      include: articleInclude,
+    });
+
+    if (!articlesPrisma) {
+      return null;
+    }
+
+    return this.restore(articlesPrisma);
   }
 
   async create(criteria: CreateArticleUseCaseInput): Promise<Article> {
