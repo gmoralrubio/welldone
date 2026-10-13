@@ -4,6 +4,13 @@ import { CategorySlug, isCategorySlug } from '@/lib/category/category.types';
 
 export type ArticleOrder = 'asc' | 'desc';
 
+export type ArticleListPathname =
+  | '/articles'
+  | '/dashboard/account'
+  | '/dashboard/my-articles';
+
+export type ArticleListStatus = 'PUBLISHED' | 'DRAFT';
+
 export type ArticleQuery = {
   search: string;
   page: number;
@@ -43,20 +50,26 @@ export function articleQueryParams(input: ArticleQuery): URLSearchParams {
 }
 
 export function articlesListHref(
-  input: Pick<ArticleQuery, 'page' | 'search' | 'order' | 'category'>
+  input: Pick<ArticleQuery, 'page' | 'search' | 'order' | 'category'> & {
+    pathname?: ArticleListPathname;
+    status?: ArticleListStatus;
+  }
 ) {
+  const pathname = input.pathname ?? '/articles';
   const params = articleQueryParams({ ...input, limit: 0 });
+  if (input.status) params.set('status', input.status);
+
   const query: Record<string, string> = {};
   params.forEach((value, key) => {
     query[key] = value;
   });
 
   if (Object.keys(query).length === 0) {
-    return { pathname: '/articles' as const };
+    return { pathname };
   }
 
   return {
-    pathname: '/articles' as const,
+    pathname,
     query,
   };
 }
