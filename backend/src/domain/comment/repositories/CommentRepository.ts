@@ -8,4 +8,5 @@ export interface CommentRepository {
     params: FindCommentsByArticleParams
   ): Promise<FindCommentsResponse>;
   create(params: CreateCommentParams): Promise<Comment>;
+  findById(id: number): Promise<Comment | null>;
 }
