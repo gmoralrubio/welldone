@@ -36,7 +36,6 @@ import { parseCommentsQuery } from '@/lib/comment/comment-query';
 import { CommentCard } from '@/app/[locale]/components/comment/comment-card';
 import { CommentForm } from '@/app/[locale]/components/comment/comment-form';
 import { formatAvatarLetter } from '@/lib/shared/format-avatar-letter';
-import { ArticleStatus } from '@/lib/article/articles.types';
 
 interface ArticleDetailPageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -86,17 +85,17 @@ export default async function ArticleDetailPage({
     notFound();
   }
 
-  const isDraft = article.status === ArticleStatus.DRAFT;
-  const commentsResult = isDraft
-    ? null
-    : await getArticleComments(authorUsername, slug, commentsPage);
+  const { data: comments, meta: commentsMeta } = await getArticleComments(
+    authorUsername,
+    slug,
+    commentsPage
+  );
 
   const t = await getTranslations('ArticleDetailPage');
   const locale = await getLocale();
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
-  const currentUser =
-    !isDraft && accessToken ? await getCommentAuthor(accessToken) : null;
+  const currentUser = accessToken ? await getCommentAuthor(accessToken) : null;
   const homeHref = getPathname({ locale, href: '/' });
   const articlesHref = getPathname({ locale, href: '/articles' });
   const authorName = `${article.author.name} ${article.author.surname}`;
@@ -128,14 +127,6 @@ export default async function ArticleDetailPage({
             categorySlug={category.slug}
           />
         ))}
-        {isDraft ? (
-          <Chip
-            color="warning"
-            variant="soft"
-          >
-            {t('draftChip')}
-          </Chip>
-        ) : null}
       </div>
 
       <header className="flex flex-col gap-4">
@@ -306,68 +297,66 @@ export default async function ArticleDetailPage({
         </Card.Content>
       </Card>
 
-      {commentsResult ? (
-        <section
-          id="comments"
-          className="mt-4 space-y-6"
-        >
-          <div className="flex gap-4">
-            <h3 className="text-3xl font-serif font-semibold">{t('commentsTitle')}</h3>
-            <Chip
-              size="md"
-              variant="soft"
-              color="accent"
-              className="rounded-xl"
-            >
-              {article.commentCount}
-            </Chip>
-          </div>
-          {currentUser ? (
-            <CommentForm
-              authorUsername={authorUsername}
-              slug={slug}
-              user={currentUser}
-            />
-          ) : (
-            <Card>
-              <CardContent>
-                <Link
-                  href="/login"
-                  className="font-serif text-lg underline"
-                >
-                  {t('loginToComment')}
-                </Link>
-              </CardContent>
-            </Card>
-          )}
-          {commentsResult.data.length === 0 && commentsResult.meta.total_items === 0 ? (
-            <p className="text-muted">{t('commentsEmpty')}</p>
-          ) : (
-            <div className="space-y-4">
-              {commentsResult.data.map((comment) => (
-                <CommentCard
-                  key={comment.id}
-                  comment={comment}
-                  articleAuthorId={article.author.id}
+      <section
+        id="comments"
+        className="mt-4 space-y-6"
+      >
+        <div className="flex gap-4">
+          <h3 className="text-3xl font-serif font-semibold">{t('commentsTitle')}</h3>
+          <Chip
+            size="md"
+            variant="soft"
+            color="accent"
+            className="rounded-xl"
+          >
+            {article.commentCount}
+          </Chip>
+        </div>
+        {currentUser ? (
+          <CommentForm
+            authorUsername={authorUsername}
+            slug={slug}
+            user={currentUser}
+          />
+        ) : (
+          <Card>
+            <CardContent>
+              <Link
+                href="/login"
+                className="font-serif text-lg underline"
+              >
+                {t('loginToComment')}
+              </Link>
+            </CardContent>
+          </Card>
+        )}
+        {comments.length === 0 && commentsMeta.total_items === 0 ? (
+          <p className="text-muted">{t('commentsEmpty')}</p>
+        ) : (
+          <div className="space-y-4">
+            {comments.map((comment) => (
+              <CommentCard
+                key={comment.id}
+                comment={comment}
+                articleAuthorId={article.author.id}
+                authorUsername={authorUsername}
+                slug={slug}
+                currentUser={currentUser}
+              />
+            ))}
+            {commentsMeta.total_items > 0 ? (
+              <div className="flex justify-center">
+                <CommentPagination
                   authorUsername={authorUsername}
                   slug={slug}
-                  currentUser={currentUser}
+                  page={commentsPage}
+                  pages={commentsMeta.pages}
                 />
-              ))}
-              {commentsResult.meta.total_items > 0 ? (
-                <div className="flex justify-center">
-                  <CommentPagination
-                    authorUsername={authorUsername}
-                    slug={slug}
-                    page={commentsPage}
-                    pages={commentsResult.meta.pages}
-                  />
-                </div>
-              ) : null}
-            </div>
-          )}
-        </section>
-      ) : null}
+              </div>
+            ) : null}
+          </div>
+        )}
+      </section>
     </main>
   );
 }
