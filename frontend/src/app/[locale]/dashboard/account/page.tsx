@@ -140,6 +140,8 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
               search=""
               order={order}
               category=""
+              pathname="/dashboard/account"
+              status={currentStatus === 'DRAFT' ? 'DRAFT' : 'PUBLISHED'}
             />
           </div>
         )}
