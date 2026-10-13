@@ -9,6 +9,7 @@ export type CreateCommentUseCaseInput = {
   slug: string;
   userId: number;
   message: string;
+  parentId?: number;
 };
 
 export class CreateCommentUseCase {
@@ -39,11 +40,27 @@ export class CreateCommentUseCase {
       throw new BusinessConflictError('Article has not been published.');
     }
 
+    let parentId: number | null = null;
+
+    if (input.parentId != null) {
+      const parent = await this.commentRepository.findById(input.parentId);
+
+      if (!parent || parent.articleId !== article.id) {
+        throw new EntityNotFoundError('Comment', input.parentId);
+      }
+
+      if (parent.parentId !== null) {
+        throw new BusinessConflictError('Replies can only be added to root comments.');
+      }
+
+      parentId = parent.id;
+    }
+
     return this.commentRepository.create({
       message: input.message,
       userId: input.userId,
       articleId: article.id,
-      parentId: null,
+      parentId,
     });
   }
 }
