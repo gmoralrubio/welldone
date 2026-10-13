@@ -5,9 +5,9 @@ import dynamic from 'next/dynamic';
 import { Card, CardContent, Input, TextArea } from '@heroui/react';
 import 'react-quill-new/dist/quill.snow.css';
 import { useTranslations } from 'next-intl';
-import { CATEGORY_SLUGS } from '@/app/[locale]/category/category.types';
+import { CATEGORY_SLUGS } from '@/lib/category/category.types';
 import { CategorySelector } from '@/app/[locale]/components/article-create/category-selector';
-import { ArticleDto } from '@/lib/articles.types'; 
+import { ArticleDto } from '@/lib/article/articles.types';
 
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 

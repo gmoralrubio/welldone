@@ -1,8 +1,6 @@
 'use client';
 
-
 import { ArticleOrder } from '@/lib/article/article-query';
-
 import { SearchField, Button } from '@heroui/react';
 import UserActions from './user-actions';
 import LocaleSwitcher from '@/app/[locale]/components/shared/locale-switcher';

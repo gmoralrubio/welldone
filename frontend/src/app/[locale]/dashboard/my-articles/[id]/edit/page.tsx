@@ -11,9 +11,9 @@ import { resolveLocale } from '@/i18n/locale-utils';
 export default async function EditArticlePage({ 
   params 
 }: { 
-  params: { id: string, locale: string } 
+  params: Promise<{ id: string, locale: string }>
 }) {
-  const { id, locale } = params;
+  const { id, locale } = await params;
 
   const safeLocale = resolveLocale(locale);
   
