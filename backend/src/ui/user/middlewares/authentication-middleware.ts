@@ -24,3 +24,26 @@ export const authenticationMiddleware = (
     throw new UnauthorizedError('Invalid Token');
   }
 };
+
+export const optionalAuthenticationMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const authToken = req.headers.authorization;
+
+  if (!authToken) {
+    next();
+    return;
+  }
+
+  const token = authToken.replace('Bearer ', '');
+  const securityService = new SecurityServiceImplementation();
+  const decodedToken = securityService.verifyJWT(token);
+
+  if (decodedToken) {
+    req.authorId = decodedToken.authorId;
+  }
+
+  next();
+};

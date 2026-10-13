@@ -24,12 +24,9 @@ export class CreateCommentUseCase {
   }
 
   async execute(input: CreateCommentUseCaseInput): Promise<Comment> {
-    const article = await this.articleRepository.findPublishedByAuthorAndSlug(
-      input.authorUsername,
-      input.slug
-    );
+    const article = await this.articleRepository.findByAuthorAndSlug(input);
 
-    if (!article) {
+    if (!article || article.status !== 'PUBLISHED') {
       throw new EntityNotFoundError('Article', input.slug);
     }
 

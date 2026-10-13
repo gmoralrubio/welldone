@@ -9,15 +9,15 @@ export const articleDetailController = async (
   next: NextFunction
 ) => {
   const prismaArticleRepository = new PrismaArticleRepository();
-  const findArticleUseCase = new FindArticleDetailUseCase(
-    prismaArticleRepository
-  );
+  const findArticleUseCase = new FindArticleDetailUseCase(prismaArticleRepository);
   try {
-    const { authorUsername, slug } = articleDetailValidationSchema.parse(
-      req.params
-    );
+    const { authorUsername, slug } = articleDetailValidationSchema.parse(req.params);
 
-    const article = await findArticleUseCase.execute({ authorUsername, slug });
+    const article = await findArticleUseCase.execute({
+      authorUsername,
+      slug,
+      userId: req.authorId,
+    });
     res.status(200).json({ article });
   } catch (error) {
     next(error);
