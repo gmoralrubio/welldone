@@ -109,6 +109,7 @@
       "articles": "Articles"
     },
     "following": "Following",
+    "draftChip": "DRAFT",
     "videoUnsupported": "Your browser cannot play this video.",
     "followers": "{count} followers",
     "follow": "Follow",

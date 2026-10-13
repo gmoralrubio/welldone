@@ -109,6 +109,7 @@
       "articles": "Artículos"
     },
     "following": "Siguiendo",
+    "draftChip": "DRAFT",
     "videoUnsupported": "Tu navegador no reproduce este vídeo.",
     "followers": "{count} seguidores",
     "follow": "Seguir",
