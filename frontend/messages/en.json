@@ -122,6 +122,7 @@
     "member": "Member",
     "author": "Author",
     "reply": "Reply",
+    "cancelReply": "Cancel",
     "commentsEmpty": "This article has no comments yet.",
     "commentsPaginationAria": "Comments pagination",
     "commentsPageSummary": "Page {page} of {total}",

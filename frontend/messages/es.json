@@ -122,6 +122,7 @@
     "member": "Miembro",
     "author": "Autor",
     "reply": "Responder",
+    "cancelReply": "Cancelar",
     "commentsEmpty": "Este artículo todavía no tiene comentarios.",
     "commentsPaginationAria": "Paginación de comentarios",
     "commentsPageSummary": "Página {page} de {total}",

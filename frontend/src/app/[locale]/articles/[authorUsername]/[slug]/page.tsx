@@ -337,6 +337,9 @@ export default async function ArticleDetailPage({
                 key={comment.id}
                 comment={comment}
                 articleAuthorId={article.author.id}
+                authorUsername={authorUsername}
+                slug={slug}
+                currentUser={currentUser}
               />
             ))}
             {commentsMeta.total_items > 0 ? (

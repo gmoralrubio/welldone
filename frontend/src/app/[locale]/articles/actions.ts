@@ -93,6 +93,17 @@ export async function createCommentAction(
   }
 
   const message = formData.get('message');
+  const parentIdValue = formData.get('parentId');
+  const payload: { message: FormDataEntryValue | null; parentId?: number } = {
+    message,
+  };
+
+  if (typeof parentIdValue === 'string' && parentIdValue.length > 0) {
+    const parentId = Number(parentIdValue);
+    if (Number.isInteger(parentId) && parentId > 0) {
+      payload.parentId = parentId;
+    }
+  }
 
   let response: Response;
   try {
@@ -104,7 +115,7 @@ export async function createCommentAction(
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`,
         },
-        body: JSON.stringify({ message }),
+        body: JSON.stringify(payload),
       }
     );
   } catch {
@@ -139,8 +150,6 @@ export async function createArticleAction(locale: string, formData: FormData) {
     featuredImageUrl: formData.get('featuredImageUrl') || null,
     featuredVideoUrl: formData.get('featuredVideoUrl') || null,
   };
-
-  console.log(payload);
 
   const response = await fetch(`${process.env.API_URL}/api/articles`, {
     method: 'POST',
