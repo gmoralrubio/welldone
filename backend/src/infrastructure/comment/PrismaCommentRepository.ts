@@ -51,6 +51,17 @@ export class PrismaCommentRepository implements CommentRepository {
     };
   }
 
+  async findById(id: number): Promise<Comment | null> {
+    const prismaComment = await this.prisma.comment.findUnique({
+      where: { id },
+      include: { user: { select: commentUserSelect } },
+    });
+
+    if (!prismaComment) return null;
+
+    return this.restore(prismaComment);
+  }
+
   async create(params: CreateCommentParams): Promise<Comment> {
     const prismaComment = await this.prisma.comment.create({
       data: {
