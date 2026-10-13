@@ -32,8 +32,17 @@ export async function getArticleByAuthorAndSlug(
   authorUsername: string,
   slug: string
 ): Promise<ArticleDto | null> {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('accessToken')?.value;
+
   const response = await fetch(
-    `${process.env.API_URL}/api/articles/${authorUsername}/${slug}`
+    `${process.env.API_URL}/api/articles/${authorUsername}/${slug}`,
+    {
+      headers: accessToken
+        ? { Authorization: `Bearer ${accessToken}` }
+        : undefined,
+      cache: accessToken ? 'no-store' : undefined,
+    }
   );
 
   if (response.status === 404) return null;
