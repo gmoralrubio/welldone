@@ -3,6 +3,8 @@
 import { Pagination } from '@heroui/react';
 import { useRouter } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
+import { commentsHref } from '@/lib/comment/comment-query';
+import { useEffect, useRef } from 'react';
 
 type CommentPaginationProps = {
   authorUsername: string;
@@ -10,12 +12,6 @@ type CommentPaginationProps = {
   page: number;
   pages: number;
 };
-
-function commentsHref(authorUsername: string, slug: string, page: number) {
-  const pathname = `/articles/${encodeURIComponent(authorUsername)}/${encodeURIComponent(slug)}`;
-  if (page <= 1) return pathname;
-  return `${pathname}?commentsPage=${page}`;
-}
 
 export function CommentPagination({
   authorUsername,
@@ -26,6 +22,14 @@ export function CommentPagination({
   const router = useRouter();
   const t = useTranslations('ArticleDetailPage');
   const totalPages = Math.max(pages, 1);
+  // Hace scroll a comentarios cuando se cambia de página, omitiendo el primer render
+  const previousPage = useRef(page);
+
+  useEffect(() => {
+    if (previousPage.current === page) return;
+    previousPage.current = page;
+    document.getElementById('comments')?.scrollIntoView({ block: 'start' });
+  }, [page]);
 
   return (
     <Pagination
@@ -39,7 +43,9 @@ export function CommentPagination({
         <Pagination.Item>
           <Pagination.Previous
             isDisabled={page <= 1}
-            onPress={() => router.push(commentsHref(authorUsername, slug, page - 1))}
+            onPress={() =>
+              router.push(commentsHref(authorUsername, slug, page - 1), { scroll: false })
+            }
           >
             <Pagination.PreviousIcon />
             <span>{t('commentsPrevious')}</span>
@@ -48,7 +54,9 @@ export function CommentPagination({
         <Pagination.Item>
           <Pagination.Next
             isDisabled={page >= totalPages}
-            onPress={() => router.push(commentsHref(authorUsername, slug, page + 1))}
+            onPress={() =>
+              router.push(commentsHref(authorUsername, slug, page + 1), { scroll: false })
+            }
           >
             <span>{t('commentsNext')}</span>
             <Pagination.NextIcon />
