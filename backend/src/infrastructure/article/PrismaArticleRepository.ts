@@ -9,6 +9,7 @@ import {
   PrismaArticleInclude,
 } from '@infrastructure/article/PrismaArticle.types';
 import { CreateArticleUseCaseInput } from '@domain/article/use-cases/create-article';
+import { FindArticleDetailUseCaseInput } from '@domain/article/use-cases/find-article-detail';
 
 const articleInclude = {
   author: {
@@ -83,13 +84,12 @@ export class PrismaArticleRepository implements ArticleRepository {
       total: articlesCount,
     };
   }
-  async findPublishedByAuthorAndSlug(
-    authorUsername: string,
-    slug: string
+  async findByAuthorAndSlug(
+    criteria: FindArticleDetailUseCaseInput
   ): Promise<Article | null> {
+    const { authorUsername, slug } = criteria;
     const articlesPrisma = await this.prisma.article.findFirst({
       where: {
-        status: 'PUBLISHED',
         author: { username: authorUsername },
         slug,
       },
