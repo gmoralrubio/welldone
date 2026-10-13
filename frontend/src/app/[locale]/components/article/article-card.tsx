@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { ArticleCategory } from '@/app/[locale]/components/article/article-category';
 import { Link } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
-import { readingMinutes } from '@/lib/article/article-presenters';
+import { articleHref, readingMinutes } from '@/lib/article/article-presenters';
 import { formatAvatarLetter } from '@/lib/shared/format-avatar-letter';
 import { useRelativeTime } from '@/app/[locale]/hooks/useRelativeTime';
 import { ArticleCardPublishedActions } from '@/app/[locale]/components/article/article-card-published-actions';
@@ -17,7 +17,7 @@ type ArticleCardProps = {
 };
 
 export function ArticleCard({ article }: ArticleCardProps) {
-  const href = `/articles/${article.author.username}/${article.slug}`;
+  const href = articleHref(article);
   const minutes = readingMinutes(article.intro, article.content);
   const t = useTranslations('ArticleCard');
 

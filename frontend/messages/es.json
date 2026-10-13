@@ -109,7 +109,6 @@
       "articles": "Artículos"
     },
     "following": "Siguiendo",
-    "draftChip": "DRAFT",
     "videoUnsupported": "Tu navegador no reproduce este vídeo.",
     "followers": "{count} seguidores",
     "follow": "Seguir",
@@ -250,7 +249,11 @@
       "drafts": "No tienes ningún borrador guardado.",
       "published": "Aún no has publicado ningún artículo."
     },
-    "editProfile": "Editar perfil"
+    "editProfile": "Editar perfil",
+    "backToArticles": "Volver a Mis artículos",
+    "statusDraft": "Borrador",
+    "statusPublished": "Publicado",
+    "videoUnsupported": "Tu navegador no reproduce este vídeo."
   },
   "Account": {
     "title": "Mi cuenta",
