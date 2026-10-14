@@ -31,8 +31,9 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
 export default async function ArticlesPage({ searchParams }: ArticlePageProps) {
   const queryParams = await searchParams;
   const criteria = parseArticleQuery(queryParams);
-  const { data, meta } = await getArticles(queryParams);
-  const t = await getTranslations('ArticlesPage');
+  const searchTooShort = criteria.search.length > 0 && criteria.search.length < 3;
+  const articles = searchTooShort ? null : await getArticles(queryParams);
+  const data = articles?.data ?? [];
   // Primer articulo como destacado
   const featured =
     criteria.page === 1 && criteria.search === '' && criteria.category.length === 0
@@ -40,6 +41,7 @@ export default async function ArticlesPage({ searchParams }: ArticlePageProps) {
       : undefined;
   // Resto de artículos
   const feed = featured ? data.slice(1) : data;
+  const t = await getTranslations('ArticlesPage');
 
   return (
     <div className="flex min-h-full flex-1 flex-col font-sans text-foreground">
@@ -51,7 +53,14 @@ export default async function ArticlesPage({ searchParams }: ArticlePageProps) {
         {featured ? <ArticleHero article={featured} /> : null}
         <div className="grid items-start gap-10 py-4 lg:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)]">
           <section className="min-w-0">
-            {feed.length === 0 ? (
+            {searchTooShort ? (
+              <p
+                role="alert"
+                className="mt-10 bg-white p-8 text-center text-muted"
+              >
+                {t('searchTooShort')}
+              </p>
+            ) : feed.length === 0 ? (
               <EmptyState className="mt-10 bg-white p-8 text-center text-muted">
                 {data.length === 0 ? t('emptySearch') : t('emptyPage')}
               </EmptyState>
@@ -65,13 +74,15 @@ export default async function ArticlesPage({ searchParams }: ArticlePageProps) {
                 ))}
               </div>
             )}
-            <ArticlePagination
-              page={criteria.page}
-              pages={meta.pages}
-              search={criteria.search}
-              order={criteria.order}
-              category={criteria.category}
-            />
+            {articles ? (
+              <ArticlePagination
+                page={criteria.page}
+                pages={articles.meta.pages}
+                search={criteria.search}
+                order={criteria.order}
+                category={criteria.category}
+              />
+            ) : null}
           </section>
           <SiteSidebar
             search={criteria.search}

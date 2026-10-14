@@ -55,6 +55,7 @@
   },
   "ArticlesPage": {
     "emptySearch": "No articles match this search.",
+    "searchTooShort": "Enter at least 3 characters to search.",
     "emptyPage": "No more articles on this page.",
     "paginationAria": "Article pagination",
     "pageSummary": "Page {page} of {total}",
