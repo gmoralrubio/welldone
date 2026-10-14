@@ -2,6 +2,7 @@ import { cookies } from 'next/headers';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { redirect } from '@/i18n/navigation';
 import AccountForm from './account-form';
+import DeleteAccount from './delete-account';
 
 interface UserProfile {
   id: number;
@@ -59,6 +60,7 @@ export default async function AccountPage() {
             />
           </div>
         </section>
+        <DeleteAccount />
       </div>
 
       <aside className="hidden lg:block lg:w-80 lg:shrink-0" />
