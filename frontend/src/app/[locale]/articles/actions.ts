@@ -43,19 +43,34 @@ export async function getArticleByAuthorAndSlug(
   return data.article;
 }
 
+function isCommentPage(value: unknown): value is PaginatedResponse<CommentDto> {
+  if (!value || typeof value !== 'object') return false;
+
+  const page = value as PaginatedResponse<CommentDto>;
+
+  return Array.isArray(page.data) && !!page.meta && typeof page.meta === 'object';
+}
+
 export async function getArticleComments(
   authorUsername: string,
   slug: string,
   page: number
-): Promise<PaginatedResponse<CommentDto>> {
+): Promise<PaginatedResponse<CommentDto> | null> {
   const params = new URLSearchParams({ page: String(page) });
-  const response = await fetch(
-    `${process.env.API_URL}/api/articles/${authorUsername}/${slug}/comments?${params.toString()}`
-  );
 
-  if (!response.ok) throw new Error('No se pudieron cargar los comentarios');
+  try {
+    const response = await fetch(
+      `${process.env.API_URL}/api/articles/${authorUsername}/${slug}/comments?${params.toString()}`
+    );
 
-  return response.json();
+    if (!response.ok) return null;
+
+    const data: unknown = await response.json();
+
+    return isCommentPage(data) ? data : null;
+  } catch {
+    return null;
+  }
 }
 
 type CommentFormUser = {

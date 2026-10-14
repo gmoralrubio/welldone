@@ -124,6 +124,7 @@
     "reply": "Responder",
     "cancelReply": "Cancelar",
     "commentsEmpty": "Este artículo todavía no tiene comentarios.",
+    "commentsLoadError": "No se han podido cargar los comentarios.",
     "commentsPaginationAria": "Paginación de comentarios",
     "commentsPageSummary": "Página {page} de {total}",
     "commentsPrevious": "Anterior",
