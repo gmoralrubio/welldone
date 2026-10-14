@@ -271,6 +271,17 @@
     "editTitle": "Editar información personal",
     "editSubtitle": "Modifica los campos que quieras actualizar.",
     "cancel": "Cancelar",
+    "delete": {
+      "title": "Eliminar mi cuenta",
+      "description": "Si eliminas tu cuenta, se eliminarán permanentemente tus datos, artículos y comentarios. Esta acción no se puede deshacer.",
+      "button": "Eliminar mi cuenta",
+      "modalTitle": "¿Seguro que quieres eliminar tu cuenta?",
+      "modalDescription": "Esta acción es irreversible. Tu cuenta, tus artículos y tus comentarios se eliminarán definitivamente.",
+      "confirm": "Eliminar cuenta",
+      "confirming": "Eliminando...",
+      "cancel": "Cancelar",
+      "error": "No se ha podido eliminar tu cuenta. Inténtalo de nuevo."
+    },
     "errors": {
       "emailInUse": "Este correo electrónico ya está en uso.",
       "usernameInUse": "Este nombre de usuario ya está en uso.",

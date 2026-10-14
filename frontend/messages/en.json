@@ -271,6 +271,17 @@
     "editTitle": "Edit personal information",
     "editSubtitle": "Update the information you want to change.",
     "cancel": "Cancel",
+    "delete": {
+      "title": "Delete my account",
+      "description": "If you delete your account, your data, articles, and comments will be permanently deleted. This action cannot be undone.",
+      "button": "Delete my account",
+      "modalTitle": "Are you sure you want to delete your account?",
+      "modalDescription": "This action is irreversible. Your account, articles, and comments will be permanently deleted.",
+      "confirm": "Delete account",
+      "confirming": "Deleting...",
+      "cancel": "Cancel",
+      "error": "Your account could not be deleted. Please try again."
+    },
     "errors": {
       "emailInUse": "This email address is already in use.",
       "usernameInUse": "This username is already in use.",

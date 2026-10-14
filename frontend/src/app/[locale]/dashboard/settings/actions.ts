@@ -54,3 +54,28 @@ export async function checkAccountAvailability(
 
   return data.available;
 }
+
+export async function deleteAccount(): Promise<{ status: number }> {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('accessToken')?.value;
+
+  if (!accessToken) {
+    return { status: 401 };
+  }
+
+  const response = await fetch(`${process.env.API_URL}/api/users/me`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+    cache: 'no-store',
+  });
+
+  if (response.status !== 204) {
+    return { status: response.status };
+  }
+
+  cookieStore.delete('accessToken');
+
+  return { status: 204 };
+}
