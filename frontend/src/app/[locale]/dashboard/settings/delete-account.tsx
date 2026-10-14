@@ -52,14 +52,22 @@ export default function DeleteAccount() {
 
   return (
     <section className="w-full max-w-xl rounded-xl bg-white p-6 shadow-md sm:p-8">
-      <h2 className="font-serif text-2xl font-semibold text-black">{t('title')}</h2>
+      <div className="mb-6">
+        <div className="flex items-center gap-3">
+          <h2 className="font-serif text-[30px] font-medium leading-[38px] tracking-tight text-black">
+            {t('title')}
+          </h2>
+        </div>
 
-      <p className="mt-3 text-sm leading-6 text-[#45464d]">{t('description')}</p>
+        <p className="mt-2 max-w-md text-[15px] leading-[22px] text-[#45464d]">
+          {t('description')}
+        </p>
+      </div>
 
       <button
         type="button"
         onClick={openDialog}
-        className="mt-6 rounded-lg bg-red-700 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-red-800"
+        className="mt-7 flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-red-700 px-5 text-sm font-semibold text-white transition-colors hover:bg-red-800"
       >
         {t('button')}
       </button>

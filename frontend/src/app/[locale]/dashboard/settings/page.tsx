@@ -47,9 +47,8 @@ export default async function AccountPage() {
             {t('settingsTitle')}
           </h1>
         </header>
-
         <section className="flex w-full justify-center">
-          <div className="w-full max-w-xl">
+          <div className="flex w-full max-w-xl flex-col gap-8">
             <AccountForm
               user={{
                 name: user.name,
@@ -58,9 +57,10 @@ export default async function AccountPage() {
                 email: user.email,
               }}
             />
+
+            <DeleteAccount />
           </div>
         </section>
-        <DeleteAccount />
       </div>
 
       <aside className="hidden lg:block lg:w-80 lg:shrink-0" />
