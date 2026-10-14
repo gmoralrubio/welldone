@@ -271,6 +271,17 @@
     "editTitle": "Editar información personal",
     "editSubtitle": "Modifica los campos que quieras actualizar.",
     "cancel": "Cancelar",
+    "deactivate": {
+      "title": "Desactivar mi cuenta",
+      "description": "Si desactivas tu cuenta, se eliminarán permanentemente tus datos, artículos y comentarios. Esta acción no se puede deshacer.",
+      "button": "Desactivar mi cuenta",
+      "modalTitle": "¿Seguro que quieres desactivar tu cuenta?",
+      "modalDescription": "Esta acción es irreversible. Tu cuenta, tus artículos y tus comentarios se eliminarán definitivamente.",
+      "confirm": "Desactivar cuenta",
+      "confirming": "Desactivando...",
+      "cancel": "Cancelar",
+      "error": "No se ha podido desactivar tu cuenta. Inténtalo de nuevo."
+    },
     "errors": {
       "emailInUse": "Este correo electrónico ya está en uso.",
       "usernameInUse": "Este nombre de usuario ya está en uso.",
