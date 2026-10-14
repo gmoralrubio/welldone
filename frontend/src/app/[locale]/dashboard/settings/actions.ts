@@ -2,11 +2,7 @@
 
 import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
-import { redirect } from '@/i18n/navigation';
-import { resolveLocale } from '@/i18n/locale-utils';
 import type { AccountFormData } from './schema';
-
-// EDICION DE DATOS DE USUARIO
 
 export async function updateAccount(data: AccountFormData) {
   const cookieStore = await cookies();
@@ -41,8 +37,6 @@ export async function updateAccount(data: AccountFormData) {
   };
 }
 
-// VER SI ESTÁ DISPONIBLE USUARIO Y EMAIL AL ACTUALIZAR DATOS DE USUARIO
-
 export async function checkAccountAvailability(
   field: 'username' | 'email',
   value: string
@@ -61,12 +55,7 @@ export async function checkAccountAvailability(
   return data.available;
 }
 
-// BORRADO DE CUENTA
-type DeleteAccountResult = {
-  status: number;
-};
-
-export async function deleteAccount(locale: string): Promise<DeleteAccountResult> {
+export async function deleteAccount(): Promise<{ status: number }> {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
 
@@ -88,8 +77,5 @@ export async function deleteAccount(locale: string): Promise<DeleteAccountResult
 
   cookieStore.delete('accessToken');
 
-  return redirect({
-    href: '/articles',
-    locale: resolveLocale(locale),
-  });
+  return { status: 204 };
 }
