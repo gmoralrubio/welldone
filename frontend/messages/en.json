@@ -271,16 +271,16 @@
     "editTitle": "Edit personal information",
     "editSubtitle": "Update the information you want to change.",
     "cancel": "Cancel",
-    "deactivate": {
-      "title": "Deactivate my account",
-      "description": "If you deactivate your account, your data, articles, and comments will be permanently deleted. This action cannot be undone.",
-      "button": "Deactivate my account",
-      "modalTitle": "Are you sure you want to deactivate your account?",
+    "delete": {
+      "title": "Delete my account",
+      "description": "If you delete your account, your data, articles, and comments will be permanently deleted. This action cannot be undone.",
+      "button": "Delete my account",
+      "modalTitle": "Are you sure you want to delete your account?",
       "modalDescription": "This action is irreversible. Your account, articles, and comments will be permanently deleted.",
-      "confirm": "Deactivate account",
-      "confirming": "Deactivating...",
+      "confirm": "Delete account",
+      "confirming": "Deleting...",
       "cancel": "Cancel",
-      "error": "Your account could not be deactivated. Please try again."
+      "error": "Your account could not be deleted. Please try again."
     },
     "errors": {
       "emailInUse": "This email address is already in use.",
