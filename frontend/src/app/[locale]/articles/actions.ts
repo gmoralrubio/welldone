@@ -139,10 +139,7 @@ export async function createCommentAction(
   }
 
   if (!response.ok) {
-    const errorData = await response.json().catch(() => null);
-    const error =
-      errorData && typeof errorData.error === 'string' ? errorData.error : 'generic';
-    return { error };
+    return { error: 'generic' };
   }
 
   revalidatePath(`/${resolveLocale(locale)}/articles/${authorUsername}/${slug}`);
