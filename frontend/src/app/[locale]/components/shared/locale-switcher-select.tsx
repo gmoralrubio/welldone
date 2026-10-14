@@ -1,6 +1,6 @@
 'use client';
 
-import { ListBox, Select, type Key } from '@heroui/react';
+import { Tabs, type Key } from '@heroui/react';
 import { useParams } from 'next/navigation';
 import { Locale } from 'next-intl';
 import { useTransition } from 'react';
@@ -45,31 +45,38 @@ export default function LocaleSwitcherSelect({ items, value, label }: Props) {
   }
 
   return (
-    <Select
-      aria-label={label}
-      className="min-w-28"
+    <Tabs
       isDisabled={isPending}
-      value={value}
-      onChange={onSelectChange}
+      selectedKey={value}
+      onSelectionChange={onSelectChange}
     >
-      <Select.Trigger>
-        <Select.Value />
-        <Select.Indicator />
-      </Select.Trigger>
-      <Select.Popover>
-        <ListBox>
+      <Tabs.ListContainer className="bg-black/5">
+        <Tabs.List
+          aria-label={label}
+          className="space-x-1"
+        >
           {items.map((item) => (
-            <ListBox.Item
+            <Tabs.Tab
               key={item.id}
               id={item.id}
-              textValue={item.label}
+              aria-label={item.label}
+              className=" text-xs px-2 py-0"
             >
-              {item.label}
-              <ListBox.ItemIndicator />
-            </ListBox.Item>
+              {item.id.toUpperCase()}
+              <Tabs.Indicator />
+            </Tabs.Tab>
           ))}
-        </ListBox>
-      </Select.Popover>
-    </Select>
+        </Tabs.List>
+      </Tabs.ListContainer>
+      {items.map((item) => (
+        <Tabs.Panel
+          key={item.id}
+          id={item.id}
+          className="hidden"
+        >
+          {null}
+        </Tabs.Panel>
+      ))}
+    </Tabs>
   );
 }

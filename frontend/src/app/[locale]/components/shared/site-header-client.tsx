@@ -45,7 +45,7 @@ export function SiteHeaderClient({
                 defaultValue={search}
                 name="search"
               >
-                <SearchField.Group className="h-7 rounded bg-field">
+                <SearchField.Group className="h-9 rounded bg-field">
                   <SearchField.SearchIcon />
                   <SearchField.Input
                     placeholder={t('searchPlaceholder')}
@@ -61,10 +61,9 @@ export function SiteHeaderClient({
                 />
               ) : null}
             </form>
-          </div>
-          <div>
             <LocaleSwitcher />
           </div>
+
           <UserActions isAuthenticated={isAuthenticated} />
         </div>
       </div>
