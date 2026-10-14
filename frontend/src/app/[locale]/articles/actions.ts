@@ -37,7 +37,7 @@ export async function getArticleByAuthorAndSlug(
     `${process.env.API_URL}/api/articles/${authorUsername}/${slug}`
   );
 
-  if (response.status === 404) return null;
+  if (response.status === 404 || response.status === 409) return null;
   if (!response.ok) throw new Error('No se pudo cargar el artículo');
   const data: { article: ArticleDto } = await response.json();
   return data.article;
