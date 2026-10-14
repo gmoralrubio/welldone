@@ -2,7 +2,11 @@
 
 import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
+import { redirect } from '@/i18n/navigation';
+import { resolveLocale } from '@/i18n/locale-utils';
 import type { AccountFormData } from './schema';
+
+// EDICION DE DATOS DE USUARIO
 
 export async function updateAccount(data: AccountFormData) {
   const cookieStore = await cookies();
@@ -37,6 +41,8 @@ export async function updateAccount(data: AccountFormData) {
   };
 }
 
+// VER SI ESTÁ DISPONIBLE USUARIO Y EMAIL AL ACTUALIZAR DATOS DE USUARIO
+
 export async function checkAccountAvailability(
   field: 'username' | 'email',
   value: string
@@ -53,4 +59,37 @@ export async function checkAccountAvailability(
   const data: { available: boolean } = await response.json();
 
   return data.available;
+}
+
+// BORRADO DE CUENTA
+type DeleteAccountResult = {
+  status: number;
+};
+
+export async function deleteAccount(locale: string): Promise<DeleteAccountResult> {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('accessToken')?.value;
+
+  if (!accessToken) {
+    return { status: 401 };
+  }
+
+  const response = await fetch(`${process.env.API_URL}/api/users/me`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+    cache: 'no-store',
+  });
+
+  if (response.status !== 204) {
+    return { status: response.status };
+  }
+
+  cookieStore.delete('accessToken');
+
+  return redirect({
+    href: '/articles',
+    locale: resolveLocale(locale),
+  });
 }
