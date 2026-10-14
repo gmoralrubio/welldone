@@ -122,6 +122,7 @@
     "member": "Member",
     "author": "Author",
     "reply": "Reply",
+    "cancelReply": "Cancel",
     "commentsEmpty": "This article has no comments yet.",
     "commentsPaginationAria": "Comments pagination",
     "commentsPageSummary": "Page {page} of {total}",
@@ -249,7 +250,11 @@
       "drafts": "You have no saved drafts.",
       "published": "You haven't published any articles yet."
     },
-    "editProfile": "Edit profile"
+    "editProfile": "Edit profile",
+    "backToArticles": "Back to My articles",
+    "statusDraft": "Draft",
+    "statusPublished": "Published",
+    "videoUnsupported": "Your browser cannot play this video."
   },
   "Account": {
     "title": "My account",

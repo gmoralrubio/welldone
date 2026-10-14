@@ -7,3 +7,9 @@ export function parseCommentsQuery(value: SearchParamValue): number {
 
   return validatePage(page);
 }
+
+export function commentsHref(authorUsername: string, slug: string, page: number) {
+  const pathname = `/articles/${encodeURIComponent(authorUsername)}/${encodeURIComponent(slug)}`;
+  if (page <= 1) return pathname;
+  return `${pathname}?commentsPage=${page}`;
+}

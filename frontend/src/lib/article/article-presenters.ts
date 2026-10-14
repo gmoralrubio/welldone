@@ -1,3 +1,17 @@
+import { ArticleStatus, type ArticleDto } from '@/lib/article/articles.types';
+
+type ArticleHrefSource = Pick<ArticleDto, 'status' | 'slug'> & {
+  author: Pick<ArticleDto['author'], 'username'>;
+};
+
+export function articleHref(article: ArticleHrefSource): string {
+  if (article.status === ArticleStatus.DRAFT) {
+    return `/dashboard/my-articles/${article.slug}`;
+  }
+
+  return `/articles/${article.author.username}/${article.slug}`;
+}
+
 const dateFormatter = new Intl.DateTimeFormat('es', {
   day: '2-digit',
   month: 'long',

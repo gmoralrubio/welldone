@@ -30,6 +30,11 @@ export const findMyArticlesValidationSchema = z.object({
   status: z.enum(['PUBLISHED', 'DRAFT']).optional(),
 });
 
+export const myArticleValidationSchema = z.object({
+  slug: z.string('Slug is required').min(3, 'Minimum slug length is 3 characters'),
+  authorId: z.number('Debes estar autenticado para ver tus artículos'),
+});
+
 export const articleDetailValidationSchema = z.object({
   authorUsername: z
     .string('Author is required')

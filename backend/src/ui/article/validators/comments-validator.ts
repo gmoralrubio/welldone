@@ -16,6 +16,7 @@ export const createCommentValidationSchema = z.object({
     .trim()
     .min(1, 'El comentario no puede estar vacío')
     .max(2000, 'El comentario no puede superar los 2000 caracteres'),
+  parentId: z.number().int().positive().optional(),
 });
 
 export const commentPaginationValidationSchema = z.object({

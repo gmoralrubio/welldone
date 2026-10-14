@@ -1,5 +1,6 @@
 'use server';
 
+import { articleHref } from '@/lib/article/article-presenters';
 import { articleQueryParams, parseArticleQuery } from '@/lib/article/article-query';
 import { ArticleDto } from '@/lib/article/articles.types';
 import { CommentDto } from '@/lib/comment/comments.types';
@@ -93,6 +94,17 @@ export async function createCommentAction(
   }
 
   const message = formData.get('message');
+  const parentIdValue = formData.get('parentId');
+  const payload: { message: FormDataEntryValue | null; parentId?: number } = {
+    message,
+  };
+
+  if (typeof parentIdValue === 'string' && parentIdValue.length > 0) {
+    const parentId = Number(parentIdValue);
+    if (Number.isInteger(parentId) && parentId > 0) {
+      payload.parentId = parentId;
+    }
+  }
 
   let response: Response;
   try {
@@ -104,7 +116,7 @@ export async function createCommentAction(
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`,
         },
-        body: JSON.stringify({ message }),
+        body: JSON.stringify(payload),
       }
     );
   } catch {
@@ -140,8 +152,6 @@ export async function createArticleAction(locale: string, formData: FormData) {
     featuredVideoUrl: formData.get('featuredVideoUrl') || null,
   };
 
-  console.log(payload);
-
   const response = await fetch(`${process.env.API_URL}/api/articles`, {
     method: 'POST',
     headers: {
@@ -159,7 +169,7 @@ export async function createArticleAction(locale: string, formData: FormData) {
   const { article } = await response.json();
 
   redirect({
-    href: `/articles/${article.author.username}/${article.slug}`,
+    href: articleHref(article),
     locale: resolveLocale(locale),
   });
 }
@@ -194,4 +204,26 @@ export async function getMyArticlesAction(
   if (!response.ok) throw new Error('No se pudieron cargar tus artículos');
 
   return await response.json();
+}
+
+export async function getMyArticleBySlug(slug: string): Promise<ArticleDto | null> {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('accessToken')?.value;
+
+  if (!accessToken) {
+    throw new Error('No autorizado');
+  }
+
+  const response = await fetch(`${process.env.API_URL}/api/articles/me/${slug}`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+    cache: 'no-store',
+  });
+
+  if (response.status === 404) return null;
+  if (!response.ok) throw new Error('No se pudo cargar el artículo');
+
+  const data: { article: ArticleDto } = await response.json();
+  return data.article;
 }

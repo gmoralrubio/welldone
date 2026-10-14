@@ -19,7 +19,7 @@ export async function createCommentController(
     }
 
     const { authorUsername, slug } = findCommentValidationSchema.parse(req.params);
-    const { message } = createCommentValidationSchema.parse(req.body);
+    const { message, parentId } = createCommentValidationSchema.parse(req.body);
 
     const commentRepository = new PrismaCommentRepository();
     const articleRepository = new PrismaArticleRepository();
@@ -33,6 +33,7 @@ export async function createCommentController(
       slug,
       userId: req.authorId,
       message,
+      parentId,
     });
 
     res.status(201).json({ comment });

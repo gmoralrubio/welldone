@@ -22,16 +22,11 @@ export class FindCommentsUseCase {
     this.articleRepository = articleRepository;
   }
 
-  async execute(
-    params: FindCommentsUseCaseInput
-  ): Promise<FindCommentsResponse> {
-    const article = await this.articleRepository.findPublishedByAuthorAndSlug(
-      params.authorUsername,
-      params.slug
-    );
+  async execute(criteria: FindCommentsUseCaseInput): Promise<FindCommentsResponse> {
+    const article = await this.articleRepository.findPublishedArticleBy(criteria);
 
-    if (!article) {
-      throw new EntityNotFoundError('Article', params.slug);
+    if (!article || article.status !== 'PUBLISHED') {
+      throw new EntityNotFoundError('Article', criteria.slug);
     }
 
     const now = new Date();
@@ -42,8 +37,8 @@ export class FindCommentsUseCase {
 
     return this.commentRepository.findComments({
       articleId: article.id,
-      page: params.page,
-      limit: params.limit,
+      page: criteria.page,
+      limit: criteria.limit,
     });
   }
 }

@@ -2,7 +2,6 @@
 
 import { createCommentAction } from '@/app/[locale]/articles/actions';
 import { formatAvatarLetter } from '@/lib/shared/format-avatar-letter';
-import { Bold, Code, QuoteOpen } from '@gravity-ui/icons';
 import {
   Avatar,
   Button,
@@ -15,7 +14,7 @@ import {
 import { useLocale, useTranslations } from 'next-intl';
 import { useActionState } from 'react';
 
-type CommentFormUser = {
+export type CommentFormUser = {
   name: string;
   surname: string;
 };
@@ -24,11 +23,19 @@ type CommentFormProps = {
   authorUsername: string;
   slug: string;
   user: CommentFormUser;
+  parentId?: number;
+  onCancel?: () => void;
 };
 
 const initialState = { error: null as string | null };
 
-export function CommentForm({ authorUsername, slug, user }: CommentFormProps) {
+export function CommentForm({
+  authorUsername,
+  slug,
+  user,
+  parentId,
+  onCancel,
+}: CommentFormProps) {
   const t = useTranslations('ArticleDetailPage');
   const locale = useLocale();
   const [state, formAction, pending] = useActionState(
@@ -43,6 +50,13 @@ export function CommentForm({ authorUsername, slug, user }: CommentFormProps) {
 
   return (
     <form action={formAction}>
+      {parentId != null ? (
+        <input
+          type="hidden"
+          name="parentId"
+          value={parentId}
+        />
+      ) : null}
       <Card>
         <CardHeader className="flex flex-row items-center gap-2">
           <Avatar
@@ -63,23 +77,28 @@ export function CommentForm({ authorUsername, slug, user }: CommentFormProps) {
             fullWidth
             required
             name="message"
-            placeholder={t('replyPlaceholder')}
+            placeholder={parentId != null ? t('writeReply') : t('replyPlaceholder')}
             variant="secondary"
             disabled={pending}
             aria-invalid={errorMessage ? true : undefined}
           />
           {errorMessage ? <p className="text-sm text-danger">{errorMessage}</p> : null}
         </CardContent>
-        <CardFooter>
-          <div className="flex flex-row items-center gap-4">
-            <Bold className="text-muted hover:text-black" />
-            <QuoteOpen className="text-muted hover:text-black" />
-            <Code className="text-muted hover:text-black" />
-          </div>
+        <CardFooter className="flex justify-end gap-2">
+          {onCancel ? (
+            <Button
+              type="button"
+              variant="ghost"
+              isDisabled={pending}
+              onPress={onCancel}
+            >
+              {t('cancelReply')}
+            </Button>
+          ) : null}
           <Button
             type="submit"
             isDisabled={pending}
-            className="bg-black text-white ml-auto mt-2"
+            className="bg-black text-white mt-2"
           >
             {t('publishReply')}
           </Button>
