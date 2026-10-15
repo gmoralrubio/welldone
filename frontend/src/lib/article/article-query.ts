@@ -7,9 +7,12 @@ export type ArticleOrder = 'asc' | 'desc';
 export type ArticleListPathname =
   | '/articles'
   | '/dashboard/account'
-  | '/dashboard/my-articles';
+  | '/dashboard/my-articles'
+  | `/articles/${string}`;
 
 export type ArticleListStatus = 'PUBLISHED' | 'DRAFT';
+
+const MIN_SEARCH_LENGTH = 3;
 
 export type ArticleQuery = {
   search: string;
@@ -18,6 +21,10 @@ export type ArticleQuery = {
   order: ArticleOrder;
   category: CategorySlug | '';
 };
+
+export function isSearchTooShort(search: string): boolean {
+  return search.length > 0 && search.length < MIN_SEARCH_LENGTH;
+}
 
 export function parseArticleQuery(
   queryParams: Record<string, SearchParamValue>
