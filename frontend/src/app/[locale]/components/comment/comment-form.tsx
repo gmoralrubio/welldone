@@ -43,10 +43,7 @@ export function CommentForm({
     initialState
   );
 
-  const errorMessage =
-    state.error === 'generic' || state.error === 'unauthorized'
-      ? t('commentError')
-      : state.error;
+  const errorMessage = state.error ? t('commentError') : null;
 
   return (
     <form action={formAction}>
@@ -82,7 +79,14 @@ export function CommentForm({
             disabled={pending}
             aria-invalid={errorMessage ? true : undefined}
           />
-          {errorMessage ? <p className="text-sm text-danger">{errorMessage}</p> : null}
+          {errorMessage ? (
+            <p
+              role="alert"
+              className="text-sm text-danger"
+            >
+              {errorMessage}
+            </p>
+          ) : null}
         </CardContent>
         <CardFooter className="flex justify-end gap-2">
           {onCancel ? (

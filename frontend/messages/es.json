@@ -55,6 +55,7 @@
   },
   "ArticlesPage": {
     "emptySearch": "No hay artículos publicados con esta búsqueda.",
+    "searchTooShort": "Escribe al menos 3 caracteres para buscar.",
     "emptyPage": "No hay más artículos en esta página.",
     "paginationAria": "Paginación de artículos",
     "pageSummary": "Página {page} de {total}",
@@ -124,6 +125,7 @@
     "reply": "Responder",
     "cancelReply": "Cancelar",
     "commentsEmpty": "Este artículo todavía no tiene comentarios.",
+    "commentsLoadError": "No se han podido cargar los comentarios.",
     "commentsPaginationAria": "Paginación de comentarios",
     "commentsPageSummary": "Página {page} de {total}",
     "commentsPrevious": "Anterior",
