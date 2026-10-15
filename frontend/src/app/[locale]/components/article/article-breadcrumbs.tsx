@@ -25,7 +25,7 @@ export function ArticleBreadcrumbs({ current, author }: ArticleBreadcrumbsProps)
   return (
     <Breadcrumbs
       aria-label={t('ariaLabel')}
-      className="w-full min-w-0 max-w-full flex-wrap"
+      className="w-full min-w-0 flex flex-wrap"
     >
       <Breadcrumbs.Item
         className="uppercase"
@@ -52,8 +52,8 @@ export function ArticleBreadcrumbs({ current, author }: ArticleBreadcrumbsProps)
           </span>
         </Breadcrumbs.Item>
       ) : null}
-      <Breadcrumbs.Item className="min-w-0 uppercase">
-        <span className="block max-w-full truncate text-xs">{slugify(current)}</span>
+      <Breadcrumbs.Item className="min-w-0 max-w-full shrink! overflow-hidden uppercase **:data-slot=link]]:block **:data-slot=link]]:min-w-0 **:data-[slot=link]:max-w-full **:data-[slot=link]:overflow-hidden">
+        <span className="block w-full min-w-0 truncate text-xs">{slugify(current)}</span>
       </Breadcrumbs.Item>
     </Breadcrumbs>
   );

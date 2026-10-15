@@ -78,7 +78,7 @@ export default async function ArticleDetailPage({
   const authorName = `${article.author.name} ${article.author.surname}`;
 
   return (
-    <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-8 px-6 py-10">
+    <main className="mx-auto flex w-full min-w-0 max-w-4xl flex-1 flex-col gap-8 px-6 py-10">
       <ArticleBreadcrumbs
         author={article.author}
         current={article.title}
