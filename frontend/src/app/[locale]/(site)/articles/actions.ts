@@ -96,6 +96,7 @@ export async function getArticleComments(
 type CommentFormUser = {
   name: string;
   surname: string;
+  username: string;
 };
 
 export async function getCommentAuthor(

@@ -1,15 +1,15 @@
 'use client';
 
-import { readingMinutes } from '@/lib/article/article-presenters';
+import { authorArticlesHref, readingMinutes } from '@/lib/article/article-presenters';
 import { ArticleDto } from '@/lib/article/articles.types';
-import { Avatar, Button, Card } from '@heroui/react';
+import { Button, Card } from '@heroui/react';
 import { ArrowUpFromSquare, Bookmark, Clock, Comment } from '@gravity-ui/icons';
 import Image from 'next/image';
 import { ArticleCategory } from '@/app/[locale]/components/article/article-category';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { useRelativeTime } from '@/app/[locale]/hooks/useRelativeTime';
-import { formatAvatarLetter } from '@/lib/shared/format-avatar-letter';
+import { UserAvatar } from '@/app/[locale]/components/user/user-avatar';
 
 type EditorialHeroProps = {
   article: ArticleDto;
@@ -75,19 +75,24 @@ export function ArticleHero({ article }: EditorialHeroProps) {
           </div>
           <div className="flex items-center justify-between gap-4 pt-4">
             <div className="flex items-center gap-2">
-              <Avatar size="md">
-                <Avatar.Fallback>
-                  {formatAvatarLetter(article.author.name, article.author.surname)}
-                </Avatar.Fallback>
-              </Avatar>
+              <UserAvatar
+                name={article.author.name}
+                surname={article.author.surname}
+                username={article.author.username}
+              />
               <div>
                 <Link
-                  href={href}
+                  href={authorArticlesHref(article.author.username)}
                   className="text-sm font-semibold text-foreground no-underline"
                 >
                   {article.author.name} {article.author.surname}
                 </Link>
-                <p className="text-xs text-muted">{`@${article.author.username}`}</p>
+                <Link
+                  href={authorArticlesHref(article.author.username)}
+                  className="block text-xs text-muted no-underline"
+                >
+                  {`@${article.author.username}`}
+                </Link>
               </div>
             </div>
             <div className="flex items-center gap-2">

@@ -6,7 +6,8 @@ import { getMyArticlesAction } from '@/app/[locale]/(site)/articles/actions';
 import { ArticleCard } from '@/app/[locale]/components/article/article-card';
 import { ArticlePagination } from '@/app/[locale]/components/article/article-pagination';
 import { parseArticleQuery } from '@/lib/article/article-query';
-import { Avatar, Button } from '@heroui/react';
+import { Button } from '@heroui/react';
+import { UserAvatar } from '@/app/[locale]/components/user/user-avatar';
 import { ArticleDto } from '@/lib/article/articles.types';
 
 interface AccountPageProps {
@@ -148,17 +149,13 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
       </div>
 
       <aside className="flex w-full flex-col gap-6 pt-4 lg:w-80 lg:border-l lg:border-separator lg:pl-10">
-        <Avatar
+        <UserAvatar
+          name={user.name}
+          surname={user.surname}
+          username={user.username}
           size="lg"
           className="h-24 w-24 text-large"
-          color="accent"
-          variant="soft"
-        >
-          <Avatar.Fallback>
-            {user.name.charAt(0)}
-            {user.surname.charAt(0)}
-          </Avatar.Fallback>
-        </Avatar>
+        />
         <div className="flex flex-col gap-1">
           <h2 className="text-lg font-bold text-foreground">
             {user.name} {user.surname}

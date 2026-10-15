@@ -1,9 +1,8 @@
 'use client';
 
 import { createCommentAction } from '@/app/[locale]/(site)/articles/actions';
-import { formatAvatarLetter } from '@/lib/shared/format-avatar-letter';
+import { UserAvatar } from '@/app/[locale]/components/user/user-avatar';
 import {
-  Avatar,
   Button,
   Card,
   CardContent,
@@ -17,6 +16,7 @@ import { useActionState } from 'react';
 export type CommentFormUser = {
   name: string;
   surname: string;
+  username: string;
 };
 
 type CommentFormProps = {
@@ -56,15 +56,11 @@ export function CommentForm({
       ) : null}
       <Card>
         <CardHeader className="flex flex-row items-center gap-2">
-          <Avatar
-            size="md"
-            variant="soft"
-            color="accent"
-          >
-            <Avatar.Fallback>
-              {formatAvatarLetter(user.name, user.surname)}
-            </Avatar.Fallback>
-          </Avatar>
+          <UserAvatar
+            name={user.name}
+            surname={user.surname}
+            username={user.username}
+          />
           <span>
             {user.name} {user.surname}
           </span>

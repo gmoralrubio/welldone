@@ -3,16 +3,14 @@ import {
   getArticleComments,
   getCommentAuthor,
 } from '@/app/[locale]/(site)/articles/actions';
-import { formatDate, slugify, truncateSlug } from '@/lib/article/article-presenters';
+
 import {
-  Avatar,
-  Breadcrumbs,
-  Button,
-  Card,
-  CardContent,
-  CardFooter,
-  Chip,
-} from '@heroui/react';
+  authorArticlesHref,
+  formatDate,
+  slugify,
+  truncateSlug,
+} from '@/lib/article/article-presenters';
+import { Breadcrumbs, Button, Card, CardContent, CardFooter, Chip } from '@heroui/react';
 import {
   Check,
   ThumbsUp,
@@ -35,7 +33,7 @@ import { parseContent } from '@/app/[locale]/(site)/articles/article-content-par
 import { parseCommentsQuery } from '@/lib/comment/comment-query';
 import { CommentCard } from '@/app/[locale]/components/comment/comment-card';
 import { CommentForm } from '@/app/[locale]/components/comment/comment-form';
-import { formatAvatarLetter } from '@/lib/shared/format-avatar-letter';
+import { UserAvatar } from '@/app/[locale]/components/user/user-avatar';
 
 interface ArticleDetailPageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -136,20 +134,19 @@ export default async function ArticleDetailPage({
 
         <Card className="flex flex-col sm:flex-row justify-between xs:items-center gap-3 my-2">
           <div className="flex flex-row gap-2">
-            <Avatar
-              size="md"
-              variant="soft"
-              color="accent"
-            >
-              <Avatar.Fallback>
-                {formatAvatarLetter(article.author.name, article.author.surname)}
-              </Avatar.Fallback>
-            </Avatar>
+            <UserAvatar
+              name={article.author.name}
+              surname={article.author.surname}
+              username={article.author.username}
+            />
             <div className="flex flex-col">
               <div className="flex gap-2">
-                <span className="text-sm font-semibold">
+                <Link
+                  href={authorArticlesHref(article.author.username)}
+                  className="text-sm font-semibold text-foreground no-underline"
+                >
                   {article.author.name} {article.author.surname}
-                </span>
+                </Link>
                 <Chip
                   size="sm"
                   color="success"
@@ -225,23 +222,30 @@ export default async function ArticleDetailPage({
         <Card.Header>
           <div className="flex justify-between items-center gap-3">
             <div className="flex gap-2">
-              <Avatar
+              <UserAvatar
+                name={article.author.name}
+                surname={article.author.surname}
+                username={article.author.username}
                 size="lg"
-                variant="soft"
-                color="accent"
                 className="rounded"
-              >
-                <Avatar.Fallback>
-                  {formatAvatarLetter(article.author.name, article.author.surname)}
-                </Avatar.Fallback>
-              </Avatar>
+              />
               <div className="flex flex-col justify-center">
                 <h3 className="font-serif font-bold text-xl leading-tight">
-                  {article.author.name} {article.author.surname}
+                  <Link
+                    href={authorArticlesHref(article.author.username)}
+                    className="text-foreground no-underline"
+                  >
+                    {article.author.name} {article.author.surname}
+                  </Link>
                 </h3>
                 <span className="text-muted text-sm leading-tight">
-                  <span className="font-medium">@{article.author.username}</span> -{' '}
-                  {t('followers', { count: '12.2k' })}
+                  <Link
+                    href={authorArticlesHref(article.author.username)}
+                    className="font-medium text-muted no-underline"
+                  >
+                    @{article.author.username}
+                  </Link>{' '}
+                  - {t('followers', { count: '12.2k' })}
                 </span>
               </div>
             </div>
@@ -255,7 +259,12 @@ export default async function ArticleDetailPage({
         </Card.Header>
         <Card.Content className="mt-4">
           <h4 className="uppercase text-sm font-medium text-muted">
-            {t('moreStories', { author: authorName })}
+            <Link
+              href={authorArticlesHref(article.author.username)}
+              className="text-muted no-underline"
+            >
+              {t('moreStories', { author: authorName })}
+            </Link>
           </h4>
           <div className="pt-2 flex flex-col sm:flex-row gap-4">
             <Card className="w-full sm:w-1/2 p-6 flex flex-col justify-between hover:shadow-md transition-shadow group">
@@ -333,8 +342,7 @@ export default async function ArticleDetailPage({
           >
             {t('commentsLoadError')}
           </p>
-        ) : commentsResult.data.length === 0 &&
-          commentsResult.meta.total_items === 0 ? (
+        ) : commentsResult.data.length === 0 && commentsResult.meta.total_items === 0 ? (
           <p className="text-muted">{t('commentsEmpty')}</p>
         ) : (
           <div className="space-y-4">
