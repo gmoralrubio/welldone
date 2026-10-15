@@ -4,6 +4,10 @@ type ArticleHrefSource = Pick<ArticleDto, 'status' | 'slug'> & {
   author: Pick<ArticleDto['author'], 'username'>;
 };
 
+export function authorArticlesHref(username: string): `/articles/${string}` {
+  return `/articles/${username}`;
+}
+
 export function articleHref(article: ArticleHrefSource): string {
   if (article.status === ArticleStatus.DRAFT) {
     return `/dashboard/my-articles/${article.slug}`;
