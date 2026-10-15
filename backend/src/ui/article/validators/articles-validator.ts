@@ -65,3 +65,26 @@ export const createArticleValidationSchema = z.object({
     .array(z.enum(CATEGORY_SLUGS))
     .min(1, 'Debes seleccionar al menos una categoría'),
 });
+
+export const articleIdParamSchema = z.object({
+  id: z.coerce.number().int().positive('El ID debe ser un número positivo'),
+});
+
+export const updateArticleValidationSchema = z.object({
+  title: z.string().min(2, 'El título debe tener al menos 2 caracteres').optional(),
+  content: z
+    .string()
+    .min(5, 'El contenido debe tener al menos 5 caracteres')
+    .transform(sanitizeArticleContent)
+    .pipe(z.string().min(5, 'El contenido debe tener al menos 5 caracteres'))
+    .optional(),
+  intro: z.string().min(5, 'La introducción es obligatoria, al menos 5 caracteres').optional(),
+  status: z.enum(['PUBLISHED', 'DRAFT']).optional(),
+  publishedAt: z.string().optional().nullable(),
+  featuredImageUrl: z.string().url('Debe ser una URL válida').optional().nullable(),
+  featuredVideoUrl: z.string().url('Debe ser una URL válida').optional().nullable(),
+  categorySlugs: z
+    .array(z.enum(CATEGORY_SLUGS))
+    .min(1, 'Debes seleccionar al menos una categoría')
+    .optional(),
+});

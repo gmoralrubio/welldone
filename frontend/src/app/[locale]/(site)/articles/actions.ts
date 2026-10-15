@@ -314,7 +314,17 @@ export async function updateArticleAction(locale: string, articleId: string, for
 
   if (!response.ok) {
     const errorData = await response.json();
-    throw new Error(errorData.error || 'Error al actualizar el artículo');
+
+    if (errorData.error === 'TITLE_ALREADY_EXISTS') {
+        return {
+          errors: {
+            title: ['Ya tienes un artículo con este mismo título. Elige otro.'], 
+          },
+        };
+      }
+      return {
+        message: errorData.error || 'Error al actualizar el artículo',
+      };
   }
 
   redirect({

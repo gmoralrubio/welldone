@@ -54,7 +54,7 @@ export function ArticleActionsMenu({ articleId, editLabel, deleteLabel }: Props)
         <div className="absolute right-0 z-50 mt-2 w-40 origin-top-right rounded-md bg-white p-1 shadow-lg ring-1 ring-black/5 focus:outline-none">
           <div className="flex flex-col gap-1">
             <Link
-              href={`/dashboard/my-articles/edit/${articleId}`}
+              href={`/dashboard/edit/${articleId}`}
               className="block w-full rounded-md px-3 py-2 text-left text-sm text-foreground hover:bg-default-100"
               onClick={() => setIsOpen(false)}
             >

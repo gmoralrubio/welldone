@@ -11,8 +11,17 @@ import { ArticleDto } from '@/lib/article/articles.types';
 
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 
+type ActionState = {
+  errors?: {
+    title?: string[];
+    [key: string]: string[] | undefined;
+  };
+  message?: string | null;
+  error?: string;
+} | void;
+
 type ArticleFormProps = {
-  action: string | ((formData: FormData) => Promise<{ error: string } | void> | void);
+  action: string | ((formData: FormData) => Promise<ActionState> | void);
   initialData?: Partial<ArticleDto>;
 };
 
@@ -39,6 +48,10 @@ export function ArticleForm({ action, initialData }: ArticleFormProps) {
     
     if (typeof action === 'function') {
       const response = await action(formData);
+      
+      if (response?.errors?.title && response.errors.title.length > 0) {
+        setTitleError(response.errors.title[0]);
+      }
       
       if (response && response.error === 'TITLE_ALREADY_EXISTS') {
         setTitleError(t('TITLE_ALREADY_EXISTS'));
