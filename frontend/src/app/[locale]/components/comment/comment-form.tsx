@@ -1,6 +1,6 @@
 'use client';
 
-import { createCommentAction } from '@/app/[locale]/articles/actions';
+import { createCommentAction } from '@/app/[locale]/(site)/articles/actions';
 import { formatAvatarLetter } from '@/lib/shared/format-avatar-letter';
 import {
   Avatar,

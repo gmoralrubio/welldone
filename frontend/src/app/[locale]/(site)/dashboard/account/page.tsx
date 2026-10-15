@@ -2,7 +2,7 @@ import { cookies } from 'next/headers';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { redirect, Link } from '@/i18n/navigation';
 import AccountForm from './account-form';
-import { getMyArticlesAction } from '@/app/[locale]/articles/actions';
+import { getMyArticlesAction } from '@/app/[locale]/(site)/articles/actions';
 import { ArticleCard } from '@/app/[locale]/components/article/article-card';
 import { ArticlePagination } from '@/app/[locale]/components/article/article-pagination';
 import { parseArticleQuery } from '@/lib/article/article-query';

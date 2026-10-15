@@ -19,7 +19,7 @@ export function SiteFooter() {
   ];
 
   return (
-    <footer className="mt-16 bg-surface-tertiary">
+    <footer className="bg-surface-tertiary">
       <div className="mx-auto grid w-full max-w-340 gap-16 px-8 py-16">
         <div className="grid gap-10 md:grid-cols-4">
           <div className="md:col-span-2">

@@ -1,5 +1,5 @@
-import { getMyArticleBySlug } from '@/app/[locale]/articles/actions';
-import { parseContent } from '@/app/[locale]/articles/article-content-parser';
+import { getMyArticleBySlug } from '@/app/[locale]/(site)/articles/actions';
+import { parseContent } from '@/app/[locale]/(site)/articles/article-content-parser';
 import { ArticleCategory } from '@/app/[locale]/components/article/article-category';
 import { Link } from '@/i18n/navigation';
 import { ArticleStatus } from '@/lib/article/articles.types';

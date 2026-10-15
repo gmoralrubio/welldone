@@ -2,7 +2,7 @@ import {
   getArticleByAuthorAndSlug,
   getArticleComments,
   getCommentAuthor,
-} from '@/app/[locale]/articles/actions';
+} from '@/app/[locale]/(site)/articles/actions';
 import { formatDate, slugify, truncateSlug } from '@/lib/article/article-presenters';
 import {
   Avatar,
@@ -31,7 +31,7 @@ import { CommentPagination } from '@/app/[locale]/components/comment/comment-pag
 
 import { getLocale, getTranslations } from 'next-intl/server';
 import { getPathname, Link } from '@/i18n/navigation';
-import { parseContent } from '@/app/[locale]/articles/article-content-parser';
+import { parseContent } from '@/app/[locale]/(site)/articles/article-content-parser';
 import { parseCommentsQuery } from '@/lib/comment/comment-query';
 import { CommentCard } from '@/app/[locale]/components/comment/comment-card';
 import { CommentForm } from '@/app/[locale]/components/comment/comment-form';
