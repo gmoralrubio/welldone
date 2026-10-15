@@ -6,24 +6,32 @@ import { Link } from '@/i18n/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import { logout } from '@/app/[locale]/logout/logout-action';
 
-const UserProfile = () => {
+type UserProfileProps = {
+  name: string;
+  username: string;
+};
+
+const UserProfile = ({ name, username }: UserProfileProps) => {
   const locale = useLocale();
   const t = useTranslations('SiteHeader');
 
   return (
     <Dropdown>
       <Dropdown.Trigger
-        className="flex items-center gap-1.5 bg-transparent px-1"
+        className="flex items-center gap-1.5 rounded-full bg-black/5 py-1 pl-1 pr-4 transition-colors hover:bg-black/10"
         aria-label={t('accountAria')}
       >
         <Avatar
           size="sm"
-          className="size-8"
+          className="size-8 shrink-0"
         >
-          <Avatar.Fallback className="text-xs bg-accent-soft text-accent-soft-foreground">
-            WD
+          <Avatar.Fallback className="bg-accent-soft text-xs text-accent-soft-foreground">
+            {name.charAt(0).toUpperCase()}
           </Avatar.Fallback>
         </Avatar>
+        <span className="hidden max-w-40 truncate px-1 text-xs font-bold text-foreground sm:inline">
+          @{username}
+        </span>
         <ChevronDown
           width={8}
           height={8}
