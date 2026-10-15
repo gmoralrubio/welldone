@@ -18,7 +18,8 @@
     "next-intl": "^4.14.9",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "react-quill-new": "^3.8.3"
+    "react-quill-new": "^3.8.3",
+    "swiper": "^14.3.0"
   },
   "devDependencies": {
     "@gravity-ui/icons": "^2.22.0",

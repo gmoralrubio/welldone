@@ -1,10 +1,11 @@
 import {
   getArticleByAuthorAndSlug,
   getArticleComments,
+  getArticlesByAuthor,
   getCommentAuthor,
 } from '@/app/[locale]/(site)/articles/actions';
 import { authorArticlesHref, formatDate } from '@/lib/article/article-presenters';
-import { Button, Card, CardContent, CardFooter, Chip } from '@heroui/react';
+import { Button, Card, CardContent, Chip } from '@heroui/react';
 import {
   Check,
   ThumbsUp,
@@ -17,8 +18,8 @@ import { Metadata } from 'next';
 import Image from 'next/image';
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
-import { PaginationBasic } from '@/app/[locale]/components/shared/PaginationBasic';
 import { ArticleBreadcrumbs } from '@/app/[locale]/components/article/article-breadcrumbs';
+import { MoreArticlesSlider } from '@/app/[locale]/components/article/more-articles-slider';
 import { ArticleCategory } from '@/app/[locale]/components/article/article-category';
 import { CommentPagination } from '@/app/[locale]/components/comment/comment-pagination';
 
@@ -69,7 +70,13 @@ export default async function ArticleDetailPage({
     notFound();
   }
 
-  const commentsResult = await getArticleComments(authorUsername, slug, commentsPage);
+  const [commentsResult, authorArticles] = await Promise.all([
+    getArticleComments(authorUsername, slug, commentsPage),
+    getArticlesByAuthor(authorUsername, { limit: '5' }),
+  ]);
+  const moreArticles = (authorArticles?.data ?? [])
+    .filter((item) => item.slug !== slug)
+    .slice(0, 4);
 
   const t = await getTranslations('ArticleDetailPage');
   const cookieStore = await cookies();
@@ -236,39 +243,11 @@ export default async function ArticleDetailPage({
               {t('moreStories', { author: authorName })}
             </Link>
           </h4>
-          <div className="pt-2 flex flex-col sm:flex-row gap-4">
-            <Card className="w-full sm:w-1/2 p-6 flex flex-col justify-between hover:shadow-md transition-shadow group">
-              <div>
-                <span className="uppercase text-xs font-medium text-accent">
-                  Diseño web
-                </span>
-                <h5 className="text-xl font-serif leading-tight font-semibold text-balance mt-2 group-hover:text-accent transition-colors">
-                  Every Frontend Architecture Pattern Explained
-                </h5>
-              </div>
-              <span className="text-sm text-muted inline">
-                15 de enero de 2026 | 16 likes
-              </span>
-            </Card>
-            <Card className="w-full sm:w-1/2 p-6 flex flex-col justify-between hover:shadow-md transition-shadow group">
-              <CardContent>
-                <div>
-                  <span className="uppercase text-xs font-medium text-accent">
-                    Diseño web
-                  </span>
-                  <h5 className="text-xl font-serif leading-tight font-semibold text-balance mt-2 group-hover:text-accent transition-colors">
-                    UI Trends That Are Actually Happening (and Worth Paying Attention To)
-                  </h5>
-                </div>
-                <span className="text-sm text-muted inline">
-                  23 de junio de 2026 | 32 likes
-                </span>
-              </CardContent>
-            </Card>
-          </div>
-          <CardFooter className="mt-4">
-            <PaginationBasic />
-          </CardFooter>
+          {moreArticles.length > 0 ? (
+            <div className="min-w-0 pt-2">
+              <MoreArticlesSlider articles={moreArticles} />
+            </div>
+          ) : null}
         </Card.Content>
       </Card>
 
