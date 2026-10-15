@@ -2,12 +2,12 @@
 
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
-import { Breadcrumbs, Button, Card, CardContent, Input, TextArea } from '@heroui/react';
+import { Button, Card, CardContent, Input, TextArea } from '@heroui/react';
 import { Check } from '@gravity-ui/icons';
 import { createArticleAction } from '../actions';
 import 'react-quill-new/dist/quill.snow.css';
 import { useLocale, useTranslations } from 'next-intl';
-import { getPathname } from '@/i18n/navigation';
+import { ArticleBreadcrumbs } from '@/app/[locale]/components/article/article-breadcrumbs';
 import { CATEGORY_SLUGS } from '@/lib/category/category.types';
 import { CategorySelector } from '@/app/[locale]/components/article-create/category-selector';
 
@@ -17,9 +17,6 @@ export default function CreateArticlePage() {
   const [content, setContent] = useState('');
   const locale = useLocale();
   const t = useTranslations('CreateArticlePage');
-
-  const homeHref = getPathname({ locale, href: '/' });
-  const articlesHref = getPathname({ locale, href: '/articles' });
 
   const modules = {
     toolbar: [
@@ -35,23 +32,7 @@ export default function CreateArticlePage() {
   return (
     <div className="flex flex-1 flex-col bg-background text-foreground">
       <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-6 py-10">
-        <Breadcrumbs aria-label={t('breadCrumbsAria')}>
-          <Breadcrumbs.Item
-            className="uppercase"
-            href={homeHref}
-          >
-            <span className="text-xs">{t('breadCrumbsHome')}</span>
-          </Breadcrumbs.Item>
-          <Breadcrumbs.Item
-            className="uppercase"
-            href={articlesHref}
-          >
-            <span className="text-xs">{t('breadCrumbsArticles')}</span>
-          </Breadcrumbs.Item>
-          <Breadcrumbs.Item className="uppercase">
-            <span className="text-xs">{t('breadCrumbsNew')}</span>
-          </Breadcrumbs.Item>
-        </Breadcrumbs>
+        <ArticleBreadcrumbs current={t('breadCrumbsNew')} />
 
         <header className="flex flex-col gap-4">
           <h1 className="text-4xl xs:text-5xl sm:text-6xl tracking-tight font-serif text-balance">

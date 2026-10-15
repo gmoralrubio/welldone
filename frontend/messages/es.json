@@ -83,9 +83,6 @@
   "CreateArticlePage": {
     "title": "Escribe tu historia",
     "subtitle": "Comparte tus conocimientos con la comunidad.",
-    "breadCrumbsAria": "Migas de pan",
-    "breadCrumbsHome": "Inicio",
-    "breadCrumbsArticles": "Artículos",
     "breadCrumbsNew": "Nuevo Artículo",
     "labelTitle": "Título del artículo *",
     "placeholderTitle": "Ej: Patrones de diseño en React...",
@@ -105,12 +102,12 @@
     "cancel": "Cancelar",
     "submit": "Guardar Artículo"
   },
+  "Breadcrumbs": {
+    "ariaLabel": "Migas de pan",
+    "home": "Inicio",
+    "articles": "Artículos"
+  },
   "ArticleDetailPage": {
-    "breadCrumbs": {
-      "ariaLabel": "Migas de pan",
-      "home": "Inicio",
-      "articles": "Artículos"
-    },
     "following": "Siguiendo",
     "videoUnsupported": "Tu navegador no reproduce este vídeo.",
     "followers": "{count} seguidores",

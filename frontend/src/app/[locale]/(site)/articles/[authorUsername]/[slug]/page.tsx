@@ -3,14 +3,8 @@ import {
   getArticleComments,
   getCommentAuthor,
 } from '@/app/[locale]/(site)/articles/actions';
-
-import {
-  authorArticlesHref,
-  formatDate,
-  slugify,
-  truncateSlug,
-} from '@/lib/article/article-presenters';
-import { Breadcrumbs, Button, Card, CardContent, CardFooter, Chip } from '@heroui/react';
+import { authorArticlesHref, formatDate } from '@/lib/article/article-presenters';
+import { Button, Card, CardContent, CardFooter, Chip } from '@heroui/react';
 import {
   Check,
   ThumbsUp,
@@ -24,12 +18,14 @@ import Image from 'next/image';
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { PaginationBasic } from '@/app/[locale]/components/shared/PaginationBasic';
+import { ArticleBreadcrumbs } from '@/app/[locale]/components/article/article-breadcrumbs';
 import { ArticleCategory } from '@/app/[locale]/components/article/article-category';
 import { CommentPagination } from '@/app/[locale]/components/comment/comment-pagination';
 
-import { getLocale, getTranslations } from 'next-intl/server';
-import { getPathname, Link } from '@/i18n/navigation';
 import { parseContent } from '@/app/[locale]/(site)/articles/article-content-parser';
+import { getTranslations } from 'next-intl/server';
+import { Link } from '@/i18n/navigation';
+
 import { parseCommentsQuery } from '@/lib/comment/comment-query';
 import { CommentCard } from '@/app/[locale]/components/comment/comment-card';
 import { CommentForm } from '@/app/[locale]/components/comment/comment-form';
@@ -57,16 +53,6 @@ export async function generateMetadata({
 }
 
 {
-  /* TODO:
-    - Imagen de Avatar
-    - Calcular seguidores
-    - Funcionalidad seguir
-    - Funcionalidad guardar como favorito
-    - Funcionalidad compartir en redes
-    - Otros artículos del autor (paginados)
-    - Responder con otro artículo
-    - Subrayado
-  */
 }
 
 export default async function ArticleDetailPage({
@@ -86,33 +72,17 @@ export default async function ArticleDetailPage({
   const commentsResult = await getArticleComments(authorUsername, slug, commentsPage);
 
   const t = await getTranslations('ArticleDetailPage');
-  const locale = await getLocale();
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
   const currentUser = accessToken ? await getCommentAuthor(accessToken) : null;
-  const homeHref = getPathname({ locale, href: '/' });
-  const articlesHref = getPathname({ locale, href: '/articles' });
   const authorName = `${article.author.name} ${article.author.surname}`;
 
   return (
     <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-8 px-6 py-10">
-      <Breadcrumbs aria-label={t('breadCrumbs.ariaLabel')}>
-        <Breadcrumbs.Item
-          className="uppercase"
-          href={homeHref}
-        >
-          <span className="text-xs">{t('breadCrumbs.home')}</span>
-        </Breadcrumbs.Item>
-        <Breadcrumbs.Item
-          className="uppercase"
-          href={articlesHref}
-        >
-          <span className="text-xs">{t('breadCrumbs.articles')}</span>
-        </Breadcrumbs.Item>
-        <Breadcrumbs.Item className="uppercase">
-          <span className="text-xs">{truncateSlug(slugify(article.title))}</span>
-        </Breadcrumbs.Item>
-      </Breadcrumbs>
+      <ArticleBreadcrumbs
+        author={article.author}
+        current={article.title}
+      />
 
       <div className="flex items-center gap-2">
         {article.categories.map((category) => (

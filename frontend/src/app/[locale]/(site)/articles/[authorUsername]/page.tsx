@@ -59,10 +59,12 @@ export default async function AuthorArticlesPage({
       listPath={authorArticlesHref(authorUsername)}
       emptyCatalog={hasFilters ? tArticles('emptySearch') : t('empty')}
       heading={
-        <ArticlesAuthorHeading
-          authorUsername={authorUsername}
-          author={author}
-        />
+        <div className="flex flex-col gap-4 pt-8">
+          <ArticlesAuthorHeading
+            authorUsername={authorUsername}
+            author={author}
+          />
+        </div>
       }
     />
   );

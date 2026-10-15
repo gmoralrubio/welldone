@@ -26,10 +26,6 @@ export function formatDate(isoDate: string): string {
   return dateFormatter.format(new Date(isoDate));
 }
 
-export function truncateSlug(slug: string): string {
-  return slug.length > 20 ? slug.substring(0, 20) + '...' : slug;
-}
-
 export function slugify(input: string): string {
   if (!input) return '';
 

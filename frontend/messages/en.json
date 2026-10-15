@@ -83,9 +83,6 @@
   "CreateArticlePage": {
     "title": "Write your story",
     "subtitle": "Share your knowledge with the community.",
-    "breadCrumbsAria": "Breadcrumbs",
-    "breadCrumbsHome": "Home",
-    "breadCrumbsArticles": "Articles",
     "breadCrumbsNew": "New article",
     "labelTitle": "Article title *",
     "placeholderTitle": "E.g.: Design patterns in React...",
@@ -105,12 +102,12 @@
     "cancel": "Cancel",
     "submit": "Save article"
   },
+  "Breadcrumbs": {
+    "ariaLabel": "Breadcrumbs",
+    "home": "Home",
+    "articles": "Articles"
+  },
   "ArticleDetailPage": {
-    "breadCrumbs": {
-      "ariaLabel": "Breadcrumbs",
-      "home": "Home",
-      "articles": "Articles"
-    },
     "following": "Following",
     "videoUnsupported": "Your browser cannot play this video.",
     "followers": "{count} followers",
