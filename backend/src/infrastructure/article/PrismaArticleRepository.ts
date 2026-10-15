@@ -35,6 +35,7 @@ export class PrismaArticleRepository implements ArticleRepository {
     const where = {
       status: 'PUBLISHED' as const,
       publishedAt: { lt: now },
+      ...(criteria.authorId ? { authorId: criteria.authorId } : {}),
       ...(criteria.category ? { categories: { some: { slug: criteria.category } } } : {}),
       ...(criteria.search
         ? { title: { contains: criteria.search, mode: 'insensitive' as const } }

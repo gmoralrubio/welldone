@@ -15,6 +15,12 @@ export const findArticlesValidationSchema = z.object({
   search: z.string().min(3).optional(),
   category: z.enum(CATEGORY_SLUGS).optional(),
   order: z.enum(['asc', 'desc']).default('desc').catch('desc'),
+  authorUsername: z
+    .string()
+    .trim()
+    .min(3)
+    .regex(/^[a-zA-Z0-9._]+$/)
+    .optional(),
 });
 export const findMyArticlesValidationSchema = z.object({
   page: z.coerce.number('Invalid page. Must be a number').int().positive().default(1),
