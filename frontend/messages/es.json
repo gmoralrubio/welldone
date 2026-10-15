@@ -3,7 +3,9 @@
     "title": "Welldone",
     "description": "Proyecto final de Bootcamp Keep Coding Web 20",
     "articlesTitle": "Welldone | Artículos",
-    "articlesDescription": "WellDone es una red de blogging que pretende ser la competencia de Medium."
+    "articlesDescription": "WellDone es una red de blogging que pretende ser la competencia de Medium.",
+    "authorArticlesTitle": "Welldone | Artículos de {author}",
+    "authorArticlesDescription": "Artículos publicados por {author} en WellDone."
   },
   "LocaleSwitcher": {
     "label": "Idioma",
@@ -130,6 +132,16 @@
     "commentsPageSummary": "Página {page} de {total}",
     "commentsPrevious": "Anterior",
     "commentsNext": "Siguiente"
+  },
+  "AuthorArticlesPage": {
+    "heading": "Artículos de {author}",
+    "empty": "Este miembro todavía no tiene artículos publicados."
+  },
+  "AuthorNotFound": {
+    "label": "Error 404",
+    "title": "Miembro no encontrado",
+    "description": "No hay ningún miembro con ese nombre de usuario.",
+    "backToList": "Volver a la lista de artículos"
   },
   "ArticleNotFound": {
     "label": "Error 404",

@@ -3,7 +3,9 @@
     "title": "Welldone",
     "description": "Keep Coding Web 20 bootcamp final project",
     "articlesTitle": "Welldone | Articles",
-    "articlesDescription": "WellDone is a blogging network aiming to compete with Medium."
+    "articlesDescription": "WellDone is a blogging network aiming to compete with Medium.",
+    "authorArticlesTitle": "Welldone | Articles by {author}",
+    "authorArticlesDescription": "Articles published by {author} on WellDone."
   },
   "LocaleSwitcher": {
     "label": "Language",
@@ -130,6 +132,16 @@
     "commentsPageSummary": "Page {page} of {total}",
     "commentsPrevious": "Previous",
     "commentsNext": "Next"
+  },
+  "AuthorArticlesPage": {
+    "heading": "Articles by {author}",
+    "empty": "This member has not published any articles yet."
+  },
+  "AuthorNotFound": {
+    "label": "Error 404",
+    "title": "Member not found",
+    "description": "There is no member with that username.",
+    "backToList": "Back to the article list"
   },
   "ArticleNotFound": {
     "label": "Error 404",
