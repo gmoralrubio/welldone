@@ -12,12 +12,15 @@ import { ArticleDto } from '@/lib/article/articles.types';
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 
 type ArticleFormProps = {
-  action: string | ((formData: FormData) => void);
+  action: string | ((formData: FormData) => Promise<{ error: string } | void> | void);
   initialData?: Partial<ArticleDto>;
 };
 
 export function ArticleForm({ action, initialData }: ArticleFormProps) {
   const [content, setContent] = useState(initialData?.content || '');
+
+  const [titleError, setTitleError] = useState<string | null>(null);
+
   const t = useTranslations('CreateArticlePage');
 
   const modules = {
@@ -31,10 +34,22 @@ export function ArticleForm({ action, initialData }: ArticleFormProps) {
     ],
   };
 
+  const handleClientAction = async (formData: FormData) => {
+    setTitleError(null);
+    
+    if (typeof action === 'function') {
+      const response = await action(formData);
+      
+      if (response && response.error === 'TITLE_ALREADY_EXISTS') {
+        setTitleError(t('TITLE_ALREADY_EXISTS'));
+      }
+    }
+  };
+
   return (
     <form 
       id="article-editor-form" 
-      action={action} 
+      action={handleClientAction} 
       className="flex flex-col gap-6"
     >
       <Card className="p-8 shadow-sm border border-border gap-4">
@@ -52,6 +67,11 @@ export function ArticleForm({ action, initialData }: ArticleFormProps) {
               variant="secondary"
               className="font-serif text-xl"
             />
+            {titleError && (
+              <span className="text-sm text-red-500 ml-1 mt-1">
+                {titleError}
+              </span>
+            )}
           </div>
 
           <div className="flex flex-col gap-1">

@@ -28,7 +28,7 @@ export async function updateAccount(data: AccountFormData) {
   const responseData = await response.json();
 
   if (response.ok) {
-    revalidatePath('/[locale]/dashboard/account', 'page');
+    revalidatePath('/[locale]/dashboard/profile', 'page');
   }
 
   return {

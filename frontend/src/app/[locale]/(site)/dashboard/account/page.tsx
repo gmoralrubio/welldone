@@ -1,7 +1,6 @@
 import { cookies } from 'next/headers';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { redirect, Link } from '@/i18n/navigation';
-import AccountForm from './account-form';
 import { getMyArticlesAction } from '@/app/[locale]/(site)/articles/actions';
 import { ArticleCard } from '@/app/[locale]/components/article/article-card';
 import { ArticlePagination } from '@/app/[locale]/components/article/article-pagination';
@@ -24,6 +23,7 @@ interface UserProfile {
 
 export default async function AccountPage({ searchParams }: AccountPageProps) {
   const t = await getTranslations('Dashboard');
+  const tAbout = await getTranslations('ProfileAbout');
   const locale = await getLocale();
 
 
@@ -84,19 +84,19 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
 
         <div className="flex w-full gap-6 border-b border-separator">
           <Link
-            href="/dashboard/account?status=PUBLISHED"
+            href="/dashboard/profile?status=PUBLISHED"
             className={currentStatus === 'PUBLISHED' ? activeTabClass : inactiveTabClass}
           >
             {t('tabs.home')}
           </Link>
           <Link
-            href="/dashboard/account?status=DRAFT"
+            href="/dashboard/profile?status=DRAFT"
             className={currentStatus === 'DRAFT' ? activeTabClass : inactiveTabClass}
           >
             {t('tabs.drafts')}
           </Link>
           <Link
-            href="/dashboard/account?status=ABOUT"
+            href="/dashboard/profile?status=ABOUT"
             className={currentStatus === 'ABOUT' ? activeTabClass : inactiveTabClass}
           >
             {t('tabs.about')}
@@ -105,19 +105,17 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
 
         <div className="mt-4 flex flex-col gap-8">
           {currentStatus === 'ABOUT' ? (
-            <section className="space-y-6">
-              <div>
-                <h2 className="text-2xl font-bold">{t('accountTitle')}</h2>
-              </div>
-              <AccountForm
-                user={{
-                  name: user.name,
-                  surname: user.surname,
-                  username: user.username,
-                  email: user.email,
-                }}
-              />
-            </section>
+            <div className="flex flex-col items-center justify-center p-12 text-center bg-surface-secondary rounded-lg">
+              <h3 className="text-xl font-bold font-serif mb-4 text-foreground">
+                {tAbout('emptyTitle')}
+              </h3>
+              <p className="text-muted max-w-lg mb-6">
+                {tAbout('emptyDescription')}
+              </p>
+              <Button variant="outline" className="rounded-full font-medium">
+                {tAbout('getStarted')}
+              </Button>
+            </div>
           ) : articles.length > 0 ? (
             articles.map((article) => (
               <ArticleCard
@@ -167,7 +165,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
         </div>
 
         <div className="mt-2 flex gap-2">
-          <Link href="/dashboard/account?status=ABOUT">
+          <Link href="/dashboard/settings">
             <Button
               size="sm"
               className="rounded-full bg-black font-medium text-white"

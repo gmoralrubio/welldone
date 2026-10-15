@@ -41,7 +41,7 @@ export default async function MyArticlesPage({ searchParams }: MyArticlesPagePro
         ) : (
           <div className="rounded-xl border border-dashed border-separator p-12 text-center">
             <p className="font-serif text-lg text-muted">
-              Aún no has escrito ningún artículo.
+              {t('emptyState')}
             </p>
 
           </div>

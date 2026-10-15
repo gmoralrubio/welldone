@@ -22,8 +22,6 @@
     "profile": "Perfil",
     "saved": "Guardados",
     "signIn": "Iniciar sesión",
-    "dashboard": "Dashboard",
-    "account": "Cuenta",
     "logout": "Cerrar sesión",
     "saveButton": "Guardar"
   },
@@ -103,7 +101,8 @@
     "labelContent": "Contenido *",
     "placeholderContent": "Escribe el contenido completo de tu artículo aquí...",
     "cancel": "Cancelar",
-    "submit": "Guardar Artículo"
+    "submit": "Guardar Artículo",
+    "TITLE_ALREADY_EXISTS": "Ya tienes un artículo con este título. Por favor, elige otro."
   },
 
   "Breadcrumbs": {
@@ -116,7 +115,8 @@
     "breadCrumbsMyArticles": "Mis Artículos",
     "breadCrumbsEdit": "Editar",
     "title": "Editar Artículo",
-    "subtitle": "Estás modificando el artículo: {title}"
+    "subtitle": "Estás modificando el artículo: {title}",
+    "TITLE_ALREADY_EXISTS": "Ya tienes un artículo con este título. Por favor, elige otro."
   },
   "ArticleDetailPage": {
     "following": "Siguiendo",
@@ -254,7 +254,7 @@
       "favorites": "Favoritos",
       "highlights": "Destacados",
       "notifications": "Notificaciones",
-      "account": "Cuenta",
+      "profile": "Perfil",
       "settings": "Configuración"
     },
     "articlesTitle": "Mis artículos",
@@ -276,7 +276,8 @@
     "backToArticles": "Volver a Mis artículos",
     "statusDraft": "Borrador",
     "statusPublished": "Publicado",
-    "videoUnsupported": "Tu navegador no reproduce este vídeo."
+    "videoUnsupported": "Tu navegador no reproduce este vídeo.",
+    "emptyState": "Aún no has escrito ningún artículo."
   },
   "Account": {
     "title": "Mi cuenta",
@@ -310,5 +311,10 @@
       "updateFailed": "No se han podido guardar los cambios. Inténtalo de nuevo.",
       "sessionExpired": "Tu sesión ha caducado. Vuelve a iniciar sesión."
     }
+  },
+  "ProfileAbout": {
+  "emptyTitle": "Cuéntale al mundo sobre ti",
+  "emptyDescription": "Aquí es donde puedes compartir más sobre ti: tu historia, experiencia laboral, logros, intereses, sueños y más.",
+  "getStarted": "Empezar"
   }
 }

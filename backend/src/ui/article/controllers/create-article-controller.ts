@@ -9,14 +9,13 @@ export const createArticleController = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     if (!req.authorId) {
       throw new UnauthorizedError(
         'Debes estar autenticado para crear un artículo'
       );
     }
-    console.log(req.body);
 
     const validatedData = createArticleValidationSchema.parse(req.body);
 
@@ -42,6 +41,11 @@ export const createArticleController = async (
       .status(201)
       .json({ message: 'Artículo creado correctamente', article: newArticle });
   } catch (error) {
+
+    if (error instanceof Error && error.message === 'TITLE_ALREADY_EXISTS') {
+       res.status(400).json({ error: 'TITLE_ALREADY_EXISTS' });
+       return; 
+    }
     next(error);
   }
 };

@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers';
-import { getLocale, getTranslations } from 'next-intl/server';
-import { Link, redirect } from '@/i18n/navigation';
+import { getLocale } from 'next-intl/server';
+import { redirect } from '@/i18n/navigation';
+import { SidebarMenu } from '@/app/[locale]/components/dashboard/sidebar-menu';
 
 export default async function DashboardLayout({
   children,
@@ -10,7 +11,6 @@ export default async function DashboardLayout({
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken');
   const locale = await getLocale();
-  const t = await getTranslations('Dashboard');
 
   if (!accessToken) {
     return redirect({ href: '/login', locale });
@@ -21,14 +21,7 @@ export default async function DashboardLayout({
       {' '}
       <div className="flex flex-1">
         <aside className="w-64 border-r border-separator bg-background-secondary p-6">
-          <nav className="flex flex-col gap-2">
-            <Link href="/dashboard/my-articles">{t('nav.articles')}</Link>
-            <Link href="/dashboard/favorites">{t('nav.favorites')}</Link>
-            <Link href="/dashboard/highlights">{t('nav.highlights')}</Link>
-            <Link href="/dashboard/notifications">{t('nav.notifications')}</Link>
-            <Link href="/dashboard/account">{t('nav.account')}</Link>
-            <Link href="/dashboard/settings">{t('nav.settings')}</Link>
-          </nav>
+          <SidebarMenu />
         </aside>
 
         <main className="min-w-0 flex-1 p-8">{children}</main>

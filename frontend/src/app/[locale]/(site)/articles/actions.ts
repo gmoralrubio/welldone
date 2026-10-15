@@ -171,7 +171,7 @@ export async function createCommentAction(
   return { error: null };
 }
 
-export async function createArticleAction(locale: string, formData: FormData) {
+export async function createArticleAction(locale: string, formData: FormData):Promise<{ error: string } | void>  {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
 
@@ -195,7 +195,12 @@ export async function createArticleAction(locale: string, formData: FormData) {
   });
 
   if (!response.ok) {
-    const errorData = await response.json();
+    const errorData = await response.json().catch(() => null);
+
+    if (errorData?.error === 'TITLE_ALREADY_EXISTS') {
+      return { error: 'TITLE_ALREADY_EXISTS' };
+    }
+    
     throw new Error(errorData.error || 'Error al crear el artículo');
   }
 
@@ -264,7 +269,12 @@ export async function getMyArticleBySlug(slug: string): Promise<ArticleDto | nul
 }
 
 export async function getArticleById(id: string): Promise<ArticleDto> {
+
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('accessToken')?.value;
+
   const response = await fetch(`${process.env.API_URL}/api/articles/${id}`, {
+    headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},
     cache: 'no-store',
   });
 

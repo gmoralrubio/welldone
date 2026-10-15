@@ -103,7 +103,9 @@
     "labelContent": "Content *",
     "placeholderContent": "Write the full content of your article here...",
     "cancel": "Cancel",
-    "submit": "Save article"
+    "submit": "Save article",
+    "TITLE_ALREADY_EXISTS": "You already have an article with this title. Please choose another one."
+
   },
 
   "Breadcrumbs": {
@@ -116,7 +118,8 @@
     "breadCrumbsMyArticles": "My Articles",
     "breadCrumbsEdit": "Edit",
     "title": "Edit Article",
-    "subtitle": "You are modifying the article: {title}"
+    "subtitle": "You are modifying the article: {title}",
+    "TITLE_ALREADY_EXISTS": "You already have an article with this title. Please choose another one."
   },
   "ArticleDetailPage": {
     "following": "Following",
@@ -254,7 +257,7 @@
       "favorites": "Favorites",
       "highlights": "Highlights",
       "notifications": "Notifications",
-      "account": "Account",
+      "profile": "Profile",
       "settings": "Settings"
     },
     "articlesTitle": "My articles",
@@ -276,7 +279,8 @@
     "backToArticles": "Back to My articles",
     "statusDraft": "Draft",
     "statusPublished": "Published",
-    "videoUnsupported": "Your browser cannot play this video."
+    "videoUnsupported": "Your browser cannot play this video.",
+    "emptyState": "You haven't written any articles yet."
   },
   "Account": {
     "title": "My account",
@@ -310,5 +314,10 @@
       "updateFailed": "Your changes could not be saved. Please try again.",
       "sessionExpired": "Your session has expired. Please sign in again."
     }
+  },
+  "ProfileAbout": {
+  "emptyTitle": "Tell the world about yourself",
+  "emptyDescription": "Here’s where you can share more about yourself: your history, work experience, accomplishments, interests, dreams, and more.",
+  "getStarted": "Get started"
   }
 }
