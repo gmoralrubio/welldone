@@ -1,3 +1,4 @@
+import { ArticleBreadcrumbs } from '@/app/[locale]/components/article/article-breadcrumbs';
 import { ArticleDto } from '@/lib/article/articles.types';
 import { getTranslations } from 'next-intl/server';
 
@@ -13,15 +14,15 @@ export async function ArticlesAuthorHeading({
   const t = await getTranslations('AuthorArticlesPage');
 
   return (
-    <header className="pt-8">
-      {author ? (
-        <p className="text-sm font-medium text-muted">
-          {author.name} {author.surname}
-        </p>
-      ) : null}
-      <h1 className="font-serif text-3xl font-medium">
-        {t('heading', { author: `@${authorUsername}` })}
-      </h1>
-    </header>
+    <div className="flex flex-col gap-4 pt-8">
+      <ArticleBreadcrumbs
+        current={author ? `${author.name} ${author.surname}` : `@${authorUsername}`}
+      />
+      <header>
+        <h1 className="font-serif text-3xl font-medium">
+          {t('heading', { author: `@${authorUsername}` })}
+        </h1>
+      </header>
+    </div>
   );
 }
