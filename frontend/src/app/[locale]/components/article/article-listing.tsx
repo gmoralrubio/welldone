@@ -2,7 +2,6 @@ import { ArticleCard } from '@/app/[locale]/components/article/article-card';
 import { ArticleHero } from '@/app/[locale]/components/article/article-hero';
 import { ArticlePagination } from '@/app/[locale]/components/article/article-pagination';
 import { SiteFooter } from '@/app/[locale]/components/shared/site-footer';
-import { SiteHeader } from '@/app/[locale]/components/shared/site-header';
 import { SiteSidebar } from '@/app/[locale]/components/shared/site-sidebar';
 import { ArticleDto } from '@/lib/article/articles.types';
 import {
@@ -41,10 +40,6 @@ export async function ArticleListing({
 
   return (
     <div className="flex min-h-full flex-1 flex-col font-sans text-foreground">
-      <SiteHeader
-        search={criteria.search}
-        order={criteria.order}
-      />
       <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-8">
         {heading}
         {featured ? <ArticleHero article={featured} /> : null}
