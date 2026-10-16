@@ -6,12 +6,16 @@ import { Link } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
 
 type UserActionsProps = {
-  isAuthenticated: boolean;
+  user: {
+    name: string;
+    username: string;
+  } | null;
 };
-const UserActions = ({ isAuthenticated }: UserActionsProps) => {
+
+const UserActions = ({ user }: UserActionsProps) => {
   const t = useTranslations('SiteHeader');
 
-  if (!isAuthenticated) {
+  if (!user) {
     return (
       <Link
         href="/login"
@@ -24,7 +28,10 @@ const UserActions = ({ isAuthenticated }: UserActionsProps) => {
   return (
     <div className="flex items-center gap-4">
       <WriteButton />
-      <UserProfile />
+      <UserProfile
+        name={user.name}
+        username={user.username}
+      />
     </div>
   );
 };

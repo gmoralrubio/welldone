@@ -1,11 +1,9 @@
-import { getArticles } from '@/app/[locale]/articles/actions';
+import { getArticles } from '@/app/[locale]/(site)/articles/actions';
 import { parseArticleQuery } from '@/lib/article/article-query';
 import { ArticleCard } from '@/app/[locale]/components/article/article-card';
 import { ArticleHero } from '@/app/[locale]/components/article/article-hero';
 import { ArticlePagination } from '@/app/[locale]/components/article/article-pagination';
 import { SiteSidebar } from '@/app/[locale]/components/shared/site-sidebar';
-import { SiteFooter } from '@/app/[locale]/components/shared/site-footer';
-import { SiteHeader } from '@/app/[locale]/components/shared/site-header';
 import { EmptyState } from '@heroui/react';
 import { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
@@ -45,10 +43,6 @@ export default async function ArticlesPage({ searchParams }: ArticlePageProps) {
 
   return (
     <div className="flex min-h-full flex-1 flex-col font-sans text-foreground">
-      <SiteHeader
-        search={criteria.search}
-        order={criteria.order}
-      />
       <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-8">
         {featured ? <ArticleHero article={featured} /> : null}
         <div className="grid items-start gap-10 py-4 lg:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)]">
@@ -90,7 +84,6 @@ export default async function ArticlesPage({ searchParams }: ArticlePageProps) {
           />
         </div>
       </div>
-      <SiteFooter />
     </div>
   );
 }

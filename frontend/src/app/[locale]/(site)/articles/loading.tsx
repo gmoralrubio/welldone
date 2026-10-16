@@ -1,5 +1,3 @@
-import { SiteFooter } from '@/app/[locale]/components/shared/site-footer';
-import { SiteHeader } from '@/app/[locale]/components/shared/site-header';
 import { Card, Skeleton, Surface } from '@heroui/react';
 
 const FEED_PLACEHOLDERS = 3;
@@ -11,10 +9,7 @@ export default function ArticlesLoading() {
       aria-busy="true"
     >
       <p className="sr-only">Cargando artículos</p>
-      <SiteHeader
-        search=""
-        order="desc"
-      />
+
       <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-8">
         <HeroSkeleton />
         <div className="grid items-start gap-10 py-4 lg:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)]">
@@ -39,7 +34,6 @@ export default function ArticlesLoading() {
           <SidebarSkeleton />
         </div>
       </div>
-      <SiteFooter />
     </div>
   );
 }

@@ -10,14 +10,13 @@ import { Link, getPathname } from '@/i18n/navigation';
 type SiteHeaderClientProps = {
   search: string;
   order: ArticleOrder;
-  isAuthenticated: boolean;
+  user: {
+    name: string;
+    username: string;
+  } | null;
 };
 
-export function SiteHeaderClient({
-  search,
-  order,
-  isAuthenticated,
-}: SiteHeaderClientProps) {
+export function SiteHeaderClient({ search, order, user }: SiteHeaderClientProps) {
   const locale = useLocale();
   const t = useTranslations('SiteHeader');
   const articlesAction = getPathname({ locale, href: '/articles' });
@@ -63,8 +62,7 @@ export function SiteHeaderClient({
             </form>
             <LocaleSwitcher />
           </div>
-
-          <UserActions isAuthenticated={isAuthenticated} />
+          <UserActions user={user} />{' '}
         </div>
       </div>
     </header>

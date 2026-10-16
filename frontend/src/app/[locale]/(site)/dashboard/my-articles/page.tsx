@@ -1,5 +1,5 @@
 import { getTranslations } from 'next-intl/server';
-import { getMyArticlesAction } from '@/app/[locale]/articles/actions';
+import { getMyArticlesAction } from '@/app/[locale]/(site)/articles/actions';
 import { ArticleCard } from '@/app/[locale]/components/article/article-card';
 import { ArticlePagination } from '@/app/[locale]/components/article/article-pagination';
 import { parseArticleQuery } from '@/lib/article/article-query';
