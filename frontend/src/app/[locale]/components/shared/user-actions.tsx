@@ -10,15 +10,15 @@ type UserActionsProps = {
     name: string;
     username: string;
   } | null;
-  isEditorMode?: boolean;
 };
 
 
-const UserActions = ({ user, isEditorMode = false }: UserActionsProps) => {
+const UserActions = ({ user }: UserActionsProps) => {
   const t = useTranslations('SiteHeader');
   const pathname = usePathname();
 
   const isDashboard = pathname.startsWith('/dashboard');
+  const isEditorMode = pathname.includes('/create') || pathname.includes('/edit');
 
   if (!user) {
     return (

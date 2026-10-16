@@ -1,15 +1,15 @@
 'use client';
 
 import { Breadcrumbs } from '@heroui/react';
-import { createArticleAction } from '@/app/[locale]/articles/actions';
+import { createArticleAction } from '@/app/[locale]/(site)/articles/actions';
 import { useLocale, useTranslations } from 'next-intl';
 import { getPathname } from '@/i18n/navigation';
 import { ArticleForm } from '@/app/[locale]/components/article-create/article-form';
-import { SiteHeaderClient } from '@/app/[locale]/components/shared/site-header-client';
 
 export default function CreateArticlePage() {
   const locale = useLocale();
   const t = useTranslations('CreateArticlePage');
+  const tBreadcrumbs = useTranslations('Breadcrumbs');
 
   const homeHref = getPathname({ locale, href: '/' });
   const articlesHref = getPathname({ locale, href: '/articles' });
@@ -17,23 +17,17 @@ export default function CreateArticlePage() {
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
       
-      <SiteHeaderClient 
-        search="" 
-        order="desc" 
-        isAuthenticated={true} 
-        isEditorMode={true} 
-      />
 
       <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-6 py-10">
-        <Breadcrumbs aria-label={t('breadCrumbsAria')}>
+        <Breadcrumbs aria-label={tBreadcrumbs('ariaLabel')}>
           <Breadcrumbs.Item className="uppercase" href={homeHref}>
-            <span className="text-xs">{t('breadCrumbsHome')}</span>
+            <span className="text-xs">{tBreadcrumbs('home')}</span>
           </Breadcrumbs.Item>
           <Breadcrumbs.Item className="uppercase" href={articlesHref}>
-            <span className="text-xs">{t('breadCrumbsArticles')}</span>
+            <span className="text-xs">{tBreadcrumbs('articles')}</span>
           </Breadcrumbs.Item>
           <Breadcrumbs.Item className="uppercase">
-            <span className="text-xs">{t('breadCrumbsNew')}</span>
+            <span className="text-xs">{tBreadcrumbs('new')}</span>
           </Breadcrumbs.Item>
         </Breadcrumbs>
 

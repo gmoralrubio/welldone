@@ -86,7 +86,6 @@
   "CreateArticlePage": {
     "title": "Write your story",
     "subtitle": "Share your knowledge with the community.",
-    "breadCrumbsNew": "New article",
     "labelTitle": "Article title *",
     "placeholderTitle": "E.g.: Design patterns in React...",
     "labelIntro": "Introduction *",
@@ -111,12 +110,13 @@
   "Breadcrumbs": {
     "ariaLabel": "Breadcrumbs",
     "home": "Home",
-    "articles": "Articles"
+    "articles": "Articles",
+    "dashboard": "Dashboard",
+    "myArticles": "My Articles",
+    "edit": "Edit",
+    "new": "New article"
   },
   "EditArticlePage": {
-    "breadCrumbsDashboard": "Dashboard",
-    "breadCrumbsMyArticles": "My Articles",
-    "breadCrumbsEdit": "Edit",
     "title": "Edit Article",
     "subtitle": "You are modifying the article: {title}",
     "TITLE_ALREADY_EXISTS": "You already have an article with this title. Please choose another one."

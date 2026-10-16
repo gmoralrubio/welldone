@@ -84,7 +84,6 @@
   "CreateArticlePage": {
     "title": "Escribe tu historia",
     "subtitle": "Comparte tus conocimientos con la comunidad.",
-    "breadCrumbsNew": "Nuevo Artículo",
     "labelTitle": "Título del artículo *",
     "placeholderTitle": "Ej: Patrones de diseño en React...",
     "labelIntro": "Introducción *",
@@ -108,12 +107,13 @@
   "Breadcrumbs": {
     "ariaLabel": "Migas de pan",
     "home": "Inicio",
-    "articles": "Artículos"
+    "articles": "Artículos",
+    "dashboard": "Panel",
+    "myArticles": "Mis Artículos",
+    "edit": "Editar",
+    "new": "Nuevo Artículo"
   },
   "EditArticlePage": {
-    "breadCrumbsDashboard": "Panel",
-    "breadCrumbsMyArticles": "Mis Artículos",
-    "breadCrumbsEdit": "Editar",
     "title": "Editar Artículo",
     "subtitle": "Estás modificando el artículo: {title}",
     "TITLE_ALREADY_EXISTS": "Ya tienes un artículo con este título. Por favor, elige otro."

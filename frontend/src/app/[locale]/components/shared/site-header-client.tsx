@@ -5,7 +5,7 @@ import { SearchField, Button } from '@heroui/react';
 import UserActions from './user-actions';
 import LocaleSwitcher from '@/app/[locale]/components/shared/locale-switcher';
 import { useLocale, useTranslations } from 'next-intl';
-import { Link, getPathname } from '@/i18n/navigation';
+import { Link, getPathname, usePathname } from '@/i18n/navigation';
 
 type SiteHeaderClientProps = {
   search: string;
@@ -14,19 +14,20 @@ type SiteHeaderClientProps = {
     name: string;
     username: string;
   } | null;
-  isEditorMode?: boolean;
 };
 
 
 export function SiteHeaderClient({
   search,
   order,
-  user,
-  isEditorMode = false,
+  user
 }: SiteHeaderClientProps) {
   const locale = useLocale();
   const t = useTranslations('SiteHeader');
+  const pathname = usePathname();
   const articlesAction = getPathname({ locale, href: '/articles' });
+  
+  const isEditorMode = pathname.includes('/create') || pathname.includes('/edit');
 
   return (
     <header className="sticky top-0 z-20 border-b border-separator bg-background-secondary shadow-accent-dark backdrop-blur-md">
@@ -89,7 +90,7 @@ export function SiteHeaderClient({
                 {t('saveButton')}
               </Button>
             )}
-            <UserActions isEditorMode={isEditorMode} user={user}/>
+            <UserActions user={user}/>
           </div>
         </div>
       </div>

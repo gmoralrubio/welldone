@@ -26,7 +26,7 @@ export default function CreateArticlePage() {
             <span className="text-xs">{tBread('articles')}</span>
           </Breadcrumbs.Item>
           <Breadcrumbs.Item className="uppercase">
-            <span className="text-xs">{t('breadCrumbsNew')}</span>
+            <span className="text-xs">{tBread('new')}</span>
           </Breadcrumbs.Item>
         </Breadcrumbs>
 
