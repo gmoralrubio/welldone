@@ -4,7 +4,7 @@ import { articleHref, formatDate } from '@/lib/article/article-presenters';
 import { ArticleDto } from '@/lib/article/articles.types';
 import { Link } from '@/i18n/navigation';
 import { Card } from '@heroui/react';
-import { ArrowLeft, ArrowRight } from '@gravity-ui/icons';
+import { ChevronLeft, ChevronRight } from '@gravity-ui/icons';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { Navigation } from 'swiper/modules';
@@ -31,7 +31,7 @@ export function MoreArticlesSlider({ articles }: MoreArticlesSliderProps) {
         aria-label={t('commentsPrevious')}
         className={`${arrowClassName} -left-8`}
       >
-        <ArrowLeft className="size-4" />
+        <ChevronLeft className="size-8" />
       </button>
       <button
         type="button"
@@ -39,7 +39,7 @@ export function MoreArticlesSlider({ articles }: MoreArticlesSliderProps) {
         aria-label={t('commentsNext')}
         className={`${arrowClassName} -right-8`}
       >
-        <ArrowRight className="size-4" />
+        <ChevronRight className="size-8" />
       </button>
       <Swiper
         modules={[Navigation]}
@@ -58,9 +58,9 @@ export function MoreArticlesSlider({ articles }: MoreArticlesSliderProps) {
           return (
             <SwiperSlide
               key={article.id}
-              className="h-auto"
+              className="flex! h-auto! py-2"
             >
-              <Card className="group flex h-full flex-col justify-between p-6 transition-shadow hover:shadow-md">
+              <Card className="group flex h-full w-full flex-col justify-between p-6 transition-shadow hover:shadow-md">
                 <div>
                   {category ? (
                     <span className="text-xs font-medium uppercase text-accent">
