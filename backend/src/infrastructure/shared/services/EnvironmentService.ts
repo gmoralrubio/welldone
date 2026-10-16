@@ -8,6 +8,7 @@ const environmentVariablesValidator = z.object({
   JWT_SECRET: z.string(),
   NODE_ENV: z.enum(['local', 'staging', 'production', 'test']),
   PORT: z.coerce.number(),
+  FRONTEND_URL: z.url(),
   REDIS_URL: z.url(),
   MAILDEV_HOST: z.string().optional(),
   MAILDEV_PORT: z.string().optional(),
@@ -24,14 +25,10 @@ class EnvironmentService {
     dotenv.config({ quiet: true });
 
     try {
-      this.environmentVariables = environmentVariablesValidator.parse(
-        process.env
-      );
+      this.environmentVariables = environmentVariablesValidator.parse(process.env);
     } catch (error) {
       if (error instanceof ZodError) {
-        throw new Error(
-          'Error loading environment variables: ' + JSON.stringify(error)
-        );
+        throw new Error('Error loading environment variables: ' + JSON.stringify(error));
       } else {
         throw new Error(`Unknown error: ${error}`);
       }
