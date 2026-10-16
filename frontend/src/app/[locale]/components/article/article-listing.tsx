@@ -1,7 +1,6 @@
 import { ArticleCard } from '@/app/[locale]/components/article/article-card';
 import { ArticleHero } from '@/app/[locale]/components/article/article-hero';
 import { ArticlePagination } from '@/app/[locale]/components/article/article-pagination';
-import { SiteFooter } from '@/app/[locale]/components/shared/site-footer';
 import { SiteSidebar } from '@/app/[locale]/components/shared/site-sidebar';
 import { ArticleDto } from '@/lib/article/articles.types';
 import {
@@ -85,7 +84,6 @@ export async function ArticleListing({
           />
         </div>
       </div>
-      <SiteFooter />
     </div>
   );
 }
