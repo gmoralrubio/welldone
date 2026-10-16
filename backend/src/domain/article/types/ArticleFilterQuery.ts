@@ -4,6 +4,7 @@ export interface ArticleFilterQuery {
   search?: string;
   category?: string;
   order: 'asc' | 'desc';
+  authorId?: number;
 }
 
 export type ArticleUserFilterQuery = ArticleFilterQuery & {

@@ -2,7 +2,11 @@
 
 import { Surface, SearchField } from '@heroui/react';
 import { SelectOrder } from '@/app/[locale]/components/article/select-order';
-import { ArticleOrder } from '@/lib/article/article-query';
+import {
+  ArticleListPathname,
+  ArticleOrder,
+  ArticleQuery,
+} from '@/lib/article/article-query';
 import { Link, getPathname } from '@/i18n/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import { CATEGORY_SLUGS } from '@/lib/category/category.types';
@@ -10,15 +14,22 @@ import { CATEGORY_SLUGS } from '@/lib/category/category.types';
 type SiteSidebarProps = {
   search: string;
   order: ArticleOrder;
+  category?: ArticleQuery['category'];
+  listPath?: ArticleListPathname;
 };
 
 const frequentSearches = ['TypeScript', 'Clean Code', 'Arquitectura', 'DevOps'];
 
-export function SiteSidebar({ search, order }: SiteSidebarProps) {
+export function SiteSidebar({
+  search,
+  order,
+  category = '',
+  listPath = '/articles',
+}: SiteSidebarProps) {
   const locale = useLocale();
   const t = useTranslations('SiteSidebar');
   const tCategories = useTranslations('Categories');
-  const articlesAction = getPathname({ locale, href: '/articles' });
+  const articlesAction = getPathname({ locale, href: listPath });
 
   return (
     <aside className="flex flex-col gap-6">
@@ -51,10 +62,17 @@ export function SiteSidebar({ search, order }: SiteSidebarProps) {
               value="asc"
             />
           ) : null}
+          {category ? (
+            <input
+              type="hidden"
+              name="category"
+              value={category}
+            />
+          ) : null}
         </form>
         <div className="mb-4">
           <p className="text-xs font-bold text-muted uppercase mb-2">{t('order')}</p>
-          <SelectOrder />
+          <SelectOrder listPath={listPath} />
         </div>
         <div>
           <p className="text-xs font-bold text-muted uppercase mb-2">
@@ -65,8 +83,12 @@ export function SiteSidebar({ search, order }: SiteSidebarProps) {
               <Link
                 key={term}
                 href={{
-                  pathname: '/articles',
-                  query: { search: term },
+                  pathname: listPath,
+                  query: {
+                    search: term,
+                    ...(category ? { category } : {}),
+                    ...(order === 'asc' ? { order } : {}),
+                  },
                 }}
                 className="rounded-full bg-field px-2.5 py-1 text-xs font-medium tracking-[0.24px] text-[#45464d] no-underline"
               >
@@ -88,8 +110,12 @@ export function SiteSidebar({ search, order }: SiteSidebarProps) {
             <Link
               key={slug}
               href={{
-                pathname: '/articles',
-                query: { category: slug },
+                pathname: listPath,
+                query: {
+                  category: slug,
+                  ...(search ? { search } : {}),
+                  ...(order === 'asc' ? { order } : {}),
+                },
               }}
               className="rounded bg-field px-3 py-1.5 text-sm font-semibold text-foreground no-underline"
             >

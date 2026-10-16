@@ -4,6 +4,10 @@ type ArticleHrefSource = Pick<ArticleDto, 'status' | 'slug'> & {
   author: Pick<ArticleDto['author'], 'username'>;
 };
 
+export function authorArticlesHref(username: string): `/articles/${string}` {
+  return `/articles/${username}`;
+}
+
 export function articleHref(article: ArticleHrefSource): string {
   if (article.status === ArticleStatus.DRAFT) {
     return `/dashboard/my-articles/${article.slug}`;
@@ -20,10 +24,6 @@ const dateFormatter = new Intl.DateTimeFormat('es', {
 
 export function formatDate(isoDate: string): string {
   return dateFormatter.format(new Date(isoDate));
-}
-
-export function truncateSlug(slug: string): string {
-  return slug.length > 20 ? slug.substring(0, 20) + '...' : slug;
 }
 
 export function slugify(input: string): string {

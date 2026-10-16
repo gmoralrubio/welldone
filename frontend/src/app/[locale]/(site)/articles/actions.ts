@@ -29,6 +29,26 @@ export async function getArticles(
   return data;
 }
 
+export async function getArticlesByAuthor(
+  authorUsername: string,
+  searchParams: ArticlesSearchParams
+): Promise<PaginatedResponse<ArticleDto> | null> {
+  const criteria = parseArticleQuery(searchParams);
+  const params = articleQueryParams(criteria);
+  params.set('authorUsername', authorUsername);
+
+  const response = await fetch(
+    `${process.env.API_URL}/api/articles?${params.toString()}`
+  );
+
+  if (response.status === 404) return null;
+  if (!response.ok) throw new Error('No se pudieron cargar los artículos');
+
+  const data: PaginatedResponse<ArticleDto> = await response.json();
+
+  return data;
+}
+
 export async function getArticleByAuthorAndSlug(
   authorUsername: string,
   slug: string
@@ -76,6 +96,7 @@ export async function getArticleComments(
 type CommentFormUser = {
   name: string;
   surname: string;
+  username: string;
 };
 
 export async function getCommentAuthor(

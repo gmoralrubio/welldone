@@ -1,13 +1,17 @@
 'use client';
 
-import { articlesListHref } from '@/lib/article/article-query';
+import { articlesListHref, type ArticleListPathname } from '@/lib/article/article-query';
 import { ListBox, Select, type Key } from '@heroui/react';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
 import { isCategorySlug } from '@/lib/category/category.types';
 
-export function SelectOrder() {
+type SelectOrderProps = {
+  listPath?: ArticleListPathname;
+};
+
+export function SelectOrder({ listPath }: SelectOrderProps) {
   const t = useTranslations('SelectOrder');
 
   const orders = [
@@ -36,6 +40,7 @@ export function SelectOrder() {
         search: search ?? '',
         order: nextOrder,
         category,
+        pathname: listPath,
       })
     );
   };

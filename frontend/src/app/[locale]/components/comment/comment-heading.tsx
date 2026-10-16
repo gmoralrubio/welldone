@@ -1,8 +1,8 @@
-import { Avatar, Chip } from '@heroui/react';
+import { Chip } from '@heroui/react';
 import { useTranslations } from 'next-intl';
 import { CommentProps } from '@/lib/comment/comments.types';
 import { useRelativeTime } from '@/app/[locale]/hooks/useRelativeTime';
-import { formatAvatarLetter } from '@/lib/shared/format-avatar-letter';
+import { UserAvatar } from '@/app/[locale]/components/user/user-avatar';
 
 export function CommentHeading({ comment, articleAuthorId }: CommentProps) {
   const t = useTranslations('ArticleDetailPage');
@@ -11,15 +11,11 @@ export function CommentHeading({ comment, articleAuthorId }: CommentProps) {
 
   return (
     <div className="flex flex-row gap-2">
-      <Avatar
-        size="md"
-        variant="soft"
-        color="accent"
-      >
-        <Avatar.Fallback>
-          {formatAvatarLetter(comment.user.name, comment.user.surname)}
-        </Avatar.Fallback>
-      </Avatar>
+      <UserAvatar
+        name={comment.user.name}
+        surname={comment.user.surname}
+        username={comment.user.username}
+      />
       <div className="flex flex-col">
         <div className="flex gap-2">
           <span className="text-sm font-semibold">
