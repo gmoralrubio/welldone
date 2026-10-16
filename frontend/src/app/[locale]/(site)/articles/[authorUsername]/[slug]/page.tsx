@@ -85,11 +85,7 @@ export default async function ArticleDetailPage({
     notFound();
   }
 
-  const { data: comments, meta: commentsMeta } = await getArticleComments(
-    authorUsername,
-    slug,
-    commentsPage
-  );
+  const commentsResult = await getArticleComments(authorUsername, slug, commentsPage);
 
   const t = await getTranslations('ArticleDetailPage');
   const locale = await getLocale();
@@ -330,11 +326,19 @@ export default async function ArticleDetailPage({
             </CardContent>
           </Card>
         )}
-        {comments.length === 0 && commentsMeta.total_items === 0 ? (
+        {commentsResult === null ? (
+          <p
+            role="alert"
+            className="text-sm text-danger"
+          >
+            {t('commentsLoadError')}
+          </p>
+        ) : commentsResult.data.length === 0 &&
+          commentsResult.meta.total_items === 0 ? (
           <p className="text-muted">{t('commentsEmpty')}</p>
         ) : (
           <div className="space-y-4">
-            {comments.map((comment) => (
+            {commentsResult.data.map((comment) => (
               <CommentCard
                 key={comment.id}
                 comment={comment}
@@ -344,13 +348,13 @@ export default async function ArticleDetailPage({
                 currentUser={currentUser}
               />
             ))}
-            {commentsMeta.total_items > 0 ? (
+            {commentsResult.meta.total_items > 0 ? (
               <div className="flex justify-center">
                 <CommentPagination
                   authorUsername={authorUsername}
                   slug={slug}
                   page={commentsPage}
-                  pages={commentsMeta.pages}
+                  pages={commentsResult.meta.pages}
                 />
               </div>
             ) : null}
