@@ -171,7 +171,7 @@ export async function createCommentAction(
   return { error: null };
 }
 
-export async function createArticleAction(locale: string, formData: FormData) {
+export async function createArticleAction(locale: string, formData: FormData):Promise<{ error: string } | void>  {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
 
@@ -195,7 +195,12 @@ export async function createArticleAction(locale: string, formData: FormData) {
   });
 
   if (!response.ok) {
-    const errorData = await response.json();
+    const errorData = await response.json().catch(() => null);
+
+    if (errorData?.error === 'TITLE_ALREADY_EXISTS') {
+      return { error: 'TITLE_ALREADY_EXISTS' };
+    }
+    
     throw new Error(errorData.error || 'Error al crear el artículo');
   }
 
@@ -220,6 +225,7 @@ export async function getMyArticlesAction(
   const criteria = parseArticleQuery(searchParams);
   const params = articleQueryParams(criteria);
 
+
   if (searchParams.status) {
     params.append('status', searchParams.status as string);
   }
@@ -237,6 +243,7 @@ export async function getMyArticlesAction(
   if (!response.ok) throw new Error('No se pudieron cargar tus artículos');
 
   return await response.json();
+
 }
 
 export async function getMyArticleBySlug(slug: string): Promise<ArticleDto | null> {
@@ -259,4 +266,69 @@ export async function getMyArticleBySlug(slug: string): Promise<ArticleDto | nul
 
   const data: { article: ArticleDto } = await response.json();
   return data.article;
+}
+
+export async function getArticleById(id: string): Promise<ArticleDto> {
+
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('accessToken')?.value;
+
+  const response = await fetch(`${process.env.API_URL}/api/articles/${id}`, {
+    headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},
+    cache: 'no-store',
+  });
+
+  if (!response.ok) throw new Error('No se pudo cargar el artículo para editar');
+  
+  const data = await response.json();
+
+  return data.article || data; 
+}
+
+export async function updateArticleAction(locale: string, articleId: string, formData: FormData) {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('accessToken')?.value;
+
+  if (!accessToken) {
+    throw new Error('No autorizado');
+  }
+
+  const payload = {
+    title: formData.get('title'),
+    intro: formData.get('intro'),
+    content: formData.get('content'),
+    status: formData.get('status'),
+    categorySlugs: formData.getAll('categorySlugs'),
+    featuredImageUrl: formData.get('featuredImageUrl') || null,
+    featuredVideoUrl: formData.get('featuredVideoUrl') || null,
+  };
+
+  const response = await fetch(`${process.env.API_URL}/api/articles/${articleId}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+
+    if (errorData.error === 'TITLE_ALREADY_EXISTS') {
+        return {
+          errors: {
+            title: ['Ya tienes un artículo con este mismo título. Elige otro.'], 
+          },
+        };
+      }
+      return {
+        message: errorData.error || 'Error al actualizar el artículo',
+      };
+  }
+
+  redirect({
+    href: '/dashboard/my-articles',
+    locale: resolveLocale(locale),
+  });
 }

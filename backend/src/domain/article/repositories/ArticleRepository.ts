@@ -5,16 +5,32 @@ import { FindPublishedArticlesUseCaseInput } from '@domain/article/use-cases/fin
 import { FindMyArticlesUseCaseInput } from '@domain/article/use-cases/find-my-articles';
 import { FindMyArticleUseCaseInput } from '@domain/article/use-cases/find-my-article';
 import { FindArticleDetailUseCaseInput } from '@domain/article/use-cases/find-article-detail';
+import { UpdateArticleUseCaseInput } from '@domain/article/use-cases/update-article';
 
 export interface ArticleRepository {
   findPublishedArticles(
     criteria: FindPublishedArticlesUseCaseInput
   ): Promise<FindArticlesResponse>;
-  findMyArticles(criteria: FindMyArticlesUseCaseInput): Promise<FindArticlesResponse>;
+  findMyArticles(
+    criteria: FindMyArticlesUseCaseInput
+  ): Promise<FindArticlesResponse>;
   findPublishedArticleBy(
     criteria: FindArticleDetailUseCaseInput
   ): Promise<Article | null>;
-  findArticleBy(criteria: FindMyArticleUseCaseInput): Promise<Article | null>;
+  findArticleBy(
+    criteria: FindMyArticleUseCaseInput
+  ): Promise<Article | null>;
+  create(
+    criteria: CreateArticleUseCaseInput
+  ): Promise<Article>;
+  findById(
+    id: number
+  ): Promise<Article | null>;
+  update(
+    id: number, data: UpdateArticleUseCaseInput
+  ): Promise<Article>;
 
-  create(criteria: CreateArticleUseCaseInput): Promise<Article>;
+  findByTitleAndAuthor(
+    title: string, authorId: number
+  ): Promise<Article | null>;
 }

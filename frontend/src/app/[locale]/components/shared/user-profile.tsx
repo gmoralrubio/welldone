@@ -42,26 +42,16 @@ const UserProfile = ({ name, username }: UserProfileProps) => {
         <Dropdown.Menu aria-label={t('accountAria')}>
           <Dropdown.Item
             id="account"
-            textValue={t('account')}
+            textValue={t('profile')}
           >
             <Link
-              href="/dashboard/account"
+              href="/dashboard/profile"
               className="block w-full no-underline text-inherit"
             >
-              {t('account')}
+              {t('profile')}
             </Link>
           </Dropdown.Item>
-          <Dropdown.Item
-            id="dashboard"
-            textValue={t('dashboard')}
-          >
-            <Link
-              href="/dashboard"
-              className="block w-full no-underline text-inherit"
-            >
-              {t('dashboard')}
-            </Link>
-          </Dropdown.Item>
+
           <Dropdown.Item
             id="logout"
             textValue={t('logout')}

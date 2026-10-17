@@ -10,6 +10,7 @@ export type ArticleListPathname =
   | '/dashboard/my-articles'
   | `/articles/${string}`;
 
+
 export type ArticleListStatus = 'PUBLISHED' | 'DRAFT';
 
 const MIN_SEARCH_LENGTH = 3;

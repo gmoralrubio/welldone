@@ -11,6 +11,7 @@ import {
 } from '@infrastructure/article/PrismaArticle.types';
 import { CreateArticleUseCaseInput } from '@domain/article/use-cases/create-article';
 import { FindArticleDetailUseCaseInput } from '@domain/article/use-cases/find-article-detail';
+import { UpdateArticleUseCaseInput } from '@domain/article/use-cases/update-article';
 
 const articleInclude = {
   author: {
@@ -143,6 +144,58 @@ export class PrismaArticleRepository implements ArticleRepository {
     return this.restore(prismaArticle);
   }
 
+  async findById(id: number): Promise<Article | null> {
+    const articlePrisma = await this.prisma.article.findUnique({
+      where: { id },
+      include: articleInclude,
+    });
+
+    if (!articlePrisma) {
+      return null;
+    }
+
+    return this.restore(articlePrisma);
+  }
+
+  async findByTitleAndAuthor(title: string, authorId: number): Promise<Article | null> {
+    const articlePrisma = await this.prisma.article.findFirst({
+      where: {
+        title,
+        authorId,
+      },
+      include: articleInclude,
+    });
+
+    if (!articlePrisma) {
+      return null;
+    }
+
+    return this.restore(articlePrisma);
+  }
+
+  async update(id: number, criteria: UpdateArticleUseCaseInput): Promise<Article> {
+    const prismaArticle = await this.prisma.article.update({
+      where: { id },
+      data: {
+        title: criteria.title,
+        content: criteria.content,
+        intro: criteria.intro,
+        status: criteria.status,
+        publishedAt: criteria.publishedAt ?? undefined,
+        featuredImageUrl: criteria.featuredImageUrl,
+        featuredVideoUrl: criteria.featuredVideoUrl,
+        ...(criteria.categorySlugs && {
+          categories: {
+            set: criteria.categorySlugs.map((slug) => ({ slug })),
+          },
+        }),
+      },
+      include: articleInclude,
+    });
+
+    return this.restore(prismaArticle);
+  }
+
   private restore(prismaArticle: PrismaArticle): Article {
     return new Article({
       id: prismaArticle.id,
@@ -167,4 +220,7 @@ export class PrismaArticleRepository implements ArticleRepository {
       commentCount: prismaArticle._count.comments,
     });
   }
+  
 }
+
+

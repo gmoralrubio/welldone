@@ -2,7 +2,7 @@
 
 import WriteButton from './write-button';
 import UserProfile from './user-profile';
-import { Link } from '@/i18n/navigation';
+import { Link, usePathname } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
 
 type UserActionsProps = {
@@ -12,8 +12,13 @@ type UserActionsProps = {
   } | null;
 };
 
+
 const UserActions = ({ user }: UserActionsProps) => {
   const t = useTranslations('SiteHeader');
+  const pathname = usePathname();
+
+  const isDashboard = pathname.startsWith('/dashboard');
+  const isEditorMode = pathname.includes('/create') || pathname.includes('/edit');
 
   if (!user) {
     return (
@@ -27,7 +32,7 @@ const UserActions = ({ user }: UserActionsProps) => {
   }
   return (
     <div className="flex items-center gap-4">
-      <WriteButton />
+      {!isEditorMode && isDashboard && <WriteButton />}
       <UserProfile
         name={user.name}
         username={user.username}

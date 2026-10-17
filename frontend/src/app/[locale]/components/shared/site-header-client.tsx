@@ -1,11 +1,11 @@
 'use client';
 
-import { SearchField } from '@heroui/react';
 import { ArticleOrder } from '@/lib/article/article-query';
+import { SearchField, Button } from '@heroui/react';
 import UserActions from './user-actions';
 import LocaleSwitcher from '@/app/[locale]/components/shared/locale-switcher';
 import { useLocale, useTranslations } from 'next-intl';
-import { Link, getPathname } from '@/i18n/navigation';
+import { Link, getPathname, usePathname } from '@/i18n/navigation';
 
 type SiteHeaderClientProps = {
   search: string;
@@ -16,10 +16,19 @@ type SiteHeaderClientProps = {
   } | null;
 };
 
-export function SiteHeaderClient({ search, order, user }: SiteHeaderClientProps) {
+
+export function SiteHeaderClient({
+  search,
+  order,
+  user
+}: SiteHeaderClientProps) {
   const locale = useLocale();
   const t = useTranslations('SiteHeader');
+  const pathname = usePathname();
   const articlesAction = getPathname({ locale, href: '/articles' });
+  
+  const isEditorMode = pathname.includes('/create') || pathname.includes('/edit');
+
   return (
     <header className="sticky top-0 z-20 border-b border-separator bg-background-secondary shadow-accent-dark backdrop-blur-md">
       <div className="mx-auto flex w-full max-w-340 flex-col px-8">
@@ -34,35 +43,55 @@ export function SiteHeaderClient({ search, order, user }: SiteHeaderClientProps)
               </span>
               <span className="font-serif text-2xl font-semibold pt-1">WellDone</span>
             </Link>
-            <form
-              action={articlesAction}
-              className="hidden w-80 md:block"
-            >
-              <SearchField
-                aria-label={t('searchAria')}
-                className="w-full"
-                defaultValue={search}
-                name="search"
+
+            {!isEditorMode && (
+              <form
+                action={articlesAction}
+                className="hidden w-80 md:block"
               >
-                <SearchField.Group className="h-9 rounded bg-field">
-                  <SearchField.SearchIcon />
-                  <SearchField.Input
-                    placeholder={t('searchPlaceholder')}
-                    className="text-xs"
+                <SearchField
+                  aria-label={t('searchAria')}
+                  className="w-full"
+                  defaultValue={search}
+                  name="search"
+                >
+                  <SearchField.Group className="h-7 rounded bg-field">
+                    <SearchField.SearchIcon />
+                    <SearchField.Input
+                      placeholder={t('searchPlaceholder')}
+                      className="text-xs"
+                    />
+                  </SearchField.Group>
+                </SearchField>
+                {order === 'asc' ? (
+                  <input
+                    type="hidden"
+                    name="order"
+                    value="asc"
                   />
-                </SearchField.Group>
-              </SearchField>
-              {order === 'asc' ? (
-                <input
-                  type="hidden"
-                  name="order"
-                  value="asc"
-                />
-              ) : null}
-            </form>
-            <LocaleSwitcher />
+                ) : null}
+              </form>
+            )}
           </div>
-          <UserActions user={user} />{' '}
+          
+          <div className="flex items-center gap-4">
+            {!isEditorMode && (
+              <div>
+                <LocaleSwitcher />
+              </div>
+            )}
+
+            {isEditorMode && (
+              <Button
+                type="submit"
+                form="article-editor-form"
+                className="bg-[#0f9d58] text-white font-medium rounded-sm"
+              >
+                {t('saveButton')}
+              </Button>
+            )}
+            <UserActions user={user}/>
+          </div>
         </div>
       </div>
     </header>

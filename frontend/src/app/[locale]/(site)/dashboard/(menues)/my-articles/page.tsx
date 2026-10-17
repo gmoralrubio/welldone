@@ -12,12 +12,13 @@ export default async function MyArticlesPage({ searchParams }: MyArticlesPagePro
   const t = await getTranslations('Dashboard');
   const params = await searchParams;
   const { page, limit, order } = parseArticleQuery(params);
-
+  
   const response = await getMyArticlesAction({
     page: String(page),
     limit: String(limit),
     order,
   });
+
   const { data: articles, meta } = response;
 
   return (
@@ -34,13 +35,15 @@ export default async function MyArticlesPage({ searchParams }: MyArticlesPagePro
             <ArticleCard
               key={article.id}
               article={article}
+              showActions={true}
             />
           ))
         ) : (
           <div className="rounded-xl border border-dashed border-separator p-12 text-center">
             <p className="font-serif text-lg text-muted">
-              Aún no has escrito ningún artículo.
+              {t('emptyState')}
             </p>
+
           </div>
         )}
       </div>
@@ -55,8 +58,10 @@ export default async function MyArticlesPage({ searchParams }: MyArticlesPagePro
             category=""
             pathname="/dashboard/my-articles"
           />
+
         </div>
       )}
     </div>
   );
+
 }

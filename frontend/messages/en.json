@@ -24,7 +24,8 @@
     "signIn": "Sign in",
     "dashboard": "Dashboard",
     "account": "Account",
-    "logout": "Log out"
+    "logout": "Log out",
+    "saveButton": "Save"
   },
   "SiteFooter": {
     "tagline": "An independent editorial sanctuary for essays on digital culture, contemporary philosophy, and critical thinking.",
@@ -78,12 +79,13 @@
     "readMinutes": "{minutes, plural, one {# min} other {# min}}",
     "commentsAria": "Comments",
     "saveAria": "Save",
-    "shareAria": "Share"
+    "shareAria": "Share",
+    "edit": "Edit article",
+    "delete": "Delete article"
   },
   "CreateArticlePage": {
     "title": "Write your story",
     "subtitle": "Share your knowledge with the community.",
-    "breadCrumbsNew": "New article",
     "labelTitle": "Article title *",
     "placeholderTitle": "E.g.: Design patterns in React...",
     "labelIntro": "Introduction *",
@@ -100,12 +102,24 @@
     "labelContent": "Content *",
     "placeholderContent": "Write the full content of your article here...",
     "cancel": "Cancel",
-    "submit": "Save article"
+    "submit": "Save article",
+    "TITLE_ALREADY_EXISTS": "You already have an article with this title. Please choose another one."
+
   },
+
   "Breadcrumbs": {
     "ariaLabel": "Breadcrumbs",
     "home": "Home",
-    "articles": "Articles"
+    "articles": "Articles",
+    "dashboard": "Dashboard",
+    "myArticles": "My Articles",
+    "edit": "Edit",
+    "new": "New article"
+  },
+  "EditArticlePage": {
+    "title": "Edit Article",
+    "subtitle": "You are modifying the article: {title}",
+    "TITLE_ALREADY_EXISTS": "You already have an article with this title. Please choose another one."
   },
   "ArticleDetailPage": {
     "following": "Following",
@@ -243,7 +257,7 @@
       "favorites": "Favorites",
       "highlights": "Highlights",
       "notifications": "Notifications",
-      "account": "Account",
+      "profile": "Profile",
       "settings": "Settings"
     },
     "articlesTitle": "My articles",
@@ -265,7 +279,8 @@
     "backToArticles": "Back to My articles",
     "statusDraft": "Draft",
     "statusPublished": "Published",
-    "videoUnsupported": "Your browser cannot play this video."
+    "videoUnsupported": "Your browser cannot play this video.",
+    "emptyState": "You haven't written any articles yet."
   },
   "Account": {
     "title": "My account",
@@ -299,5 +314,10 @@
       "updateFailed": "Your changes could not be saved. Please try again.",
       "sessionExpired": "Your session has expired. Please sign in again."
     }
+  },
+  "ProfileAbout": {
+  "emptyTitle": "Tell the world about yourself",
+  "emptyDescription": "Here’s where you can share more about yourself: your history, work experience, accomplishments, interests, dreams, and more.",
+  "getStarted": "Get started"
   }
 }

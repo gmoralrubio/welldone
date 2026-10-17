@@ -23,12 +23,9 @@ export class CreateArticleUseCase {
     private readonly articleRepository: ArticleRepository,
     private readonly userRepository: UserRepository
   ) {}
+  
 
   async execute(input: CreateArticleUseCaseInput): Promise<Article> {
-    const author = await this.userRepository.findById(input.authorId);
-    if (!author) {
-      throw new EntityNotFoundError('User', input.authorId.toString());
-    }
 
     if (!input.title || input.title.trim() === '') {
       throw new ValidationError('El título es obligatorio');
@@ -37,10 +34,15 @@ export class CreateArticleUseCase {
       throw new ValidationError('El contenido es obligatorio');
     }
     if (!input.categorySlugs || input.categorySlugs.length === 0) {
-      throw new ValidationError(
-        'El artículo debe tener al menos una categoría'
-      );
+      throw new ValidationError('El artículo debe tener al menos una categoría');
     }
+
+    const author = await this.userRepository.findById(input.authorId);
+
+    if (!author) {
+      throw new EntityNotFoundError('User', input.authorId.toString());
+    }
+
 
     const finalSlug = input.slug?.trim()
       ? input.slug
@@ -50,6 +52,16 @@ export class CreateArticleUseCase {
           .replace(/[\u0300-\u036f]/g, '')
           .replace(/[^a-z0-9]+/g, '-')
           .replace(/(^-|-$)+/g, '');
+    
+    
+    const existingArticle = await this.articleRepository.findArticleBy({
+      authorId: input.authorId,
+      slug: finalSlug
+    });
+
+    if (existingArticle) {
+      throw new Error('TITLE_ALREADY_EXISTS');
+    }
 
     return this.articleRepository.create({
       ...input,
