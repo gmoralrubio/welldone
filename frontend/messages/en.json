@@ -78,7 +78,7 @@
       "days": "{days, plural, one {# day} other {# days}} ago"
     },
     "readMinutes": "{minutes, plural, one {# min} other {# min}}",
-    "commentsAria": "Comments",
+    "commentsAria": "{count, plural, one {# comment} other {# comments}}",
     "saveAria": "Save",
     "shareAria": "Share",
     "edit": "Edit article",
