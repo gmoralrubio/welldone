@@ -32,4 +32,44 @@ export class PrismaPasswordResetTokenRepository implements PasswordResetTokenRep
       where: { userId },
     });
   }
+
+  async resetPassword(tokenHash: string, hashedPassword: string): Promise<boolean> {
+    return this.prismaClient.$transaction(async (tx) => {
+      const token = await tx.passwordResetToken.findUnique({
+        where: { tokenHash },
+      });
+
+      if (!token || token.expiresAt <= new Date()) {
+        return false;
+      }
+
+      // Eliminar el token para que no se pueda reusar
+      const deletedTokens = await tx.passwordResetToken.deleteMany({
+        where: {
+          id: token.id,
+          tokenHash,
+          expiresAt: {
+            gt: new Date(),
+          },
+        },
+      });
+
+      if (deletedTokens.count === 0) {
+        return false;
+      }
+
+      // Actualizar la contraseña con el hash
+      await tx.user.update({
+        where: { id: token.userId },
+        data: { password: hashedPassword },
+      });
+
+      // Invalidar cualquier otro enlace pendiente
+      await tx.passwordResetToken.deleteMany({
+        where: { userId: token.userId },
+      });
+
+      return true;
+    });
+  }
 }
