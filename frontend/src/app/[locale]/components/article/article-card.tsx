@@ -79,7 +79,7 @@ export function ArticleCard({ article, showActions = false, href }: ArticleCardP
           
           <div className="flex items-center gap-2">
             {article.status === 'PUBLISHED' ? (
-              <ArticleCardPublishedActions />
+              <ArticleCardPublishedActions commentCount={article.commentCount} />
             ) : (
               <Chip className="text-muted bg-surface-secondary border-none" size="sm">DRAFT</Chip>
             )}
