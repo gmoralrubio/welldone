@@ -1,7 +1,9 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import { Link } from '@/i18n/navigation';
+import { useState, useRef, useEffect, useTransition } from 'react';
+import { Link, useRouter } from '@/i18n/navigation';
+import { useTranslations } from 'next-intl';
+import { deleteArticleAction } from '@/app/[locale]/(site)/articles/actions';
 
 const DotsIcon = () => (
   <svg fill="none" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg" className="text-default-500">
@@ -20,6 +22,13 @@ interface Props {
 export function ArticleActionsMenu({ articleId, editLabel, deleteLabel }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  const router = useRouter();
+  const t = useTranslations('ArticleCard');
+  
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -32,6 +41,39 @@ export function ArticleActionsMenu({ articleId, editLabel, deleteLabel }: Props)
     }
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen]);
+
+  function openDialog() {
+    setIsOpen(false);
+    setError(null);
+    dialogRef.current?.showModal();
+  }
+
+  function closeDialog() {
+    if (!isPending) {
+      dialogRef.current?.close();
+    }
+  }
+
+  function handleDelete() {
+    if (isPending) return;
+    setError(null);
+
+    startTransition(async () => {
+      try {
+        const result = await deleteArticleAction(articleId);
+
+        if (result.status === 204) {
+          dialogRef.current?.close();
+          router.refresh();
+          return;
+        }
+
+        setError(t('deleteError') || 'No se pudo eliminar el artículo.');
+      } catch {
+        setError(t('deleteError') || 'Error de conexión.');
+      }
+    });
+  }
 
   return (
     <div className="relative inline-block text-left" ref={menuRef}>
@@ -66,7 +108,7 @@ export function ArticleActionsMenu({ articleId, editLabel, deleteLabel }: Props)
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                setIsOpen(false);
+                openDialog();
 
               }}
               className="block w-full rounded-md px-3 py-2 text-left text-sm text-danger hover:bg-danger-50"
@@ -77,6 +119,53 @@ export function ArticleActionsMenu({ articleId, editLabel, deleteLabel }: Props)
           </div>
         </div>
       )}
+
+      <dialog
+        ref={dialogRef}
+        aria-labelledby={`delete-dialog-title-${articleId}`}
+        onCancel={(event) => {
+          if (isPending) event.preventDefault();
+        }}
+      
+        className="m-auto w-[calc(100%-2rem)] max-w-md rounded-xl bg-white p-6 shadow-xl backdrop:bg-black/50 backdrop:backdrop-blur-sm z-50 fixed inset-0"
+      >
+        <h3
+          id={`delete-dialog-title-${articleId}`}
+          className="font-serif text-2xl font-semibold text-black"
+        >
+          {t('deleteModalTitle') || '¿Eliminar artículo?'}
+        </h3>
+
+        <p className="mt-4 text-sm leading-6 text-[#45464d]">
+          {t('deleteModalDescription') || 'Esta acción no se puede deshacer. El artículo y todos sus comentarios serán eliminados permanentemente.'}
+        </p>
+
+        {error && (
+          <p role="alert" className="mt-4 text-sm text-red-700">
+            {error}
+          </p>
+        )}
+
+        <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+          <button
+            type="button"
+            onClick={closeDialog}
+            disabled={isPending}
+            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-black transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {t('cancel') || 'Cancelar'}
+          </button>
+
+          <button
+            type="button"
+            onClick={handleDelete}
+            disabled={isPending}
+            className="rounded-lg bg-red-700 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-red-800 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isPending ? (t('confirmingDelete') || 'Eliminando...') : (t('confirmDelete') || 'Sí, eliminar')}
+          </button>
+        </div>
+      </dialog>
     </div>
   );
 }

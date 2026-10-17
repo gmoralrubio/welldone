@@ -9,6 +9,7 @@ import { articleCommentsController } from '@ui/article/controllers/article-comme
 import { createCommentController } from '@ui/article/controllers/create-comment-controller';
 import { getArticleByIdController } from '../controllers/get-article-by-id-controller';
 import { updateArticleController } from '../controllers/update-article-controller';
+import { deleteArticleController } from '../controllers/delete-article-controller';
 
 export const articlesRouter = Router();
 
@@ -20,6 +21,7 @@ articlesRouter.get('/me/:slug', authenticationMiddleware, findMyArticleControlle
 
 articlesRouter.get('/:id', getArticleByIdController);
 articlesRouter.patch('/:id', authenticationMiddleware, updateArticleController);
+articlesRouter.delete('/:id', authenticationMiddleware, deleteArticleController);
 
 articlesRouter.get('/:authorUsername/:slug', articleDetailController);
 articlesRouter.get('/:authorUsername/:slug/comments', articleCommentsController);

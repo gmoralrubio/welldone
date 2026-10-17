@@ -81,7 +81,13 @@
     "saveAria": "Save",
     "shareAria": "Share",
     "edit": "Edit article",
-    "delete": "Delete article"
+    "delete": "Delete article",
+    "deleteModalTitle": "Delete article?",
+    "deleteModalDescription": "This action cannot be undone. The article and all its comments will be permanently deleted.",
+    "cancel": "Cancel",
+    "confirmDelete": "Yes, delete",
+    "confirmingDelete": "Deleting...",
+    "deleteError": "An error occurred while trying to delete the article."
   },
   "CreateArticlePage": {
     "title": "Write your story",

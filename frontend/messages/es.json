@@ -79,7 +79,13 @@
     "saveAria": "Guardar",
     "shareAria": "Compartir",
     "edit": "Editar artículo",
-    "delete": "Borrar artículo"
+    "delete": "Borrar artículo",
+    "deleteModalTitle": "¿Eliminar artículo?",
+    "deleteModalDescription": "Esta acción no se puede deshacer. El artículo y todos sus comentarios serán eliminados permanentemente.",
+    "cancel": "Cancelar",
+    "confirmDelete": "Sí, eliminar",
+    "confirmingDelete": "Eliminando...",
+    "deleteError": "Ocurrió un error al intentar eliminar el artículo."
   },
   "CreateArticlePage": {
     "title": "Escribe tu historia",

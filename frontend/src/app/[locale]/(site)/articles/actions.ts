@@ -332,3 +332,33 @@ export async function updateArticleAction(locale: string, articleId: string, for
     locale: resolveLocale(locale),
   });
 }
+
+export async function deleteArticleAction(articleId: string | number) {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('accessToken')?.value;
+
+  if (!accessToken) {
+    return { status: 401, error: 'No autorizado' };
+  }
+
+  try {
+    const response = await fetch(`${process.env.API_URL}/api/articles/${articleId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      return { status: response.status, error: 'Error al eliminar el artículo' };
+    }
+
+    // Refrescamos las cachés para que desaparezca de las listas
+    revalidatePath('/dashboard/my-articles');
+    revalidatePath('/articles');
+
+    return { status: 204 };
+  } catch {
+    return { status: 500, error: 'Error de conexión' };
+  }
+}
