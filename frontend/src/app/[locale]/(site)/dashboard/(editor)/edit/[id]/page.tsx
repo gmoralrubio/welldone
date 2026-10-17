@@ -1,7 +1,6 @@
-import { Breadcrumbs } from '@heroui/react';
 import { getTranslations } from 'next-intl/server';
-import { getPathname } from '@/i18n/navigation';
 import { ArticleForm } from '@/app/[locale]/components/article-create/article-form';
+import { ArticleBreadcrumbs } from '@/app/[locale]/components/article/article-breadcrumbs';
 import { getArticleById, updateArticleAction } from '@/app/[locale]/(site)/articles/actions';
 
 
@@ -19,9 +18,6 @@ export default async function EditArticlePage({
   const t = await getTranslations('EditArticlePage');
   const tBreadcrumbs = await getTranslations('Breadcrumbs');
 
-  const dashboardHref = getPathname({ locale: safeLocale, href: '/dashboard' });
-  const myArticlesHref = getPathname({ locale: safeLocale, href: '/dashboard/my-articles' });
-
   const article = await getArticleById(id);
 
   return (
@@ -30,17 +26,11 @@ export default async function EditArticlePage({
 
       <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-6 py-10">
         
-        <Breadcrumbs aria-label="Migas de pan de edición">
-          <Breadcrumbs.Item className="uppercase" href={dashboardHref}>
-            <span className="text-xs">{tBreadcrumbs('dashboard')}</span>
-          </Breadcrumbs.Item>
-          <Breadcrumbs.Item className="uppercase" href={myArticlesHref}>
-            <span className="text-xs">{tBreadcrumbs('myArticles')}</span>
-          </Breadcrumbs.Item>
-          <Breadcrumbs.Item className="uppercase">
-            <span className="text-xs">{tBreadcrumbs('edit')}</span>
-          </Breadcrumbs.Item>
-        </Breadcrumbs>
+        <ArticleBreadcrumbs
+          current={tBreadcrumbs('edit')}
+          asSlug={false}
+          section="dashboard"
+        />
 
         <header className="flex flex-col gap-4">
           <h1 className="text-4xl xs:text-5xl sm:text-6xl tracking-tight font-serif text-balance">
