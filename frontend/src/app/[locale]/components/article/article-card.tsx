@@ -20,10 +20,11 @@ import { ArticleActionsMenu } from './article-actions-menu';
 type ArticleCardProps = {
   article: ArticleDto;
   showActions?: boolean;
+  href?: string;
 };
 
-export function ArticleCard({ article, showActions = false }: ArticleCardProps) {
-  const href = articleHref(article);
+export function ArticleCard({ article, showActions = false, href }: ArticleCardProps) {
+  const articleLink = href ?? articleHref(article);
   const minutes = readingMinutes(article.intro, article.content);
   const t = useTranslations('ArticleCard');
 
@@ -50,7 +51,7 @@ export function ArticleCard({ article, showActions = false }: ArticleCardProps) 
             <span suppressHydrationWarning>{useRelativeTime(article.publishedAt)}</span>
           </div>
           <Link
-            href={href}
+            href={articleLink}
             className="text-foreground no-underline"
           >
             <h2 className="font-serif text-2xl font-medium text-balance">

@@ -87,7 +87,7 @@ export class PrismaArticleRepository implements ArticleRepository {
       total: articlesCount,
     };
   }
-  async findPublishedArticleBy(
+  async findPublishedArticleByAuthorAndSlug(
     criteria: FindArticleDetailUseCaseInput
   ): Promise<Article | null> {
     const { authorUsername, slug } = criteria;
@@ -106,7 +106,7 @@ export class PrismaArticleRepository implements ArticleRepository {
     }
   }
 
-  async findArticleBy(criteria: FindMyArticleUseCaseInput): Promise<Article | null> {
+  async findArticleByIdAndSlug(criteria: FindMyArticleUseCaseInput): Promise<Article | null> {
     const articlesPrisma = await this.prisma.article.findFirst({
       where: {
         authorId: criteria.authorId,

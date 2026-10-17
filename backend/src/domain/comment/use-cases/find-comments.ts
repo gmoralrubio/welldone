@@ -23,7 +23,7 @@ export class FindCommentsUseCase {
   }
 
   async execute(criteria: FindCommentsUseCaseInput): Promise<FindCommentsResponse> {
-    const article = await this.articleRepository.findPublishedArticleBy(criteria);
+    const article = await this.articleRepository.findPublishedArticleByAuthorAndSlug(criteria);
 
     if (!article || article.status !== 'PUBLISHED') {
       throw new EntityNotFoundError('Article', criteria.slug);

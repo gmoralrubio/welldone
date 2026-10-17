@@ -15,7 +15,7 @@ export class FindMyArticleUseCase {
   }
 
   async execute(criteria: FindMyArticleUseCaseInput): Promise<Article> {
-    const article = await this.articleRepository.findArticleBy(criteria);
+    const article = await this.articleRepository.findArticleByIdAndSlug(criteria);
 
     if (!article) {
       throw new EntityNotFoundError('Article', criteria.slug);

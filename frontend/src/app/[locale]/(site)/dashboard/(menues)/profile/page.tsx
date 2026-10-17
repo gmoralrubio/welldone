@@ -121,7 +121,8 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
               <ArticleCard
                 key={article.id}
                 article={article}
-                showActions={true} 
+                showActions
+                href={`/dashboard/my-articles/${article.slug}`}
               />
             ))
           ) : (
