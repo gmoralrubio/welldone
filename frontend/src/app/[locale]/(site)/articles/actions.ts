@@ -171,7 +171,7 @@ export async function createCommentAction(
   return { error: null };
 }
 
-export async function createArticleAction(locale: string, formData: FormData):Promise<{ error: string } | void>  {
+export async function createArticleAction(locale: string, formData: FormData): Promise<{ error?: string; errors?: Record<string, string[]> } | void> {  
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
 
@@ -197,11 +197,15 @@ export async function createArticleAction(locale: string, formData: FormData):Pr
   if (!response.ok) {
     const errorData = await response.json().catch(() => null);
 
+    if (errorData?.errors) {
+      return { errors: errorData.errors };
+    }
+
     if (errorData?.error === 'TITLE_ALREADY_EXISTS') {
       return { error: 'TITLE_ALREADY_EXISTS' };
     }
     
-    throw new Error(errorData.error || 'Error al crear el artículo');
+    return { error: errorData?.error || 'Error al crear el artículo' };
   }
 
   const { article } = await response.json();
@@ -313,18 +317,17 @@ export async function updateArticleAction(locale: string, articleId: string, for
   });
 
   if (!response.ok) {
-    const errorData = await response.json();
+    const errorData = await response.json().catch(() => null);
 
-    if (errorData.error === 'TITLE_ALREADY_EXISTS') {
-        return {
-          errors: {
-            title: ['Ya tienes un artículo con este mismo título. Elige otro.'], 
-          },
-        };
-      }
-      return {
-        message: errorData.error || 'Error al actualizar el artículo',
-      };
+    if (errorData?.errors) {
+    return { errors: errorData.errors };
+    }
+
+    if (errorData?.error === 'TITLE_ALREADY_EXISTS') {
+      return { error: 'TITLE_ALREADY_EXISTS' };
+    }
+
+    return { error: errorData?.error ||'Error al actualizar el artículo'};
   }
 
   redirect({

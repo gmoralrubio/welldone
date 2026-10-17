@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { Card, CardContent, Input, TextArea } from '@heroui/react';
 import 'react-quill-new/dist/quill.snow.css';
@@ -8,14 +8,23 @@ import { useTranslations } from 'next-intl';
 import { CATEGORY_SLUGS } from '@/lib/category/category.types';
 import { CategorySelector } from '@/app/[locale]/components/article-create/category-selector';
 import { ArticleDto } from '@/lib/article/articles.types';
+import { createArticleFrontendSchema } from '@/lib/article/article-schema';
 
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 
+export type FormErrors = {
+  title?: string[];
+  intro?: string[];
+  content?: string[];
+  status?: string[];
+  categories?: string[];
+  featuredImageUrl?: string[];
+  featuredVideoUrl?: string[];
+  [key: string]: string[] | undefined;
+};
+
 type ActionState = {
-  errors?: {
-    title?: string[];
-    [key: string]: string[] | undefined;
-  };
+  errors?: FormErrors;
   message?: string | null;
   error?: string;
 } | void;
@@ -27,10 +36,13 @@ type ArticleFormProps = {
 
 export function ArticleForm({ action, initialData }: ArticleFormProps) {
   const [content, setContent] = useState(initialData?.content || '');
-
-  const [titleError, setTitleError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<FormErrors>({});
+  const [generalError, setGeneralError] = useState<string | null>(null);
+  
+  const [isDirty, setIsDirty] = useState(false);
 
   const t = useTranslations('CreateArticlePage');
+  type TranslationKey = Parameters<typeof t>[0];
 
   const modules = {
     toolbar: [
@@ -43,18 +55,81 @@ export function ArticleForm({ action, initialData }: ArticleFormProps) {
     ],
   };
 
-  const handleClientAction = async (formData: FormData) => {
-    setTitleError(null);
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (isDirty) {
+        e.preventDefault();
+        e.returnValue = ''; 
+      }
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [isDirty]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); 
+    
+    const formData = new FormData(e.currentTarget);
+    setFieldErrors({});
+    setGeneralError(null);
+    
+    const rawImg = formData.get('featuredImageUrl');
+    const rawVid = formData.get('featuredVideoUrl');
+    const rawPub = formData.get('publishedAt');
+
+    const formValues = {
+      title: formData.get('title') as string,
+      intro: formData.get('intro') as string,
+      content: formData.get('content') as string,
+      status: formData.get('status') as string,
+      categorySlugs: formData.getAll('categorySlugs') as string[],
+      featuredImageUrl: rawImg ? String(rawImg) : null,
+      featuredVideoUrl: rawVid ? String(rawVid) : null,
+      publishedAt: rawPub ? String(rawPub) : null,
+    };
+
+    const result = createArticleFrontendSchema.safeParse(formValues);
+
+    if (!result.success) {
+      // Si falla, extraemos las claves de traducción de Zod y abortamos el envío
+      const newErrors: FormErrors = {};
+      result.error.issues.forEach((issue) => {
+        const field = issue.path[0] as string;
+        newErrors[field] = [issue.message];
+      });
+      setFieldErrors(newErrors);
+      return; 
+    }
     
     if (typeof action === 'function') {
       const response = await action(formData);
       
-      if (response?.errors?.title && response.errors.title.length > 0) {
-        setTitleError(response.errors.title[0]);
+      if (response?.errors) {
+        setFieldErrors(response.errors);
+      } else if (response?.error === 'TITLE_ALREADY_EXISTS') {
+        setFieldErrors((prev) => ({ ...prev, title: [t('TITLE_ALREADY_EXISTS')] }));
+      } else if (response?.error) {
+        setGeneralError(response.error);
+      } else {
+        // Todo fue un éxito: quitamos el estado sucio para que pueda navegar tranquilamente
+        setIsDirty(false);
       }
-      
-      if (response && response.error === 'TITLE_ALREADY_EXISTS') {
-        setTitleError(t('TITLE_ALREADY_EXISTS'));
+    }
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    
+    const fieldSchema = createArticleFrontendSchema.shape[name as keyof typeof createArticleFrontendSchema.shape];
+
+    if (fieldSchema) {
+      const result = fieldSchema.safeParse(value.trim());
+
+      if (!result.success) {
+        const errorMessages = result.error.issues.map((issue) => issue.message);
+        setFieldErrors(prev => ({ ...prev, [name]: errorMessages }));
+      } else {
+        setFieldErrors(prev => ({ ...prev, [name]: undefined }));
       }
     }
   };
@@ -62,27 +137,34 @@ export function ArticleForm({ action, initialData }: ArticleFormProps) {
   return (
     <form 
       id="article-editor-form" 
-      action={handleClientAction} 
+      onSubmit={handleSubmit}
+      onChange={() => setIsDirty(true)} 
       className="flex flex-col gap-6"
     >
       <Card className="p-8 shadow-sm border border-border gap-4">
         <CardContent className="flex flex-col gap-6">
           
+          {generalError && (
+            <div className="p-3 bg-red-100 text-red-700 rounded-md text-sm mb-4">
+              {generalError}
+            </div>
+          )}
+
           <div className="flex flex-col gap-1">
             <label className="text-sm font-medium text-foreground ml-1">
               {t('labelTitle')}
             </label>
             <Input
-              required
               name="title"
               defaultValue={initialData?.title}
+              onBlur={handleBlur}
               placeholder={t('placeholderTitle')}
               variant="secondary"
               className="font-serif text-xl"
             />
-            {titleError && (
+            {fieldErrors?.title && (
               <span className="text-sm text-red-500 ml-1 mt-1">
-                {titleError}
+                {t(fieldErrors.title[0] as TranslationKey)}
               </span>
             )}
           </div>
@@ -92,14 +174,19 @@ export function ArticleForm({ action, initialData }: ArticleFormProps) {
               {t('labelIntro')}
             </label>
             <TextArea
-              required
               name="intro"
               defaultValue={initialData?.intro}
+              onBlur={handleBlur}
               placeholder={t('placeholderIntro')}
               variant="secondary"
               rows={2}
               className="font-serif"
             />
+            {fieldErrors?.intro && (
+              <span className="text-sm text-red-500 ml-1 mt-1">
+                {t(fieldErrors.intro[0] as TranslationKey)}
+              </span>
+            )}
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4">
@@ -108,6 +195,11 @@ export function ArticleForm({ action, initialData }: ArticleFormProps) {
                 initialValues={initialData?.categories?.map(category => category.slug) || []}
             />
           </div>
+          {fieldErrors?.categories && (
+            <span className="text-sm text-red-500 ml-1 mt-1">
+              {t(fieldErrors.categories[0] as TranslationKey)}
+            </span>
+          )}
 
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex flex-col gap-1 w-full sm:w-1/2">
@@ -115,7 +207,6 @@ export function ArticleForm({ action, initialData }: ArticleFormProps) {
                 {t('labelStatus')}
               </label>
               <select
-                required
                 name="status"
                 defaultValue={initialData?.status || "DRAFT"}
                 className="w-full h-10 px-3 rounded-md bg-surface-secondary border-none font-serif text-foreground outline-none focus:ring-2 focus:ring-accent appearance-none"
@@ -123,6 +214,11 @@ export function ArticleForm({ action, initialData }: ArticleFormProps) {
                 <option value="DRAFT">{t('statusDraft')}</option>
                 <option value="PUBLISHED">{t('statusPublished')}</option>
               </select>
+              {fieldErrors?.status && (
+                <span className="text-sm text-red-500 ml-1 mt-1">
+                  {t(fieldErrors.status[0] as TranslationKey)}
+                </span>
+              )}
             </div>
             
             <div className="flex flex-col gap-1 w-full sm:w-1/2">
@@ -146,10 +242,16 @@ export function ArticleForm({ action, initialData }: ArticleFormProps) {
               <Input
                 name="featuredImageUrl"
                 defaultValue={initialData?.featuredImageUrl || ''}
+                onBlur={handleBlur}
                 placeholder={t('placeholderFeaturedImage')}
                 variant="secondary"
                 className="w-full"
               />
+              {fieldErrors?.featuredImageUrl && (
+                <span className="text-sm text-red-500 ml-1 mt-1">
+                  {t(fieldErrors.featuredImageUrl[0] as TranslationKey)}
+                </span>
+              )}
             </div>
             <div className="flex flex-col gap-1 w-full sm:w-1/2">
               <label className="text-sm font-medium text-foreground ml-1">
@@ -158,10 +260,16 @@ export function ArticleForm({ action, initialData }: ArticleFormProps) {
               <Input
                 name="featuredVideoUrl"
                 defaultValue={initialData?.featuredVideoUrl || ''}
+                onBlur={handleBlur}
                 placeholder={t('placeholderFeaturedVideo')}
                 variant="secondary"
                 className="w-full"
               />
+              {fieldErrors?.featuredVideoUrl && (
+                <span className="text-sm text-red-500 ml-1 mt-1">
+                  {t(fieldErrors.featuredVideoUrl[0] as TranslationKey)}
+                </span>
+              )}
             </div>
           </div>
 
@@ -174,16 +282,25 @@ export function ArticleForm({ action, initialData }: ArticleFormProps) {
               <ReactQuill
                 theme="snow"
                 value={content}
-                onChange={setContent}
+                onChange={(val) => {
+                  setContent(val);
+                  setIsDirty(true); 
+                }}
                 modules={modules}
                 placeholder={t('placeholderContent')}
                 className="h-62.5 font-serif"
               />
             </div>
+            {fieldErrors?.content && (
+              <span className="text-sm text-red-500 ml-1 mt-1">
+                {t(fieldErrors.content[0] as TranslationKey)}
+              </span>
+            )}
           </div>
 
         </CardContent>
       </Card>
+      
     </form>
   );
 }
