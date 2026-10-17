@@ -14,10 +14,10 @@ export interface ArticleRepository {
   findMyArticles(
     criteria: FindMyArticlesUseCaseInput
   ): Promise<FindArticlesResponse>;
-  findPublishedArticleBy(
+  findPublishedArticleByAuthorAndSlug(
     criteria: FindArticleDetailUseCaseInput
   ): Promise<Article | null>;
-  findArticleBy(
+  findArticleByIdAndSlug(
     criteria: FindMyArticleUseCaseInput
   ): Promise<Article | null>;
   create(

@@ -54,7 +54,7 @@ export class CreateArticleUseCase {
           .replace(/(^-|-$)+/g, '');
     
     
-    const existingArticle = await this.articleRepository.findArticleBy({
+    const existingArticle = await this.articleRepository.findArticleByIdAndSlug({
       authorId: input.authorId,
       slug: finalSlug
     });
