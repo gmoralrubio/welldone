@@ -33,4 +33,6 @@ export interface ArticleRepository {
   findByTitleAndAuthor(
     title: string, authorId: number
   ): Promise<Article | null>;
+  
+  delete(id: number): Promise<void>;
 }

@@ -25,7 +25,8 @@
     "dashboard": "Dashboard",
     "account": "Account",
     "logout": "Log out",
-    "saveButton": "Save"
+    "saveButton": "Save",
+    "cancelButton": "Cancel"
   },
   "SiteFooter": {
     "tagline": "An independent editorial sanctuary for essays on digital culture, contemporary philosophy, and critical thinking.",
@@ -81,7 +82,13 @@
     "saveAria": "Save",
     "shareAria": "Share",
     "edit": "Edit article",
-    "delete": "Delete article"
+    "delete": "Delete article",
+    "deleteModalTitle": "Delete article?",
+    "deleteModalDescription": "This action cannot be undone. The article and all its comments will be permanently deleted.",
+    "cancel": "Cancel",
+    "confirmDelete": "Yes, delete",
+    "confirmingDelete": "Deleting...",
+    "deleteError": "An error occurred while trying to delete the article."
   },
   "CreateArticlePage": {
     "title": "Write your story",
@@ -103,7 +110,12 @@
     "placeholderContent": "Write the full content of your article here...",
     "cancel": "Cancel",
     "submit": "Save article",
-    "TITLE_ALREADY_EXISTS": "You already have an article with this title. Please choose another one."
+    "TITLE_ALREADY_EXISTS": "You already have an article with this title. Please choose another one.",
+    "titleMinLength": "The title must be at least 2 characters long",
+    "contentMinLength": "The content must be at least 5 characters long",
+    "introMinLength": "The introduction is required and must be at least 5 characters long",
+    "invalidUrl": "Must be a valid URL",
+    "categoryRequired": "You must select at least one category"
 
   },
 
@@ -319,5 +331,11 @@
   "emptyTitle": "Tell the world about yourself",
   "emptyDescription": "Here’s where you can share more about yourself: your history, work experience, accomplishments, interests, dreams, and more.",
   "getStarted": "Get started"
-  }
+  },
+  "ConfirmExitModal": {
+  "title": "Are you sure you want to leave?",
+  "description": "If you leave now, you will lose all unsaved changes. This action cannot be undone.",
+  "cancel": "Cancel",
+  "confirm": "Yes, leave without saving"
+}
 }

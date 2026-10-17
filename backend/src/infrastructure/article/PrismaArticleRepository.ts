@@ -195,6 +195,12 @@ export class PrismaArticleRepository implements ArticleRepository {
 
     return this.restore(prismaArticle);
   }
+  
+  async delete(id: number): Promise<void> {
+    await this.prisma.article.delete({
+      where: { id },
+    });
+  }
 
   private restore(prismaArticle: PrismaArticle): Article {
     return new Article({

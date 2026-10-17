@@ -23,7 +23,8 @@
     "saved": "Guardados",
     "signIn": "Iniciar sesión",
     "logout": "Cerrar sesión",
-    "saveButton": "Guardar"
+    "saveButton": "Guardar",
+    "cancelButton": "Cancelar"
   },
   "SiteFooter": {
     "tagline": "Santuario editorial independiente para ensayos de cultura digital, filosofía contemporánea y pensamiento crítico.",
@@ -79,7 +80,13 @@
     "saveAria": "Guardar",
     "shareAria": "Compartir",
     "edit": "Editar artículo",
-    "delete": "Borrar artículo"
+    "delete": "Borrar artículo",
+    "deleteModalTitle": "¿Eliminar artículo?",
+    "deleteModalDescription": "Esta acción no se puede deshacer. El artículo y todos sus comentarios serán eliminados permanentemente.",
+    "cancel": "Cancelar",
+    "confirmDelete": "Sí, eliminar",
+    "confirmingDelete": "Eliminando...",
+    "deleteError": "Ocurrió un error al intentar eliminar el artículo."
   },
   "CreateArticlePage": {
     "title": "Escribe tu historia",
@@ -101,7 +108,12 @@
     "placeholderContent": "Escribe el contenido completo de tu artículo aquí...",
     "cancel": "Cancelar",
     "submit": "Guardar Artículo",
-    "TITLE_ALREADY_EXISTS": "Ya tienes un artículo con este título. Por favor, elige otro."
+    "TITLE_ALREADY_EXISTS": "Ya tienes un artículo con este título. Por favor, elige otro.",
+    "titleMinLength": "El título debe tener al menos 2 caracteres",
+    "contentMinLength": "El contenido debe tener al menos 5 caracteres",
+    "introMinLength": "La introducción es obligatoria, al menos 5 caracteres",
+    "invalidUrl": "Debe ser una URL válida",
+    "categoryRequired": "Debes seleccionar al menos una categoría"
   },
 
   "Breadcrumbs": {
@@ -316,5 +328,11 @@
   "emptyTitle": "Cuéntale al mundo sobre ti",
   "emptyDescription": "Aquí es donde puedes compartir más sobre ti: tu historia, experiencia laboral, logros, intereses, sueños y más.",
   "getStarted": "Empezar"
+  },
+  "ConfirmExitModal":{
+    "title": "¿Seguro que quieres salir?",
+    "description": "Si sales ahora perderás todos los cambios que no hayas guardado. Esta acción no se puede deshacer.",
+    "cancel": "Cancelar",
+    "confirm": "Sí, salir sin guardar"
   }
 }

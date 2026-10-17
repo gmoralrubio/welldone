@@ -171,7 +171,7 @@ export async function createCommentAction(
   return { error: null };
 }
 
-export async function createArticleAction(locale: string, formData: FormData):Promise<{ error: string } | void>  {
+export async function createArticleAction(locale: string, formData: FormData): Promise<{ error?: string; errors?: Record<string, string[]> } | void> {  
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
 
@@ -197,11 +197,15 @@ export async function createArticleAction(locale: string, formData: FormData):Pr
   if (!response.ok) {
     const errorData = await response.json().catch(() => null);
 
+    if (errorData?.errors) {
+      return { errors: errorData.errors };
+    }
+
     if (errorData?.error === 'TITLE_ALREADY_EXISTS') {
       return { error: 'TITLE_ALREADY_EXISTS' };
     }
     
-    throw new Error(errorData.error || 'Error al crear el artículo');
+    return { error: errorData?.error || 'Error al crear el artículo' };
   }
 
   const { article } = await response.json();
@@ -313,22 +317,51 @@ export async function updateArticleAction(locale: string, articleId: string, for
   });
 
   if (!response.ok) {
-    const errorData = await response.json();
+    const errorData = await response.json().catch(() => null);
 
-    if (errorData.error === 'TITLE_ALREADY_EXISTS') {
-        return {
-          errors: {
-            title: ['Ya tienes un artículo con este mismo título. Elige otro.'], 
-          },
-        };
-      }
-      return {
-        message: errorData.error || 'Error al actualizar el artículo',
-      };
+    if (errorData?.errors) {
+    return { errors: errorData.errors };
+    }
+
+    if (errorData?.error === 'TITLE_ALREADY_EXISTS') {
+      return { error: 'TITLE_ALREADY_EXISTS' };
+    }
+
+    return { error: errorData?.error ||'Error al actualizar el artículo'};
   }
 
   redirect({
     href: '/dashboard/my-articles',
     locale: resolveLocale(locale),
   });
+}
+
+export async function deleteArticleAction(articleId: string | number) {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('accessToken')?.value;
+
+  if (!accessToken) {
+    return { status: 401, error: 'No autorizado' };
+  }
+
+  try {
+    const response = await fetch(`${process.env.API_URL}/api/articles/${articleId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      return { status: response.status, error: 'Error al eliminar el artículo' };
+    }
+
+    // Refrescamos las cachés para que desaparezca de las listas
+    revalidatePath('/dashboard/my-articles');
+    revalidatePath('/articles');
+
+    return { status: 204 };
+  } catch {
+    return { status: 500, error: 'Error de conexión' };
+  }
 }
