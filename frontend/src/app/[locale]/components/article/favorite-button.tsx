@@ -1,10 +1,10 @@
 'use client';
 
-import { saveFavoriteAction } from '@/app/[locale]/(site)/articles/actions';
+import { submitFavoriteAction } from '@/app/[locale]/(site)/articles/actions';
 import { Bookmark, BookmarkFill } from '@gravity-ui/icons';
 import { Button } from '@heroui/react';
 import { useLocale, useTranslations } from 'next-intl';
-import { useActionState } from 'react';
+import { useActionState, useOptimistic } from 'react';
 
 type FavoriteButtonProps = {
   authorUsername: string;
@@ -12,7 +12,7 @@ type FavoriteButtonProps = {
   saved?: boolean;
 };
 
-const initialState = { error: null, saved: false };
+const initialState = { error: null, saved: null as boolean | null };
 
 export function FavoriteButton({
   authorUsername,
@@ -22,13 +22,22 @@ export function FavoriteButton({
   const t = useTranslations('ArticleCard');
   const locale = useLocale();
   const [state, formAction, isPending] = useActionState(
-    saveFavoriteAction.bind(null, locale, authorUsername, slug),
+    submitFavoriteAction.bind(null, locale, authorUsername, slug),
     initialState
   );
-  const isSaved = saved || state.saved;
-  const ariaLabel = isSaved ? t('savedAria') : t('saveAria');
+  const isSaved = state.saved ?? saved;
+  const [optimisticSaved, addOptimistic] = useOptimistic(
+    isSaved,
+    (_current, toggleFavorite: 'save' | 'remove') => toggleFavorite === 'save'
+  );
+  const ariaLabel = optimisticSaved ? t('removeAria') : t('saveAria');
 
-  const icon = isSaved ? (
+  function submit(formData: FormData) {
+    addOptimistic(formData.get('toggleFavorite') === 'remove' ? 'remove' : 'save');
+    formAction(formData);
+  }
+
+  const icon = optimisticSaved ? (
     <BookmarkFill
       width={14}
       height={14}
@@ -46,22 +55,27 @@ export function FavoriteButton({
       role="alert"
       className="text-xs text-danger"
     >
-      {t('saveError')}
+      {isSaved ? t('removeError') : t('saveError')}
     </span>
   ) : null;
 
   return (
     <form
-      action={formAction}
+      action={submit}
       className="inline-flex items-center gap-2"
     >
+      <input
+        type="hidden"
+        name="toggleFavorite"
+        value={isSaved ? 'remove' : 'save'}
+      />
       <Button
         type="submit"
         isIconOnly
         variant="ghost"
         size="sm"
         aria-label={ariaLabel}
-        isDisabled={isPending || isSaved}
+        isDisabled={isPending}
       >
         {icon}
       </Button>

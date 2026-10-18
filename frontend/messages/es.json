@@ -80,6 +80,8 @@
     "saveAria": "Guardar",
     "savedAria": "Guardado",
     "saveError": "No se pudo guardar el artículo.",
+    "removeAria": "Quitar de favoritos",
+    "removeError": "No se pudo quitar el artículo de favoritos.",
     "shareAria": "Compartir",
     "edit": "Editar artículo",
     "delete": "Borrar artículo",

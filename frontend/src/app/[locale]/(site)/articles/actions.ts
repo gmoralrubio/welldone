@@ -211,6 +211,66 @@ export async function saveFavoriteAction(
   return { error: null, saved: true };
 }
 
+export async function removeFavoriteAction(
+  locale: string,
+  authorUsername: string,
+  slug: string
+): Promise<{ error: string | null; saved: boolean }> {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('accessToken')?.value;
+
+  if (!accessToken) {
+    return redirect({ href: '/login', locale: resolveLocale(locale) });
+  }
+
+  let response: Response;
+  try {
+    response = await fetch(
+      `${process.env.API_URL}/api/articles/${authorUsername}/${slug}/favorites`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        cache: 'no-store',
+      }
+    );
+  } catch {
+    return { error: 'generic', saved: true };
+  }
+
+  if (response.status === 401) {
+    return redirect({ href: '/login', locale: resolveLocale(locale) });
+  }
+
+  if (!response.ok) {
+    return { error: 'generic', saved: true };
+  }
+
+  revalidatePath(`/${resolveLocale(locale)}/dashboard/favorites`);
+  return { error: null, saved: false };
+}
+
+export async function submitFavoriteAction(
+  locale: string,
+  authorUsername: string,
+  slug: string,
+  prevState: { error: string | null; saved: boolean | null },
+  formData: FormData
+): Promise<{ error: string | null; saved: boolean | null }> {
+  if (formData.get('toggleFavorite') === 'remove') {
+    const result = await removeFavoriteAction(locale, authorUsername, slug);
+    return result.error
+      ? { error: result.error, saved: prevState.saved ?? true }
+      : { error: null, saved: false };
+  }
+
+  const result = await saveFavoriteAction(locale, authorUsername, slug);
+  return result.error
+    ? { error: result.error, saved: prevState.saved ?? false }
+    : { error: null, saved: true };
+}
+
 export async function createArticleAction(
   locale: string,
   formData: FormData
