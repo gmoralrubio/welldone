@@ -171,7 +171,50 @@ export async function createCommentAction(
   return { error: null };
 }
 
-export async function createArticleAction(locale: string, formData: FormData): Promise<{ error?: string; errors?: Record<string, string[]> } | void> {  
+export async function saveFavoriteAction(
+  locale: string,
+  authorUsername: string,
+  slug: string
+): Promise<{ error: string | null; saved: boolean }> {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('accessToken')?.value;
+
+  if (!accessToken) {
+    return redirect({ href: '/login', locale: resolveLocale(locale) });
+  }
+
+  let response: Response;
+  try {
+    response = await fetch(
+      `${process.env.API_URL}/api/articles/${authorUsername}/${slug}/favorites`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        cache: 'no-store',
+      }
+    );
+  } catch {
+    return { error: 'generic', saved: false };
+  }
+
+  if (response.status === 401) {
+    return redirect({ href: '/login', locale: resolveLocale(locale) });
+  }
+
+  if (!response.ok) {
+    return { error: 'generic', saved: false };
+  }
+
+  revalidatePath(`/${resolveLocale(locale)}/dashboard/favorites`);
+  return { error: null, saved: true };
+}
+
+export async function createArticleAction(
+  locale: string,
+  formData: FormData
+): Promise<{ error?: string; errors?: Record<string, string[]> } | void> {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
 
@@ -204,7 +247,7 @@ export async function createArticleAction(locale: string, formData: FormData): P
     if (errorData?.error === 'TITLE_ALREADY_EXISTS') {
       return { error: 'TITLE_ALREADY_EXISTS' };
     }
-    
+
     return { error: errorData?.error || 'Error al crear el artículo' };
   }
 
@@ -229,7 +272,6 @@ export async function getMyArticlesAction(
   const criteria = parseArticleQuery(searchParams);
   const params = articleQueryParams(criteria);
 
-
   if (searchParams.status) {
     params.append('status', searchParams.status as string);
   }
@@ -247,7 +289,35 @@ export async function getMyArticlesAction(
   if (!response.ok) throw new Error('No se pudieron cargar tus artículos');
 
   return await response.json();
+}
 
+export async function getMyFavoritesAction(
+  searchParams: ArticlesSearchParams
+): Promise<PaginatedResponse<ArticleDto>> {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('accessToken')?.value;
+
+  if (!accessToken) {
+    throw new Error('No autorizado');
+  }
+
+  const criteria = parseArticleQuery(searchParams);
+  const params = new URLSearchParams({ page: String(criteria.page) });
+  if (criteria.limit) params.set('limit', String(criteria.limit));
+
+  const response = await fetch(
+    `${process.env.API_URL}/api/articles/me/favorites?${params.toString()}`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      cache: 'no-store',
+    }
+  );
+
+  if (!response.ok) throw new Error('No se pudieron cargar tus favoritos');
+
+  return await response.json();
 }
 
 export async function getMyArticleBySlug(slug: string): Promise<ArticleDto | null> {
@@ -273,7 +343,6 @@ export async function getMyArticleBySlug(slug: string): Promise<ArticleDto | nul
 }
 
 export async function getArticleById(id: string): Promise<ArticleDto> {
-
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
 
@@ -283,13 +352,17 @@ export async function getArticleById(id: string): Promise<ArticleDto> {
   });
 
   if (!response.ok) throw new Error('No se pudo cargar el artículo para editar');
-  
+
   const data = await response.json();
 
-  return data.article || data; 
+  return data.article || data;
 }
 
-export async function updateArticleAction(locale: string, articleId: string, formData: FormData) {
+export async function updateArticleAction(
+  locale: string,
+  articleId: string,
+  formData: FormData
+) {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
 
@@ -320,14 +393,14 @@ export async function updateArticleAction(locale: string, articleId: string, for
     const errorData = await response.json().catch(() => null);
 
     if (errorData?.errors) {
-    return { errors: errorData.errors };
+      return { errors: errorData.errors };
     }
 
     if (errorData?.error === 'TITLE_ALREADY_EXISTS') {
       return { error: 'TITLE_ALREADY_EXISTS' };
     }
 
-    return { error: errorData?.error ||'Error al actualizar el artículo'};
+    return { error: errorData?.error || 'Error al actualizar el artículo' };
   }
 
   redirect({

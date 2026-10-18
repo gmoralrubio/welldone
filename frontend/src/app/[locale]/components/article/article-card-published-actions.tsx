@@ -1,14 +1,23 @@
 'use client';
 
-import { ArrowUpFromSquare, Bookmark, Comment } from '@gravity-ui/icons';
+import { FavoriteButton } from '@/app/[locale]/components/article/favorite-button';
+import { ArrowUpFromSquare, Comment } from '@gravity-ui/icons';
 import { Button } from '@heroui/react';
 import { useTranslations } from 'next-intl';
 
 type ArticleCardPublishedActionsProps = {
   commentCount: number;
+  authorUsername: string;
+  slug: string;
+  isFavorite?: boolean;
 };
 
-export function ArticleCardPublishedActions({ commentCount }: ArticleCardPublishedActionsProps) {
+export function ArticleCardPublishedActions({
+  commentCount,
+  authorUsername,
+  slug,
+  isFavorite = false,
+}: ArticleCardPublishedActionsProps) {
   const t = useTranslations('ArticleCard');
 
   return (
@@ -24,17 +33,11 @@ export function ArticleCardPublishedActions({ commentCount }: ArticleCardPublish
         />
         <span className="text-xs">{commentCount}</span>
       </Button>
-      <Button
-        isIconOnly
-        variant="ghost"
-        size="sm"
-        aria-label={t('saveAria')}
-      >
-        <Bookmark
-          width={14}
-          height={14}
-        />
-      </Button>
+      <FavoriteButton
+        authorUsername={authorUsername}
+        slug={slug}
+        saved={isFavorite}
+      />
       <Button
         isIconOnly
         variant="ghost"

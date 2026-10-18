@@ -3,19 +3,20 @@
 import { authorArticlesHref, readingMinutes } from '@/lib/article/article-presenters';
 import { ArticleDto } from '@/lib/article/articles.types';
 import { Button, Card } from '@heroui/react';
-import { ArrowUpFromSquare, Bookmark, Clock, Comment } from '@gravity-ui/icons';
+import { ArrowUpFromSquare, Clock, Comment } from '@gravity-ui/icons';
 import Image from 'next/image';
 import { ArticleCategory } from '@/app/[locale]/components/article/article-category';
+import { FavoriteButton } from '@/app/[locale]/components/article/favorite-button';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { useRelativeTime } from '@/app/[locale]/hooks/useRelativeTime';
 import { UserAvatar } from '@/app/[locale]/components/user/user-avatar';
 
-type EditorialHeroProps = {
+type ArticleHeroProps = {
   article: ArticleDto;
 };
 
-export function ArticleHero({ article }: EditorialHeroProps) {
+export function ArticleHero({ article }: ArticleHeroProps) {
   const href = `/articles/${article.author.username}/${article.slug}`;
   const minutes = readingMinutes(article.intro, article.content);
   const relativeTime = useRelativeTime(article.publishedAt);
@@ -96,24 +97,15 @@ export function ArticleHero({ article }: EditorialHeroProps) {
               </div>
             </div>
             <div className="flex items-center gap-2">
+              <FavoriteButton
+                authorUsername={article.author.username}
+                slug={article.slug}
+              />
               <Button
                 isIconOnly
-                variant="secondary"
-                size="sm"
-                aria-label="Guardar"
-                className="bg-surface-secondary text-foreground"
-              >
-                <Bookmark
-                  width={14}
-                  height={14}
-                />
-              </Button>
-              <Button
-                isIconOnly
-                variant="secondary"
+                variant="ghost"
                 size="sm"
                 aria-label="Compartir"
-                className="bg-surface-secondary text-foreground"
               >
                 <ArrowUpFromSquare
                   width={14}
@@ -121,10 +113,9 @@ export function ArticleHero({ article }: EditorialHeroProps) {
                 />
               </Button>
               <Button
-                variant="secondary"
+                variant="ghost"
                 size="sm"
                 aria-label="Comentarios"
-                className="bg-surface-secondary text-foreground"
               >
                 <Comment
                   width={14}

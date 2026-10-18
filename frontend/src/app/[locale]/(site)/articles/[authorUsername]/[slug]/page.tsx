@@ -10,7 +10,6 @@ import {
   Check,
   ThumbsUp,
   Comment,
-  BookmarkFill,
   ArrowUpFromSquare,
   PersonPlus,
 } from '@gravity-ui/icons';
@@ -31,6 +30,7 @@ import { parseCommentsQuery } from '@/lib/comment/comment-query';
 import { CommentCard } from '@/app/[locale]/components/comment/comment-card';
 import { CommentForm } from '@/app/[locale]/components/comment/comment-form';
 import { UserAvatar } from '@/app/[locale]/components/user/user-avatar';
+import { FavoriteButton } from '@/app/[locale]/components/article/favorite-button';
 
 interface ArticleDetailPageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -149,7 +149,10 @@ export default async function ArticleDetailPage({
               <span className="text-sm">{article.commentCount}</span>
             </div>
             <div className="flex gap-1 items-center px-3">
-              <BookmarkFill className="text-success" />
+              <FavoriteButton
+                authorUsername={article.author.username}
+                slug={article.slug}
+              />
             </div>
             <div className="flex gap-1 items-center px-3">
               <ArrowUpFromSquare />
