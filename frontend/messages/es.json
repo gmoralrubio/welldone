@@ -206,6 +206,27 @@
       "loginFailed": "No se ha podido iniciar sesión. Inténtalo de nuevo."
     }
   },
+  "AuthForgotPassword": {
+    "brand": "WellDone",
+    "backToReading": "Volver a la lectura pública",
+    "eyebrow": "Recupera tu acceso",
+    "title": "¿Has olvidado tu contraseña?",
+    "subtitle": "Introduce tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.",
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "tu@email.com",
+    "required": "Obligatorio",
+    "submit": "Enviar enlace de recuperación",
+    "submitting": "Enviando...",
+    "success": "Si existe una cuenta asociada a este correo, recibirás un enlace para restablecer tu contraseña.",
+    "backToLogin": "Volver a iniciar sesión",
+    "errors": {
+      "requestFailed": "No se ha podido procesar la solicitud. Inténtalo de nuevo."
+    }
+  },
+  "ValidationForgotPassword": {
+    "emailRequired": "El correo electrónico es obligatorio.",
+    "emailInvalid": "Introduce un correo electrónico válido."
+  },
   "AuthRegister": {
     "brand": "WellDone",
     "backToReading": "Volver a la lectura pública",

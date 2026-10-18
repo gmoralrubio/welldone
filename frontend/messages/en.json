@@ -208,6 +208,27 @@
       "loginFailed": "Could not sign in. Please try again."
     }
   },
+  "AuthForgotPassword": {
+    "brand": "WellDone",
+    "backToReading": "Back to public reading",
+    "eyebrow": "Recover your access",
+    "title": "Forgot your password?",
+    "subtitle": "Enter your email address and we'll send you a link to reset your password.",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "you@email.com",
+    "required": "Required",
+    "submit": "Send recovery link",
+    "submitting": "Sending...",
+    "success": "If an account exists with this email address, you'll receive a link to reset your password.",
+    "backToLogin": "Back to sign in",
+    "errors": {
+      "requestFailed": "We couldn't process your request. Please try again."
+    }
+  },
+  "ValidationForgotPassword": {
+    "emailRequired": "Email is required.",
+    "emailInvalid": "Enter a valid email address."
+  },
   "AuthRegister": {
     "brand": "WellDone",
     "backToReading": "Back to public reading",
