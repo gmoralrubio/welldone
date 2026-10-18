@@ -228,7 +228,6 @@ export default function AccountForm({ user }: AccountFormProps) {
     );
   }
 
-  // VISTA DE EDICIÓN
   return (
     <section className="w-full max-w-xl rounded-xl bg-white p-6 shadow-md sm:p-8">
       <div className="mb-6">

@@ -107,7 +107,7 @@ export function ArticleForm({ action, initialData }: ArticleFormProps) {
       if (response?.errors) {
         setFieldErrors(response.errors);
       } else if (response?.error === 'TITLE_ALREADY_EXISTS') {
-        setFieldErrors((prev) => ({ ...prev, title: [t('TITLE_ALREADY_EXISTS')] }));
+        setFieldErrors((prev) => ({ ...prev, title: ['TITLE_ALREADY_EXISTS'] }));
       } else if (response?.error) {
         setGeneralError(response.error);
       } else {
@@ -123,7 +123,12 @@ export function ArticleForm({ action, initialData }: ArticleFormProps) {
     const fieldSchema = createArticleFrontendSchema.shape[name as keyof typeof createArticleFrontendSchema.shape];
 
     if (fieldSchema) {
-      const result = fieldSchema.safeParse(value.trim());
+      let valueToParse: string | null = value.trim();
+
+      if (valueToParse === '' && (name === 'featuredImageUrl' || name === 'featuredVideoUrl' || name === 'publishedAt')) {
+        valueToParse = null;
+      }
+      const result = fieldSchema.safeParse(valueToParse);
 
       if (!result.success) {
         const errorMessages = result.error.issues.map((issue) => issue.message);
@@ -282,9 +287,22 @@ export function ArticleForm({ action, initialData }: ArticleFormProps) {
               <ReactQuill
                 theme="snow"
                 value={content}
-                onChange={(val) => {
-                  setContent(val);
+                onChange={(val, delta, source, editor) => {
+                  // Comprobamos si el texto real (sin HTML) está vacío
+                  const isEmpty = editor.getText().trim().length === 0;
+                  setContent(isEmpty ? '' : val);
                   setIsDirty(true); 
+                }}
+                onBlur={(previousSelection, source, editor) => {
+                  const isEmpty = editor.getText().trim().length === 0;
+                  const valueToValidate = isEmpty ? '' : content;
+                  const result = createArticleFrontendSchema.shape.content.safeParse(valueToValidate);
+                  
+                  if (!result.success) {
+                    setFieldErrors(prev => ({ ...prev, content: [result.error.issues[0].message] }));
+                  } else {
+                    setFieldErrors(prev => ({ ...prev, content: undefined }));
+                  }
                 }}
                 modules={modules}
                 placeholder={t('placeholderContent')}
