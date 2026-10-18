@@ -10,7 +10,7 @@ import { createCommentController } from '@ui/article/controllers/create-comment-
 import { getArticleByIdController } from '../controllers/get-article-by-id-controller';
 import { updateArticleController } from '../controllers/update-article-controller';
 import { deleteArticleController } from '../controllers/delete-article-controller';
-import { findFavoritesController } from '../controllers/find-my-favorites-controller';
+import { findFavoritesController } from '../controllers/find-favorites-controller';
 import { removeFavoriteController } from '../controllers/remove-favorite-controller';
 import { saveFavoriteController } from '../controllers/save-favorite-controller';
 

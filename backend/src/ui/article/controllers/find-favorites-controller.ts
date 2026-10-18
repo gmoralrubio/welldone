@@ -1,7 +1,7 @@
-import { FindMyFavoritesUseCase } from '@domain/favorite/use-cases/find-favorites';
+import { FindFavoritesUseCase } from '@domain/favorite/use-cases/find-favorites';
 import { UnauthorizedError } from '@domain/errors/UnauthorizedError';
 import { PrismaFavoriteRepository } from '@infrastructure/favorite/PrismaFavoriteRepository';
-import { findMyFavoritesQuerySchema } from '@ui/article/validators/favorites-validator';
+import { findFavoritesQuerySchema } from '@ui/article/validators/favorites-validator';
 import { buildPaginatedResponse } from '@ui/shared/presenters/paginated-response';
 import { NextFunction, Request, Response } from 'express';
 
@@ -15,13 +15,11 @@ export async function findFavoritesController(
       throw new UnauthorizedError('Debes estar autenticado para ver tus favoritos');
     }
 
-    const { page, limit } = findMyFavoritesQuerySchema.parse(req.query);
+    const { page, limit } = findFavoritesQuerySchema.parse(req.query);
 
-    const findMyFavoritesUseCase = new FindMyFavoritesUseCase(
-      new PrismaFavoriteRepository()
-    );
+    const findFavoritesUseCase = new FindFavoritesUseCase(new PrismaFavoriteRepository());
 
-    const { articles, total } = await findMyFavoritesUseCase.execute({
+    const { articles, total } = await findFavoritesUseCase.execute({
       userId: req.authorId,
       page,
       limit,

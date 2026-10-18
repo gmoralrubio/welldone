@@ -6,7 +6,7 @@ export type FindFavoritesUseCaseInput = Pagination & {
   userId: number;
 };
 
-export class FindMyFavoritesUseCase {
+export class FindFavoritesUseCase {
   readonly favoriteRepository: FavoriteRepository;
 
   constructor(favoriteRepository: FavoriteRepository) {
