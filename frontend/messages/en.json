@@ -80,6 +80,8 @@
     "readMinutes": "{minutes, plural, one {# min} other {# min}}",
     "commentsAria": "{count, plural, one {# comment} other {# comments}}",
     "saveAria": "Save",
+    "savedAria": "Saved",
+    "saveError": "The article could not be saved.",
     "shareAria": "Share",
     "edit": "Edit article",
     "delete": "Delete article",
@@ -292,7 +294,8 @@
     "statusDraft": "Draft",
     "statusPublished": "Published",
     "videoUnsupported": "Your browser cannot play this video.",
-    "emptyState": "You haven't written any articles yet."
+    "emptyState": "You haven't written any articles yet.",
+    "favoritesEmpty": "You haven't saved any articles yet."
   },
   "Account": {
     "title": "My account",

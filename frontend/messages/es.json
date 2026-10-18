@@ -78,6 +78,8 @@
     "readMinutes": "{minutes, plural, one {# min} other {# min}}",
     "commentsAria": "{count, plural, one {# comentario} other {# comentarios}}",
     "saveAria": "Guardar",
+    "savedAria": "Guardado",
+    "saveError": "No se pudo guardar el artículo.",
     "shareAria": "Compartir",
     "edit": "Editar artículo",
     "delete": "Borrar artículo",
@@ -289,7 +291,8 @@
     "statusDraft": "Borrador",
     "statusPublished": "Publicado",
     "videoUnsupported": "Tu navegador no reproduce este vídeo.",
-    "emptyState": "Aún no has escrito ningún artículo."
+    "emptyState": "Aún no has escrito ningún artículo.",
+    "favoritesEmpty": "Aún no has guardado ningún artículo."
   },
   "Account": {
     "title": "Mi cuenta",
