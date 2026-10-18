@@ -6,6 +6,7 @@ interface UserProps extends EntityProps {
   name: string;
   surname: string;
   username: string;
+  bio?: string | null;
 }
 
 export class User extends Entity {
@@ -14,6 +15,7 @@ export class User extends Entity {
   readonly name: string;
   readonly surname: string;
   readonly username: string;
+  readonly bio: string | null;
 
   constructor(props: UserProps) {
     super(props);
@@ -23,5 +25,7 @@ export class User extends Entity {
     this.name = props.name;
     this.surname = props.surname;
     this.username = props.username;
+    this.bio = props.bio ?? null;
+    
   }
 }

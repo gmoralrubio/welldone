@@ -337,5 +337,11 @@
   "description": "If you leave now, you will lose all unsaved changes. This action cannot be undone.",
   "cancel": "Cancel",
   "confirm": "Yes, leave without saving"
-}
+  },
+  "PublicProfile": {
+    "userNotFound": "Usuario no encontrado",
+    "userNotFoundDesc": "No pudimos encontrar el perfil de @{username}",
+    "aboutUser": "Acerca de {name}",
+    "emptyBio": "Este usuario aún no ha escrito su biografía."
+  }
 }

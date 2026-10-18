@@ -8,7 +8,8 @@ export type ArticleListPathname =
   | '/articles'
   | '/dashboard/account'
   | '/dashboard/my-articles'
-  | `/articles/${string}`;
+  | `/articles/${string}`
+  | `/dashboard/@${string}`;
 
 
 export type ArticleListStatus = 'PUBLISHED' | 'DRAFT';

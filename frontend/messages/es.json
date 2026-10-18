@@ -334,5 +334,11 @@
     "description": "Si sales ahora perderás todos los cambios que no hayas guardado. Esta acción no se puede deshacer.",
     "cancel": "Cancelar",
     "confirm": "Sí, salir sin guardar"
+  },
+  "PublicProfile": {
+    "userNotFound": "User not found",
+    "userNotFoundDesc": "We couldn't find the profile for @{username}",
+    "aboutUser": "About {name}",
+    "emptyBio": "This user hasn't written a bio yet."
   }
 }

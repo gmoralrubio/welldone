@@ -46,6 +46,6 @@ export default async function ProfileDynamicPage({ params, searchParams }: Profi
   if (isOwnProfile && currentUser) {
     return <PrivateProfile currentUser={currentUser} searchParams={searchParams} currentTab={currentTab}/>;
   } else {
-    return <PublicProfile targetUsername={targetUsername} currentUser={currentUser} searchParams={searchParams} currentTab={currentTab} />;
+    return <PublicProfile targetUsername={targetUsername} searchParams={searchParams} currentTab={currentTab} />;
   }
 }
