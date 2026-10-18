@@ -9,8 +9,8 @@ export type ArticleListPathname =
   | '/dashboard/account'
   | '/dashboard/my-articles'
   | `/articles/${string}`
-  | `/dashboard/@${string}`;
-
+  | `/dashboard/@${string}`
+  | '/dashboard/favorites';
 
 export type ArticleListStatus = 'PUBLISHED' | 'DRAFT';
 
