@@ -190,6 +190,7 @@
     "identifierPlaceholder": "Email o usuario",
     "passwordLabel": "Contraseña",
     "passwordPlaceholder": "Introduce tu contraseña",
+    "forgotPassword": "¿Has olvidado tu contraseña?",
     "required": "Obligatorio",
     "submit": "Iniciar sesión",
     "noAccount": "¿Todavía no tienes una cuenta?",
@@ -330,11 +331,11 @@
     }
   },
   "ProfileAbout": {
-  "emptyTitle": "Cuéntale al mundo sobre ti",
-  "emptyDescription": "Aquí es donde puedes compartir más sobre ti: tu historia, experiencia laboral, logros, intereses, sueños y más.",
-  "getStarted": "Empezar"
+    "emptyTitle": "Cuéntale al mundo sobre ti",
+    "emptyDescription": "Aquí es donde puedes compartir más sobre ti: tu historia, experiencia laboral, logros, intereses, sueños y más.",
+    "getStarted": "Empezar"
   },
-  "ConfirmExitModal":{
+  "ConfirmExitModal": {
     "title": "¿Seguro que quieres salir?",
     "description": "Si sales ahora perderás todos los cambios que no hayas guardado. Esta acción no se puede deshacer.",
     "cancel": "Cancelar",

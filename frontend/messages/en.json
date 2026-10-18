@@ -120,7 +120,6 @@
     "introMinLength": "The introduction is required and must be at least 5 characters long",
     "invalidUrl": "Must be a valid URL",
     "categoryRequired": "You must select at least one category"
-
   },
 
   "Breadcrumbs": {
@@ -193,6 +192,7 @@
     "identifierPlaceholder": "Email or username",
     "passwordLabel": "Password",
     "passwordPlaceholder": "Enter your password",
+    "forgotPassword": "Forgot your password?",
     "required": "Required",
     "submit": "Sign in",
     "noAccount": "Don't have an account yet?",
@@ -333,15 +333,15 @@
     }
   },
   "ProfileAbout": {
-  "emptyTitle": "Tell the world about yourself",
-  "emptyDescription": "Here’s where you can share more about yourself: your history, work experience, accomplishments, interests, dreams, and more.",
-  "getStarted": "Get started"
+    "emptyTitle": "Tell the world about yourself",
+    "emptyDescription": "Here’s where you can share more about yourself: your history, work experience, accomplishments, interests, dreams, and more.",
+    "getStarted": "Get started"
   },
   "ConfirmExitModal": {
-  "title": "Are you sure you want to leave?",
-  "description": "If you leave now, you will lose all unsaved changes. This action cannot be undone.",
-  "cancel": "Cancel",
-  "confirm": "Yes, leave without saving"
+    "title": "Are you sure you want to leave?",
+    "description": "If you leave now, you will lose all unsaved changes. This action cannot be undone.",
+    "cancel": "Cancel",
+    "confirm": "Yes, leave without saving"
   },
   "PublicProfile": {
     "userNotFound": "Usuario no encontrado",
