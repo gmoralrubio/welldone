@@ -47,6 +47,17 @@ export class PrismaFavoriteRepository implements FavoriteRepository {
     return { favorite: this.restore(prismaFavorite), created: true };
   }
 
+  async remove(params: SaveFavoritesParams): Promise<boolean> {
+    const result = await this.prisma.favorite.deleteMany({
+      where: {
+        userId: params.userId,
+        articleId: params.articleId,
+      },
+    });
+
+    return result.count > 0;
+  }
+
   async findMany(params: FindFavoritesParams): Promise<FindFavoritesResponse> {
     const { page, limit, userId } = params;
     const now = new Date();

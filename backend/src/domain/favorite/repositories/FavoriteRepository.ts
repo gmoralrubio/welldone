@@ -5,5 +5,6 @@ import { SaveFavoritesParams } from '@domain/favorite/types/SaveFavoritesParams'
 
 export interface FavoriteRepository {
   save(params: SaveFavoritesParams): Promise<SaveFavoriteResult>;
+  remove(params: SaveFavoritesParams): Promise<boolean>;
   findMany(params: FindFavoritesParams): Promise<FindFavoritesResponse>;
 }

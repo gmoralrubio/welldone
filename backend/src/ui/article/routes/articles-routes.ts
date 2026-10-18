@@ -11,6 +11,7 @@ import { getArticleByIdController } from '../controllers/get-article-by-id-contr
 import { updateArticleController } from '../controllers/update-article-controller';
 import { deleteArticleController } from '../controllers/delete-article-controller';
 import { findFavoritesController } from '../controllers/find-my-favorites-controller';
+import { removeFavoriteController } from '../controllers/remove-favorite-controller';
 import { saveFavoriteController } from '../controllers/save-favorite-controller';
 
 export const articlesRouter = Router();
@@ -36,4 +37,9 @@ articlesRouter.post(
   '/:authorUsername/:slug/favorites',
   authenticationMiddleware,
   saveFavoriteController
+);
+articlesRouter.delete(
+  '/:authorUsername/:slug/favorites',
+  authenticationMiddleware,
+  removeFavoriteController
 );
