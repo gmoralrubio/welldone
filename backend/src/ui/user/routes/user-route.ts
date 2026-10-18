@@ -8,6 +8,7 @@ import { updateUserController } from '../controllers/update-user-controller';
 import { deleteUserController } from '../controllers/delete-user-controller';
 import { getPublicProfileController } from '../controllers/get-public-profile-controller';
 import { forgotPasswordController } from '../controllers/forgot-password-controller';
+import { resetPasswordController } from '../controllers/reset-password-controller';
 
 export const userRouter = Router();
 // REGISTRAR USUARIO
@@ -31,5 +32,8 @@ userRouter.delete('/me', [authenticationMiddleware, deleteUserController]);
 // CONSULTAR PERFIL PÚBLICO DE OTRO USUARIO
 userRouter.get('/profile/:username', getPublicProfileController);
 
-// SOLICITAR RECUPERACIÓN DE CONTRASEÑA
+// SOLICITAR CORREO RECUPERACIÓN
 userRouter.post('/forgot-password', forgotPasswordController);
+
+// CAMBIAR CONTRASEÑA
+userRouter.post('/reset-password', resetPasswordController);
