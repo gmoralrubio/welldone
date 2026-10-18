@@ -2,7 +2,7 @@ import { createHash, randomBytes } from 'node:crypto';
 import { UserRepository } from '../repositories/UserRepository';
 import { PasswordResetTokenRepository } from '../repositories/PasswordResetTokenRepository';
 import { EmailLocale, EmailService } from '../services/EmailService';
-import { BadSyntaxError } from '../../errors/BadSyntaxError';
+import { validateEmail } from '../validators/validate-email';
 
 interface ForgotPasswordInput {
   email: string;
@@ -19,11 +19,7 @@ export class ForgotPasswordUseCase {
 
   async execute({ email, locale }: ForgotPasswordInput): Promise<void> {
     // Validar el correo electrónico.
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-    if (!emailRegex.test(email)) {
-      throw new BadSyntaxError('Invalid email syntax');
-    }
+    validateEmail(email);
 
     // Buscar al usuario.
     const user = await this.userRepository.findByEmail(email);
