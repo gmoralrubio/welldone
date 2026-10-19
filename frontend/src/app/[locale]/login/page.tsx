@@ -72,7 +72,9 @@ export default function LoginPage() {
   return (
     <main className="flex min-h-screen flex-col bg-[#faf9f6] text-[#1a1c1a] antialiased">
       <header className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        <div className="text-xl font-semibold tracking-tight text-black">{t('brand')}</div>
+        <div className="text-xl font-semibold tracking-tight text-black">
+          {t('brand')}
+        </div>
 
         <div className="flex items-center gap-4">
           <Link
@@ -190,7 +192,12 @@ export default function LoginPage() {
                 {t(`errors.${errors.form}`)}
               </p>
             ) : null}
-
+            <Link
+              href="/forgot-password"
+              className="self-end text-sm font-medium text-[#006a63] transition-colors hover:text-black"
+            >
+              {t('forgotPassword')}
+            </Link>
             <button
               type="submit"
               className="mt-1 flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-black px-5 text-sm font-semibold text-white transition-colors hover:bg-[#006a63]"
