@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { ForgotPasswordUseCase } from '@domain/user/use-cases/forgot-password';
 import { PrismaUserRepository } from '@infrastructure/user/repositories/PrismaUserRepository';
 import { PrismaPasswordResetTokenRepository } from '@infrastructure/user/repositories/PrismaPasswordResetTokenRepository';
-import { NodemailerEmailService } from '@infrastructure/user/services/NodeMailerEmailService';
+import { createEmailService } from '@infrastructure/user/services/createEmailService';
 import { environmentService } from '@infrastructure/shared/services/EnvironmentService';
 
 export const forgotPasswordController = async (
@@ -28,7 +28,7 @@ export const forgotPasswordController = async (
     const forgotPasswordUseCase = new ForgotPasswordUseCase(
       new PrismaUserRepository(),
       new PrismaPasswordResetTokenRepository(),
-      new NodemailerEmailService(),
+      createEmailService(),
       FRONTEND_URL
     );
 
