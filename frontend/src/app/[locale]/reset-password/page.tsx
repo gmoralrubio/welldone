@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type SubmitEvent } from 'react';
+import { Suspense, useState, type SubmitEvent } from 'react';
 import { ArrowLeft, ArrowRight, Lock } from '@gravity-ui/icons';
 import { Input, Label, TextField } from '@heroui/react';
 import { useSearchParams } from 'next/navigation';
@@ -26,7 +26,7 @@ type ResetPasswordErrors = Partial<
   }
 >;
 
-export default function ResetPasswordPage() {
+function ResetPasswordForm() {
   const t = useTranslations('AuthResetPassword');
   const tValidation = useTranslations('ValidationResetPassword');
 
@@ -255,5 +255,13 @@ export default function ResetPasswordPage() {
         </div>
       </section>
     </main>
+  );
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={null}>
+      <ResetPasswordForm />
+    </Suspense>
   );
 }
