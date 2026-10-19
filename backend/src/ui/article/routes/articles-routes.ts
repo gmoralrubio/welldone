@@ -10,13 +10,16 @@ import { createCommentController } from '@ui/article/controllers/create-comment-
 import { getArticleByIdController } from '../controllers/get-article-by-id-controller';
 import { updateArticleController } from '../controllers/update-article-controller';
 import { deleteArticleController } from '../controllers/delete-article-controller';
+import { findFavoritesController } from '../controllers/find-favorites-controller';
+import { removeFavoriteController } from '../controllers/remove-favorite-controller';
+import { saveFavoriteController } from '../controllers/save-favorite-controller';
 
 export const articlesRouter = Router();
-
 
 articlesRouter.get('/', findPublishedArticlesController);
 articlesRouter.post('/', authenticationMiddleware, createArticleController);
 articlesRouter.get('/me', authenticationMiddleware, findMyArticlesController);
+articlesRouter.get('/me/favorites', authenticationMiddleware, findFavoritesController);
 articlesRouter.get('/me/:slug', authenticationMiddleware, findMyArticleController);
 
 articlesRouter.get('/:id', getArticleByIdController);
@@ -29,4 +32,14 @@ articlesRouter.post(
   '/:authorUsername/:slug/comments',
   authenticationMiddleware,
   createCommentController
+);
+articlesRouter.post(
+  '/:authorUsername/:slug/favorites',
+  authenticationMiddleware,
+  saveFavoriteController
+);
+articlesRouter.delete(
+  '/:authorUsername/:slug/favorites',
+  authenticationMiddleware,
+  removeFavoriteController
 );

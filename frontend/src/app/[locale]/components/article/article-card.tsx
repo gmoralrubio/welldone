@@ -21,9 +21,15 @@ type ArticleCardProps = {
   article: ArticleDto;
   showActions?: boolean;
   href?: string;
+  isFavorite?: boolean;
 };
 
-export function ArticleCard({ article, showActions = false, href }: ArticleCardProps) {
+export function ArticleCard({
+  article,
+  showActions = false,
+  href,
+  isFavorite = false,
+}: ArticleCardProps) {
   const articleLink = href ?? articleHref(article);
   const minutes = readingMinutes(article.intro, article.content);
   const t = useTranslations('ArticleCard');
@@ -76,23 +82,32 @@ export function ArticleCard({ article, showActions = false, href }: ArticleCardP
               {t('readMinutes', { minutes })}
             </span>
           </div>
-          
+
           <div className="flex items-center gap-2">
             {article.status === 'PUBLISHED' ? (
-              <ArticleCardPublishedActions commentCount={article.commentCount} />
+              <ArticleCardPublishedActions
+                commentCount={article.commentCount}
+                authorUsername={article.author.username}
+                slug={article.slug}
+                isFavorite={isFavorite}
+              />
             ) : (
-              <Chip className="text-muted bg-surface-secondary border-none" size="sm">DRAFT</Chip>
+              <Chip
+                className="text-muted bg-surface-secondary border-none"
+                size="sm"
+              >
+                DRAFT
+              </Chip>
             )}
 
             {showActions && (
-              <ArticleActionsMenu 
-                articleId={article.id} 
-                editLabel={t('edit')} 
-                deleteLabel={t('delete')} 
+              <ArticleActionsMenu
+                articleId={article.id}
+                editLabel={t('edit')}
+                deleteLabel={t('delete')}
               />
             )}
           </div>
-
         </div>
       </div>
       <div className="relative aspect-3/2 w-full shrink-0 overflow-hidden rounded bg-surface-secondary sm:aspect-auto sm:w-48 sm:self-stretch">

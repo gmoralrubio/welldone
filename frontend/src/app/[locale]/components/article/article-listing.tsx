@@ -1,3 +1,4 @@
+import { getFavoriteArticleIds } from '@/app/[locale]/(site)/articles/actions';
 import { ArticleCard } from '@/app/[locale]/components/article/article-card';
 import { ArticleHero } from '@/app/[locale]/components/article/article-hero';
 import { ArticlePagination } from '@/app/[locale]/components/article/article-pagination';
@@ -29,6 +30,7 @@ export async function ArticleListing({
   emptyCatalog,
 }: ArticleListingProps) {
   const data = articles?.data ?? [];
+  const favoriteIds = new Set(await getFavoriteArticleIds(data.map((article) => article.id)));
   const featured =
     criteria.page === 1 && criteria.search === '' && criteria.category.length === 0
       ? data[0]
@@ -41,7 +43,12 @@ export async function ArticleListing({
     <div className="flex min-h-full flex-1 flex-col font-sans text-foreground">
       <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-8">
         {heading}
-        {featured ? <ArticleHero article={featured} /> : null}
+        {featured ? (
+          <ArticleHero
+            article={featured}
+            isFavorite={favoriteIds.has(featured.id)}
+          />
+        ) : null}
         <div className="grid items-start gap-10 py-4 lg:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)]">
           <section className="min-w-0">
             {searchTooShort ? (
@@ -61,6 +68,7 @@ export async function ArticleListing({
                   <ArticleCard
                     key={article.id}
                     article={article}
+                    isFavorite={favoriteIds.has(article.id)}
                   />
                 ))}
               </div>

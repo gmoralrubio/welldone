@@ -3,6 +3,7 @@ import {
   getArticleComments,
   getArticlesByAuthor,
   getCommentAuthor,
+  getFavoriteArticleIds,
 } from '@/app/[locale]/(site)/articles/actions';
 import { authorArticlesHref, formatDate } from '@/lib/article/article-presenters';
 import { Button, Card, CardContent, Chip } from '@heroui/react';
@@ -10,7 +11,6 @@ import {
   Check,
   ThumbsUp,
   Comment,
-  BookmarkFill,
   ArrowUpFromSquare,
   PersonPlus,
 } from '@gravity-ui/icons';
@@ -31,6 +31,7 @@ import { parseCommentsQuery } from '@/lib/comment/comment-query';
 import { CommentCard } from '@/app/[locale]/components/comment/comment-card';
 import { CommentForm } from '@/app/[locale]/components/comment/comment-form';
 import { UserAvatar } from '@/app/[locale]/components/user/user-avatar';
+import { FavoriteButton } from '@/app/[locale]/components/article/favorite-button';
 
 interface ArticleDetailPageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -70,9 +71,10 @@ export default async function ArticleDetailPage({
     notFound();
   }
 
-  const [commentsResult, authorArticles] = await Promise.all([
+  const [commentsResult, authorArticles, favoriteIds] = await Promise.all([
     getArticleComments(authorUsername, slug, commentsPage),
     getArticlesByAuthor(authorUsername, { limit: '5' }),
+    getFavoriteArticleIds([article.id]),
   ]);
   const moreArticles = (authorArticles?.data ?? [])
     .filter((item) => item.slug !== slug)
@@ -149,7 +151,11 @@ export default async function ArticleDetailPage({
               <span className="text-sm">{article.commentCount}</span>
             </div>
             <div className="flex gap-1 items-center px-3">
-              <BookmarkFill className="text-success" />
+              <FavoriteButton
+                authorUsername={article.author.username}
+                slug={article.slug}
+                saved={favoriteIds.includes(article.id)}
+              />
             </div>
             <div className="flex gap-1 items-center px-3">
               <ArrowUpFromSquare />
