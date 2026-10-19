@@ -3,6 +3,7 @@ import {
   getArticleComments,
   getArticlesByAuthor,
   getCommentAuthor,
+  getFavoriteArticleIds,
 } from '@/app/[locale]/(site)/articles/actions';
 import { authorArticlesHref, formatDate } from '@/lib/article/article-presenters';
 import { Button, Card, CardContent, Chip } from '@heroui/react';
@@ -70,9 +71,10 @@ export default async function ArticleDetailPage({
     notFound();
   }
 
-  const [commentsResult, authorArticles] = await Promise.all([
+  const [commentsResult, authorArticles, favoriteIds] = await Promise.all([
     getArticleComments(authorUsername, slug, commentsPage),
     getArticlesByAuthor(authorUsername, { limit: '5' }),
+    getFavoriteArticleIds([article.id]),
   ]);
   const moreArticles = (authorArticles?.data ?? [])
     .filter((item) => item.slug !== slug)
@@ -152,6 +154,7 @@ export default async function ArticleDetailPage({
               <FavoriteButton
                 authorUsername={article.author.username}
                 slug={article.slug}
+                saved={favoriteIds.includes(article.id)}
               />
             </div>
             <div className="flex gap-1 items-center px-3">

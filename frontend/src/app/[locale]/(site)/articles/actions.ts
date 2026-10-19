@@ -351,6 +351,31 @@ export async function getMyArticlesAction(
   return await response.json();
 }
 
+export async function getFavoriteArticleIds(articleIds: number[]): Promise<number[]> {
+  if (articleIds.length === 0) return [];
+
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('accessToken')?.value;
+
+  if (!accessToken) return [];
+
+  const params = new URLSearchParams({ articleIds: articleIds.join(',') });
+  const response = await fetch(
+    `${process.env.API_URL}/api/articles/me/favorites?${params.toString()}`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      cache: 'no-store',
+    }
+  );
+
+  if (!response.ok) return [];
+
+  const data: { articleIds?: number[] } = await response.json();
+  return data.articleIds ?? [];
+}
+
 export async function getMyFavoritesAction(
   searchParams: ArticlesSearchParams
 ): Promise<PaginatedResponse<ArticleDto>> {

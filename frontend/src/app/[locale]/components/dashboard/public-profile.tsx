@@ -1,6 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
-import { getArticlesByAuthor } from '@/app/[locale]/(site)/articles/actions';
+import { getArticlesByAuthor, getFavoriteArticleIds } from '@/app/[locale]/(site)/articles/actions';
 import { ArticleCard } from '@/app/[locale]/components/article/article-card';
 import { ArticlePagination } from '@/app/[locale]/components/article/article-pagination';
 import { parseArticleQuery } from '@/lib/article/article-query';
@@ -62,6 +62,8 @@ export default async function PublicProfile({ targetUsername,searchParams, curre
     }
   }
 
+  const favoriteIds = new Set(await getFavoriteArticleIds(articles.map((article) => article.id)));
+
   const activeTabClass = 'border-b border-foreground pb-3 text-sm font-medium text-foreground';
   const inactiveTabClass = 'border-b border-transparent pb-3 text-sm font-medium text-muted transition-colors hover:text-foreground';
 
@@ -113,6 +115,7 @@ export default async function PublicProfile({ targetUsername,searchParams, curre
                 article={article}
                 showActions={false}
                 href={`/articles/${targetUsername}/${article.slug}`}
+                isFavorite={favoriteIds.has(article.id)}
               />
             ))
           ) : (

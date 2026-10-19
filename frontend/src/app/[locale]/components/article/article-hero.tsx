@@ -14,9 +14,10 @@ import { UserAvatar } from '@/app/[locale]/components/user/user-avatar';
 
 type ArticleHeroProps = {
   article: ArticleDto;
+  isFavorite?: boolean;
 };
 
-export function ArticleHero({ article }: ArticleHeroProps) {
+export function ArticleHero({ article, isFavorite = false }: ArticleHeroProps) {
   const href = `/articles/${article.author.username}/${article.slug}`;
   const minutes = readingMinutes(article.intro, article.content);
   const relativeTime = useRelativeTime(article.publishedAt);
@@ -100,6 +101,7 @@ export function ArticleHero({ article }: ArticleHeroProps) {
               <FavoriteButton
                 authorUsername={article.author.username}
                 slug={article.slug}
+                saved={isFavorite}
               />
               <Button
                 isIconOnly

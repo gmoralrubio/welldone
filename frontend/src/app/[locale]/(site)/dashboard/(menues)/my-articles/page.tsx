@@ -1,5 +1,5 @@
 import { getTranslations } from 'next-intl/server';
-import { getMyArticlesAction } from '@/app/[locale]/(site)/articles/actions';
+import { getFavoriteArticleIds, getMyArticlesAction } from '@/app/[locale]/(site)/articles/actions';
 import { ArticleCard } from '@/app/[locale]/components/article/article-card';
 import { ArticlePagination } from '@/app/[locale]/components/article/article-pagination';
 import { parseArticleQuery } from '@/lib/article/article-query';
@@ -20,6 +20,7 @@ export default async function MyArticlesPage({ searchParams }: MyArticlesPagePro
   });
 
   const { data: articles, meta } = response;
+  const favoriteIds = new Set(await getFavoriteArticleIds(articles.map((article) => article.id)));
 
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-8">
@@ -36,6 +37,7 @@ export default async function MyArticlesPage({ searchParams }: MyArticlesPagePro
               key={article.id}
               article={article}
               showActions={true}
+              isFavorite={favoriteIds.has(article.id)}
             />
           ))
         ) : (
