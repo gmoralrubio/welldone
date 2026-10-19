@@ -229,6 +229,32 @@
     "emailRequired": "Email is required.",
     "emailInvalid": "Enter a valid email address."
   },
+  "AuthResetPassword": {
+    "brand": "WellDone",
+    "backToReading": "Back to public reading",
+    "eyebrow": "Recover your access",
+    "title": "Reset password",
+    "subtitle": "Enter your new password to regain access to your account.",
+    "passwordLabel": "New password",
+    "passwordPlaceholder": "Enter your new password",
+    "repeatPasswordLabel": "Repeat password",
+    "repeatPasswordPlaceholder": "Repeat your new password",
+    "required": "Required",
+    "submit": "Reset password",
+    "submitting": "Saving...",
+    "success": "Your password has been reset successfully. You can now sign in.",
+    "backToLogin": "Back to sign in",
+    "errors": {
+      "invalidToken": "This recovery link is invalid or has expired. Request a new one.",
+      "requestFailed": "Your password could not be reset. Please try again."
+    }
+  },
+  "ValidationResetPassword": {
+    "passwordRequired": "Password is required.",
+    "passwordPattern": "Must be 8–15 characters with uppercase, lowercase, a number, and a special character.",
+    "repeatPasswordRequired": "You must repeat the password.",
+    "passwordsMismatch": "Passwords do not match."
+  },
   "AuthRegister": {
     "brand": "WellDone",
     "backToReading": "Back to public reading",

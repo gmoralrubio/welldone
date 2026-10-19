@@ -227,6 +227,32 @@
     "emailRequired": "El correo electrónico es obligatorio.",
     "emailInvalid": "Introduce un correo electrónico válido."
   },
+  "AuthResetPassword": {
+    "brand": "WellDone",
+    "backToReading": "Volver a la lectura pública",
+    "eyebrow": "Recupera tu acceso",
+    "title": "Restablecer contraseña",
+    "subtitle": "Introduce tu nueva contraseña para recuperar el acceso a tu cuenta.",
+    "passwordLabel": "Nueva contraseña",
+    "passwordPlaceholder": "Introduce tu nueva contraseña",
+    "repeatPasswordLabel": "Repetir contraseña",
+    "repeatPasswordPlaceholder": "Repite tu nueva contraseña",
+    "required": "Obligatorio",
+    "submit": "Restablecer contraseña",
+    "submitting": "Guardando...",
+    "success": "Tu contraseña se ha restablecido correctamente. Ya puedes iniciar sesión.",
+    "backToLogin": "Volver a iniciar sesión",
+    "errors": {
+      "invalidToken": "El enlace de recuperación no es válido o ha caducado. Solicita uno nuevo.",
+      "requestFailed": "No se ha podido restablecer la contraseña. Inténtalo de nuevo."
+    }
+  },
+  "ValidationResetPassword": {
+    "passwordRequired": "La contraseña es obligatoria.",
+    "passwordPattern": "Debe tener entre 8 y 15 caracteres, una mayúscula, una minúscula, un número y un carácter especial.",
+    "repeatPasswordRequired": "Debes repetir la contraseña.",
+    "passwordsMismatch": "Las contraseñas no coinciden."
+  },
   "AuthRegister": {
     "brand": "WellDone",
     "backToReading": "Volver a la lectura pública",
