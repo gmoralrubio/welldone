@@ -80,7 +80,7 @@ export default function ResetPasswordPage() {
 
       if (response.status === 200) {
         setIsSuccess(true);
-      } else if (response.status === 400) {
+      } else if (response.status === 401) {
         setErrors({ form: 'invalidToken' });
       } else {
         setErrors({ form: 'requestFailed' });
