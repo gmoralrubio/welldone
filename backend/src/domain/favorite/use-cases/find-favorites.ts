@@ -6,6 +6,11 @@ export type FindFavoritesUseCaseInput = Pagination & {
   userId: number;
 };
 
+export type FindFavoriteArticleIdsInput = {
+  userId: number;
+  articleIds: number[];
+};
+
 export class FindFavoritesUseCase {
   readonly favoriteRepository: FavoriteRepository;
 
@@ -15,5 +20,9 @@ export class FindFavoritesUseCase {
 
   async execute(input: FindFavoritesUseCaseInput): Promise<FindFavoritesResponse> {
     return this.favoriteRepository.findMany(input);
+  }
+
+  async executeArticleIds(input: FindFavoriteArticleIdsInput): Promise<number[]> {
+    return this.favoriteRepository.findArticleIds(input.userId, input.articleIds);
   }
 }

@@ -90,6 +90,18 @@ export class PrismaFavoriteRepository implements FavoriteRepository {
     };
   }
 
+  async findArticleIds(userId: number, articleIds: number[]): Promise<number[]> {
+    const rows = await this.prisma.favorite.findMany({
+      where: {
+        userId,
+        articleId: { in: articleIds },
+      },
+      select: { articleId: true },
+    });
+
+    return rows.map((row) => row.articleId);
+  }
+
   private restoreArticle(prismaArticle: PrismaArticle): Article {
     return new Article({
       id: prismaArticle.id,

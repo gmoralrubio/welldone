@@ -15,9 +15,24 @@ export async function findFavoritesController(
       throw new UnauthorizedError('Debes estar autenticado para ver tus favoritos');
     }
 
-    const { page, limit } = findFavoritesQuerySchema.parse(req.query);
+    const { page, limit, articleIds } = findFavoritesQuerySchema.parse(req.query);
 
     const findFavoritesUseCase = new FindFavoritesUseCase(new PrismaFavoriteRepository());
+
+    if (articleIds !== undefined) {
+      if (articleIds.length === 0) {
+        res.status(200).json({ articleIds: [] });
+        return;
+      }
+
+      const savedIds = await findFavoritesUseCase.executeArticleIds({
+        userId: req.authorId,
+        articleIds,
+      });
+
+      res.status(200).json({ articleIds: savedIds });
+      return;
+    }
 
     const { articles, total } = await findFavoritesUseCase.execute({
       userId: req.authorId,
