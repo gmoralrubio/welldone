@@ -13,26 +13,33 @@ const environmentVariablesValidator = z
     REDIS_URL: z.url(),
     MAILDEV_HOST: z.string().optional(),
     MAILDEV_PORT: z.string().optional(),
-    RESEND_API_KEY: z.string().min(1).optional(),
-    RESEND_FROM_EMAIL: z.email().optional(),
+    SMTP_HOST: z.string().min(1).optional(),
+    SMTP_PORT: z.coerce.number().optional(),
+    SMTP_SECURE: z.enum(['true', 'false']).optional(),
+    SMTP_USER: z.string().min(1).optional(),
+    SMTP_PASS: z.string().min(1).optional(),
+    MAIL_FROM: z.string().min(1).optional(),
   })
   .superRefine((env, ctx) => {
     if (env.NODE_ENV !== 'production') return;
 
-    if (!env.RESEND_API_KEY) {
-      ctx.addIssue({
-        code: 'custom',
-        path: ['RESEND_API_KEY'],
-        message: 'RESEND_API_KEY is required in production',
-      });
-    }
+    const required = [
+      ['SMTP_HOST', env.SMTP_HOST],
+      ['SMTP_PORT', env.SMTP_PORT],
+      ['SMTP_SECURE', env.SMTP_SECURE],
+      ['SMTP_USER', env.SMTP_USER],
+      ['SMTP_PASS', env.SMTP_PASS],
+      ['MAIL_FROM', env.MAIL_FROM],
+    ] as const;
 
-    if (!env.RESEND_FROM_EMAIL) {
-      ctx.addIssue({
-        code: 'custom',
-        path: ['RESEND_FROM_EMAIL'],
-        message: 'RESEND_FROM_EMAIL is required in production',
-      });
+    for (const [name, value] of required) {
+      if (value === undefined) {
+        ctx.addIssue({
+          code: 'custom',
+          path: [name],
+          message: `${name} is required in production`,
+        });
+      }
     }
   });
 

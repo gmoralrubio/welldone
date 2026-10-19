@@ -277,8 +277,10 @@ jobs:
 - `.env.back` -> se le pasa a los servicios `backend` y `migrate` vía `env_file` en `docker-compose.prod.yml`
   - Se inyecta como variables de entorno dentro del contenedor cuando arranca
   - Son las que valida `EnvironmentService`. `DATABASE_URL` apunta al servicio `postgres` y usa
-    el mismo usuario/clave/BD que el `.env` de arriba. Maildev no va a producción, así que
-    `MAILDEV_HOST`/`MAILDEV_PORT` se omiten (son opcionales).
+  el mismo usuario/clave/BD que el `.env` de arriba. Maildev no va a producción, así que
+  `MAILDEV_HOST`/`MAILDEV_PORT` se omiten (son opcionales). El correo sale por Gmail SMTP,
+  así que `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS` y `MAIL_FROM`
+  son obligatorias.
 
   ```
   DATABASE_URL=postgresql://user:password@postgres:5432/WelldoneApi
@@ -286,6 +288,12 @@ jobs:
   NODE_ENV=production
   PORT=4000
   JWT_SECRET=<secreto-largo-y-aleatorio>
+  SMTP_HOST=smtp.gmail.com
+  SMTP_PORT=465
+  SMTP_SECURE=true
+  SMTP_USER=<cuenta-gmail>
+  SMTP_PASS=<contraseña-de-aplicación>
+  MAIL_FROM="WellDone <cuenta-gmail>"
   ```
 
 > **Cuidado con el `$` en las contraseñas.** Docker Compose interpola `${VAR}` también en los
