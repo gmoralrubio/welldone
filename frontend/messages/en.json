@@ -121,7 +121,6 @@
     "invalidUrl": "Must be a valid URL",
     "categoryRequired": "You must select at least one category"
   },
-
   "Breadcrumbs": {
     "ariaLabel": "Breadcrumbs",
     "home": "Home",
@@ -391,9 +390,9 @@
     "confirm": "Yes, leave without saving"
   },
   "PublicProfile": {
-    "userNotFound": "Usuario no encontrado",
-    "userNotFoundDesc": "No pudimos encontrar el perfil de @{username}",
-    "aboutUser": "Acerca de {name}",
-    "emptyBio": "Este usuario aún no ha escrito su biografía."
+    "userNotFound": "User not found",
+    "userNotFoundDesc": "We couldn't find the profile for @{username}",
+    "aboutUser": "About {name}",
+    "emptyBio": "This user hasn't written a bio yet."
   }
 }
