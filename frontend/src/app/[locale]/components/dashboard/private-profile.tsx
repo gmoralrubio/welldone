@@ -1,6 +1,5 @@
-import { cookies } from 'next/headers';
-import { getLocale, getTranslations } from 'next-intl/server';
-import { redirect, Link } from '@/i18n/navigation';
+import { getTranslations } from 'next-intl/server';
+import { Link } from '@/i18n/navigation';
 import { getMyArticlesAction } from '@/app/[locale]/(site)/articles/actions';
 import { ArticleCard } from '@/app/[locale]/components/article/article-card';
 import { ArticlePagination } from '@/app/[locale]/components/article/article-pagination';
@@ -9,9 +8,6 @@ import { Button } from '@heroui/react';
 import { UserAvatar } from '@/app/[locale]/components/user/user-avatar';
 import { ArticleDto } from '@/lib/article/articles.types';
 
-interface AccountPageProps {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-}
 
 interface UserProfile {
   id: number;
@@ -21,42 +17,23 @@ interface UserProfile {
   email: string;
 }
 
-export default async function AccountPage({ searchParams }: AccountPageProps) {
+interface AccountPageProps {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+  currentUser: UserProfile;
+  currentTab: string;
+}
+
+export default async function PrivateProfile({ searchParams, currentUser, currentTab }: AccountPageProps) {
   const t = await getTranslations('Dashboard');
   const tAbout = await getTranslations('ProfileAbout');
-  const locale = await getLocale();
 
-
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get('accessToken')?.value;
-
-  if (!accessToken) {
-    return redirect({ href: '/login', locale });
-  }
-
-  const response = await fetch(`${process.env.API_URL}/api/users/me`, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-    cache: 'no-store',
-  });
-
-  if (response.status === 401) {
-    return redirect({ href: '/login', locale });
-  }
-
-  if (!response.ok) {
-    throw new Error('Could not load user profile');
-  }
-
-  const user: UserProfile = await response.json();
 
   const params = await searchParams;
-  const currentStatus = (params.status as string) || 'PUBLISHED';
   const { page, limit, order } = parseArticleQuery(params);
 
-  let articles: ArticleDto[] = [];
+  const currentStatus = currentTab;
 
+  let articles: ArticleDto[] = [];
   let meta = { page: 1, pages: 1 };
 
   if (currentStatus !== 'ABOUT') {
@@ -79,24 +56,24 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 lg:flex-row">
       <div className="flex flex-1 flex-col gap-6">
         <h1 className="font-serif text-4xl font-bold text-foreground sm:text-5xl">
-          {user.name} {user.surname}
+          {currentUser.name} {currentUser.surname}
         </h1>
 
         <div className="flex w-full gap-6 border-b border-separator">
           <Link
-            href="/dashboard/profile?status=PUBLISHED"
+            href={`/dashboard/@${currentUser.username}`}
             className={currentStatus === 'PUBLISHED' ? activeTabClass : inactiveTabClass}
           >
             {t('tabs.home')}
           </Link>
           <Link
-            href="/dashboard/profile?status=DRAFT"
+            href={`/dashboard/@${currentUser.username}/draft`}
             className={currentStatus === 'DRAFT' ? activeTabClass : inactiveTabClass}
           >
             {t('tabs.drafts')}
           </Link>
           <Link
-            href="/dashboard/profile?status=ABOUT"
+            href={`/dashboard/@${currentUser.username}/about`}
             className={currentStatus === 'ABOUT' ? activeTabClass : inactiveTabClass}
           >
             {t('tabs.about')}
@@ -151,17 +128,17 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
 
       <aside className="flex w-full flex-col gap-6 pt-4 lg:w-80 lg:border-l lg:border-separator lg:pl-10">
         <UserAvatar
-          name={user.name}
-          surname={user.surname}
-          username={user.username}
+          name={currentUser.name}
+          surname={currentUser.surname}
+          username={currentUser.username}
           size="lg"
           className="h-24 w-24 text-large"
         />
         <div className="flex flex-col gap-1">
           <h2 className="text-lg font-bold text-foreground">
-            {user.name} {user.surname}
+            {currentUser.name} {currentUser.surname}
           </h2>
-          <span className="text-sm text-muted">@{user.username}</span>
+          <span className="text-sm text-muted">@{currentUser.username}</span>
 
         </div>
 

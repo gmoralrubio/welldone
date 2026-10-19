@@ -38,7 +38,7 @@ export function SiteHeaderClient({
 
   const handleConfirmExit = () => {
     cancelDialogRef.current?.close();
-    router.push('/dashboard/profile');
+    router.push(`/dashboard/@${user?.username}`);
 
   };
 

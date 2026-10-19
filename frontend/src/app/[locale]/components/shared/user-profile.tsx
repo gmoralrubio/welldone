@@ -45,7 +45,7 @@ const UserProfile = ({ name, username }: UserProfileProps) => {
             textValue={t('profile')}
           >
             <Link
-              href="/dashboard/profile"
+              href={`/dashboard/@${username}`}
               className="block w-full no-underline text-inherit"
             >
               {t('profile')}

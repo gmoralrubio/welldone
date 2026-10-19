@@ -6,6 +6,7 @@ import { authenticationMiddleware } from '../middlewares/authentication-middlewa
 import { getCurrentUserController } from '../controllers/get-current-user-controller';
 import { updateUserController } from '../controllers/update-user-controller';
 import { deleteUserController } from '../controllers/delete-user-controller';
+import { getPublicProfileController } from '../controllers/get-public-profile-controller';
 
 export const userRouter = Router();
 // REGISTRAR USUARIO
@@ -25,3 +26,6 @@ userRouter.patch('/me', [authenticationMiddleware, updateUserController]);
 
 // ELIMINAR CUENTA
 userRouter.delete('/me', [authenticationMiddleware, deleteUserController]);
+
+// CONSULTAR PERFIL PÚBLICO DE OTRO USUARIO
+userRouter.get('/profile/:username', getPublicProfileController);

@@ -3,12 +3,13 @@
 import { Link, usePathname } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
 
-export function SidebarMenu() {
+export function SidebarMenu({ username }: { username?: string }) {
   const pathname = usePathname();
   const t = useTranslations('Dashboard'); 
 
+
   const menuItems = [
-    { href: '/dashboard/profile', label: t('nav.profile') },
+    { href: `/dashboard/@${username}`, label: t('nav.profile'), matchPrefix: `/dashboard/@`},
     { href: '/dashboard/my-articles', label: t('nav.articles') },
     { href: '/dashboard/favorites', label: t('nav.favorites') },
     { href: '/dashboard/highlights', label: t('nav.highlights') },
@@ -19,7 +20,9 @@ export function SidebarMenu() {
   return (
     <nav className="flex flex-col gap-2">
       {menuItems.map((item) => {
-        const isActive = pathname.startsWith(item.href);
+        const isActive = item.matchPrefix 
+          ? pathname.startsWith(item.matchPrefix) 
+          : pathname.startsWith(item.href);
 
         return (
           <Link
