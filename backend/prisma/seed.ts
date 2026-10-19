@@ -1,11 +1,8 @@
 import process from 'process';
 import bcrypt from 'bcrypt';
 import { ArticleStatus, PrismaClient } from '@prisma/client';
-import {
-  CATEGORIES,
-  type CategorySlug,
-} from '../src/domain/category/categories';
-import { sanitizeArticleContent } from '../src/infrastructure/article/sanitizers/sanitizeArticleContent';
+import { CATEGORIES } from '../dist/domain/category/categories';
+import { sanitizeArticleContent } from '../dist/infrastructure/article/sanitizers/sanitizeArticleContent';
 
 const prisma = new PrismaClient();
 
@@ -22,7 +19,7 @@ type SeedArticle = {
   slug: string;
   status: ArticleStatus;
   publishedAt: Date;
-  categorySlugs: CategorySlug[];
+  categorySlugs: string[];
 };
 
 const johnArticles: SeedArticle[] = [
@@ -79,8 +76,7 @@ const johnArticles: SeedArticle[] = [
   },
   {
     title: 'Colas, reintentos y la paciencia del sistema',
-    intro:
-      'Borrador sobre qué debe reintentarse solo y qué debe esperar a una persona.',
+    intro: 'Borrador sobre qué debe reintentarse solo y qué debe esperar a una persona.',
     content: `<p>Todavía estoy ordenando los ejemplos. Un correo que falla por un timeout merece un reintento. Un pago duplicado no.</p><p>Cuando el texto distinga esos dos casos con claridad, saldrá de borrador. Hasta entonces se queda aquí, con la estructura y sin la conclusión.</p>`,
     slug: 'colas-reintentos-y-la-paciencia-del-sistema',
     status: 'DRAFT',
