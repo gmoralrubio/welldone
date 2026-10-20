@@ -92,7 +92,7 @@ export default async function PrivateProfile({ searchParams, currentUser, curren
                 key={article.id}
                 article={article}
                 showActions
-                href={`/dashboard/my-articles/${article.slug}`}
+                href={`/dashboard/@${article.author.username}/${article.slug}`}
                 isFavorite={favoriteIds.has(article.id)}
               />
             ))
@@ -113,7 +113,7 @@ export default async function PrivateProfile({ searchParams, currentUser, curren
               search=""
               order={order}
               category=""
-              pathname="/dashboard/account"
+              pathname='/dashboard/@${username}'
               status={currentStatus === 'DRAFT' ? 'DRAFT' : 'PUBLISHED'}
             />
          </div>

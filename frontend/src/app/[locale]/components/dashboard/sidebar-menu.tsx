@@ -10,7 +10,6 @@ export function SidebarMenu({ username }: { username?: string }) {
 
   const menuItems = [
     { href: `/dashboard/@${username}`, label: t('nav.profile'), matchPrefix: `/dashboard/@`},
-    { href: '/dashboard/my-articles', label: t('nav.articles') },
     { href: '/dashboard/favorites', label: t('nav.favorites') },
     { href: '/dashboard/highlights', label: t('nav.highlights') },
     { href: '/dashboard/notifications', label: t('nav.notifications') },

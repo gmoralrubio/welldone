@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 import { Button } from '@heroui/react';
 import { Pencil, Check, Xmark } from '@gravity-ui/icons';
 import { useTranslations } from 'next-intl';
- import { updateAccount } from '@/app/[locale]/(site)/dashboard/(menues)/[...username]/actions'; 
+ import { updateAccount } from '@/app/[locale]/(site)/dashboard/(menues)/[username]/actions'; 
 
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 import 'react-quill-new/dist/quill.snow.css';

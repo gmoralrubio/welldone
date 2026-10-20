@@ -29,7 +29,6 @@ export function ArticleBreadcrumbs({
   const homeHref = getPathname({ locale, href: '/' });
   const articlesHref = getPathname({ locale, href: '/articles' });
   const dashboardHref = getPathname({ locale, href: '/dashboard' });
-  const myArticlesHref = getPathname({ locale, href: '/dashboard/my-articles' });
   const currentLabel = asSlug ? slugify(current) : current;
 
   return (
@@ -44,12 +43,6 @@ export function ArticleBreadcrumbs({
             href={dashboardHref}
           >
             <span className="text-xs">{t('dashboard')}</span>
-          </Breadcrumbs.Item>
-          <Breadcrumbs.Item
-            className="uppercase"
-            href={myArticlesHref}
-          >
-            <span className="text-xs">{t('myArticles')}</span>
           </Breadcrumbs.Item>
         </>
       ) : (

@@ -489,7 +489,7 @@ export async function updateArticleAction(
   }
 
   redirect({
-    href: '/dashboard/my-articles',
+    href: '/dashboard/',
     locale: resolveLocale(locale),
   });
 }
@@ -515,7 +515,7 @@ export async function deleteArticleAction(articleId: string | number) {
     }
 
     // Refrescamos las cachés para que desaparezca de las listas
-    revalidatePath('/dashboard/my-articles');
+    revalidatePath('/dashboard/@${username}');
     revalidatePath('/articles');
 
     return { status: 204 };

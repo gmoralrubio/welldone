@@ -10,7 +10,7 @@ export function authorArticlesHref(username: string): `/articles/${string}` {
 
 export function articleHref(article: ArticleHrefSource): string {
   if (article.status === ArticleStatus.DRAFT) {
-    return `/dashboard/my-articles/${article.slug}`;
+    return `/dashboard/@${article.author.username}/${article.slug}`;
   }
 
   return `/articles/${article.author.username}/${article.slug}`;

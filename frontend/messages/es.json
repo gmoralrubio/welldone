@@ -315,7 +315,6 @@
   },
   "Dashboard": {
     "nav": {
-      "articles": "Mis artículos",
       "favorites": "Favoritos",
       "highlights": "Destacados",
       "notifications": "Notificaciones",
