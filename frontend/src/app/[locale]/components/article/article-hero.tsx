@@ -41,7 +41,7 @@ export function ArticleHero({ article, isFavorite = false }: ArticleHeroProps) {
           </span>
         </div>
       </div>
-      <Card className="mt-4 grid gap-10 bg-white p-6 shadow-xs shadow-accent-dark/30 md:p-10 lg:grid-cols-12 hover:shadow-md">
+      <Card className="mt-4 grid gap-10 bg-white p-6 shadow-xs shadow-accent-dark/30 md:p-10 lg:grid-cols-12 hover:shadow-md group">
         <div className="flex flex-col justify-between gap-8 lg:col-span-7">
           <div className="flex flex-col gap-2">
             <div className="flex flex-wrap items-center gap-2 text-xs text-muted mb-2">
@@ -67,7 +67,7 @@ export function ArticleHero({ article, isFavorite = false }: ArticleHeroProps) {
               href={href}
               className="text-foreground no-underline"
             >
-              <h1 className="font-serif text-4xl text-balance md:text-5xl ">
+              <h1 className="font-serif text-4xl text-balance md:text-5xl group-hover:text-accent-foreground">
                 {article.title}
               </h1>
             </Link>

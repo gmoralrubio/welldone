@@ -35,7 +35,7 @@ export function ArticleCard({
   const t = useTranslations('ArticleCard');
 
   return (
-    <Card className="flex flex-col gap-4 bg-white p-6 shadow-xs shadow-accent-dark/30 hover:shadow-md sm:flex-row sm:items-stretch">
+    <Card className="flex flex-col gap-4 bg-white p-6 shadow-xs shadow-accent-dark/30 hover:shadow-md sm:flex-row sm:items-stretch group">
       <div className="flex min-w-0 flex-1 flex-col justify-between gap-4">
         <div className="flex flex-col gap-1">
           <div className="flex flex-wrap items-center gap-2 text-xs text-muted">
@@ -60,7 +60,7 @@ export function ArticleCard({
             href={articleLink}
             className="text-foreground no-underline"
           >
-            <h2 className="font-serif text-2xl font-medium text-balance">
+            <h2 className="font-serif text-2xl font-medium text-balance group-hover:text-accent-foreground">
               {article.title}
             </h2>
           </Link>
