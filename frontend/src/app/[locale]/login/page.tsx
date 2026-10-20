@@ -7,6 +7,7 @@ import { Input, Label, TextField } from '@heroui/react';
 import { loginUser } from './actions';
 import { Link, useRouter } from '@/i18n/navigation';
 import LocaleSwitcher from '@/app/[locale]/components/shared/locale-switcher';
+import { SiteFooter } from '@/app/[locale]/components/shared/site-footer';
 import { useTranslations } from 'next-intl';
 
 type LoginFieldKey = keyof LoginFormData;
@@ -70,7 +71,8 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col bg-[#faf9f6] text-[#1a1c1a] antialiased">
+    <div className="flex min-h-screen flex-col">
+    <main className="flex flex-1 flex-col bg-[#faf9f6] text-[#1a1c1a] antialiased">
       <header className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <div className="text-xl font-semibold tracking-tight text-black">
           {t('brand')}
@@ -229,31 +231,8 @@ export default function LoginPage() {
         </div>
       </section>
 
-      <footer className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-4 px-4 pb-8 pt-2 text-center sm:flex-row sm:px-6 sm:text-left lg:px-8">
-        <div className="flex flex-wrap items-center justify-center gap-3 text-[11px] font-bold tracking-[0.06em] text-[#76777d] sm:justify-start">
-          <span>{t('footerCopyright')}</span>
-          <span className="text-[#c6c6cd]">•</span>
-          <span>{t('footerRights')}</span>
-          <span className="text-[#c6c6cd]">•</span>
-          <span>{t('footerIssn')}</span>
-        </div>
-        <div className="flex flex-wrap items-center justify-center gap-4 text-[11px] font-bold tracking-[0.06em] text-[#76777d]">
-          <span>{t('footerProject')}</span>
-          <a
-            href="#"
-            className="transition-colors hover:text-[#000000]"
-          >
-            {t('footerTerms')}
-          </a>
-
-          <a
-            href="#"
-            className="transition-colors hover:text-[#000000]"
-          >
-            {t('footerPrivacy')}
-          </a>
-        </div>
-      </footer>
     </main>
+    <SiteFooter />
+    </div>
   );
 }

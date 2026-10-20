@@ -29,7 +29,7 @@
     "cancelButton": "Cancel"
   },
   "SiteFooter": {
-    "tagline": "An independent editorial sanctuary for essays on digital culture, contemporary philosophy, and critical thinking.",
+    "tagline": "A place to read, write, and deepen your understanding about tech and coding.",
     "publication": "Publication",
     "platform": "Platform",
     "language": "Language:",
@@ -46,6 +46,7 @@
     "order": "Sort",
     "frequentSearches": "Popular searches",
     "categories": "Categories",
+    "clearFilter": "Clear filter",
     "membershipBadge": "WellDone membership",
     "membershipTitle": "Write without friction, publish with impact",
     "membershipBody": "Become a member to publish rich articles with our WYSIWYG editor, manage drafts, and build community.",
@@ -84,7 +85,6 @@
     "saveError": "The article could not be saved.",
     "removeAria": "Remove from favorites",
     "removeError": "The article could not be removed from favorites.",
-    "shareAria": "Share",
     "edit": "Edit article",
     "delete": "Delete article",
     "deleteModalTitle": "Delete article?",

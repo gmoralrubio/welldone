@@ -2,11 +2,11 @@
 
 import { authorArticlesHref, readingMinutes } from '@/lib/article/article-presenters';
 import { ArticleDto } from '@/lib/article/articles.types';
-import { Button, Card } from '@heroui/react';
-import { ArrowUpFromSquare, Clock, Comment } from '@gravity-ui/icons';
+import { Card } from '@heroui/react';
+import { Clock } from '@gravity-ui/icons';
 import Image from 'next/image';
 import { ArticleCategory } from '@/app/[locale]/components/article/article-category';
-import { FavoriteButton } from '@/app/[locale]/components/article/favorite-button';
+import { ArticleCardPublishedActions } from '@/app/[locale]/components/article/article-card-published-actions';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { useRelativeTime } from '@/app/[locale]/hooks/useRelativeTime';
@@ -41,7 +41,7 @@ export function ArticleHero({ article, isFavorite = false }: ArticleHeroProps) {
           </span>
         </div>
       </div>
-      <Card className="mt-4 grid gap-10 bg-white p-6 shadow-xs shadow-accent-dark/30 md:p-10 lg:grid-cols-12 hover:shadow-md">
+      <Card className="mt-4 grid gap-10 bg-white p-6 shadow-xs shadow-accent-dark/30 md:p-10 lg:grid-cols-12 hover:shadow-md group">
         <div className="flex flex-col justify-between gap-8 lg:col-span-7">
           <div className="flex flex-col gap-2">
             <div className="flex flex-wrap items-center gap-2 text-xs text-muted mb-2">
@@ -67,7 +67,7 @@ export function ArticleHero({ article, isFavorite = false }: ArticleHeroProps) {
               href={href}
               className="text-foreground no-underline"
             >
-              <h1 className="font-serif text-4xl text-balance md:text-5xl ">
+              <h1 className="font-serif text-4xl text-balance md:text-5xl group-hover:text-accent-foreground">
                 {article.title}
               </h1>
             </Link>
@@ -97,34 +97,12 @@ export function ArticleHero({ article, isFavorite = false }: ArticleHeroProps) {
                 </Link>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <FavoriteButton
-                authorUsername={article.author.username}
-                slug={article.slug}
-                saved={isFavorite}
-              />
-              <Button
-                isIconOnly
-                variant="ghost"
-                size="sm"
-                aria-label="Compartir"
-              >
-                <ArrowUpFromSquare
-                  width={14}
-                  height={14}
-                />
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                aria-label="Comentarios"
-              >
-                <Comment
-                  width={14}
-                  height={14}
-                />
-              </Button>
-            </div>
+            <ArticleCardPublishedActions
+              commentCount={article.commentCount}
+              authorUsername={article.author.username}
+              slug={article.slug}
+              isFavorite={isFavorite}
+            />
           </div>
         </div>
         <div className="relative min-h-64 overflow-hidden rounded bg-surface-secondary lg:col-span-5 lg:min-h-96">

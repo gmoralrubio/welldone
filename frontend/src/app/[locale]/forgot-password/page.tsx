@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight, At } from '@gravity-ui/icons';
 import { Input, Label, TextField } from '@heroui/react';
 import { Link } from '@/i18n/navigation';
 import LocaleSwitcher from '@/app/[locale]/components/shared/locale-switcher';
+import { SiteFooter } from '@/app/[locale]/components/shared/site-footer';
 import { useLocale, useTranslations } from 'next-intl';
 
 import { forgotPasswordSchema } from './schema';
@@ -56,7 +57,8 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col bg-[#faf9f6] text-[#1a1c1a] antialiased">
+    <div className="flex min-h-screen flex-col">
+    <main className="flex flex-1 flex-col bg-[#faf9f6] text-[#1a1c1a] antialiased">
       <header className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <div className="text-xl font-semibold tracking-tight text-black">
           {t('brand')}
@@ -178,5 +180,7 @@ export default function ForgotPasswordPage() {
         </div>
       </section>
     </main>
+    <SiteFooter />
+    </div>
   );
 }

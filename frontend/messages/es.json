@@ -29,7 +29,7 @@
     "cancelButton": "Cancelar"
   },
   "SiteFooter": {
-    "tagline": "Santuario editorial independiente para ensayos de cultura digital, filosofía contemporánea y pensamiento crítico.",
+    "tagline": "Un lugar para leer, escribir y profundizar tu comprensión sobre tecnología y programación.",
     "publication": "Publicación",
     "platform": "Plataforma",
     "language": "Idioma:",
@@ -46,6 +46,7 @@
     "order": "Orden",
     "frequentSearches": "Búsquedas frecuentes",
     "categories": "Categorías",
+    "clearFilter": "Limpiar filtro",
     "membershipBadge": "Membresía WellDone",
     "membershipTitle": "Escribe sin fricción, publica con impacto",
     "membershipBody": "Conviértete en miembro para publicar artículos enriquecidos con nuestro editor WYSIWYG, gestionar borradores y crear comunidad.",
@@ -84,7 +85,6 @@
     "saveError": "No se pudo guardar el artículo.",
     "removeAria": "Quitar de favoritos",
     "removeError": "No se pudo quitar el artículo de favoritos.",
-    "shareAria": "Compartir",
     "edit": "Editar artículo",
     "delete": "Borrar artículo",
     "deleteModalTitle": "¿Eliminar artículo?",
