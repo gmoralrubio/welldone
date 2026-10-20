@@ -18,8 +18,6 @@ type SiteSidebarProps = {
   listPath?: ArticleListPathname;
 };
 
-const frequentSearches = ['TypeScript', 'Clean Code', 'Arquitectura', 'DevOps'];
-
 export function SiteSidebar({
   search,
   order,
@@ -30,6 +28,13 @@ export function SiteSidebar({
   const t = useTranslations('SiteSidebar');
   const tCategories = useTranslations('Categories');
   const articlesAction = getPathname({ locale, href: listPath });
+
+  function clearCategoryFilter() {
+    const url = new URL(window.location.href);
+    url.searchParams.delete('category');
+    url.searchParams.delete('page');
+    window.location.assign(url.toString());
+  }
 
   return (
     <aside className="flex flex-col gap-6">
@@ -70,40 +75,24 @@ export function SiteSidebar({
             />
           ) : null}
         </form>
-        <div className="mb-4">
+        <div>
           <p className="text-xs font-bold text-muted uppercase mb-2">{t('order')}</p>
           <SelectOrder listPath={listPath} />
-        </div>
-        <div>
-          <p className="text-xs font-bold text-muted uppercase mb-2">
-            {t('frequentSearches')}
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {frequentSearches.map((term) => (
-              <Link
-                key={term}
-                href={{
-                  pathname: listPath,
-                  query: {
-                    search: term,
-                    ...(category ? { category } : {}),
-                    ...(order === 'asc' ? { order } : {}),
-                  },
-                }}
-                className="rounded-full bg-field px-2.5 py-1 text-xs font-medium tracking-[0.24px] text-[#45464d] no-underline"
-              >
-                {term}
-              </Link>
-            ))}
-          </div>
         </div>
       </Surface>
 
       <Surface className="bg-surface-tertiary p-6 shadow-accent-dark rounded-3xl">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xs font-bold text-muted uppercase mb-4">
-            {t('categories')}
-          </h2>
+        <div className="mb-4 flex items-center justify-between gap-3">
+          <h2 className="text-xs font-bold text-muted uppercase">{t('categories')}</h2>
+          {category ? (
+            <button
+              type="button"
+              onClick={clearCategoryFilter}
+              className="text-xs font-semibold text-muted underline-offset-2 hover:underline"
+            >
+              {t('clearFilter')}
+            </button>
+          ) : null}
         </div>
         <div className="flex flex-wrap gap-2">
           {CATEGORY_SLUGS.map((slug) => (
