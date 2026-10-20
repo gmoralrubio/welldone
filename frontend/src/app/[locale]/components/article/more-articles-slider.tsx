@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
+import { ArticleCategory } from '@/app/[locale]/components/article/article-category';
 
 type MoreArticlesSliderProps = {
   articles: ArticleDto[];
@@ -54,7 +55,7 @@ export function MoreArticlesSlider({ articles }: MoreArticlesSliderProps) {
       >
         {articles.map((article) => {
           const category = article.categories[0]?.name;
-
+          const categorySlug = article.categories[0]?.slug;
           return (
             <SwiperSlide
               key={article.id}
@@ -62,15 +63,11 @@ export function MoreArticlesSlider({ articles }: MoreArticlesSliderProps) {
             >
               <Card className="group flex h-full w-full flex-col justify-between p-6 transition-shadow hover:shadow-md">
                 <div>
-                  {category ? (
-                    <span className="text-xs font-medium uppercase text-accent">
-                      {category}
-                    </span>
-                  ) : null}
+                  {category ? <ArticleCategory categorySlug={categorySlug} /> : null}
                   <h5 className="mt-2 text-balance font-serif text-xl font-semibold leading-tight">
                     <Link
                       href={articleHref(article)}
-                      className="text-foreground no-underline transition-colors group-hover:text-accent"
+                      className="text-foreground no-underline transition-colors group-hover:text-accent-foreground"
                     >
                       {article.title}
                     </Link>
