@@ -6,6 +6,7 @@ export interface UpdateUserData {
   surname?: string;
   username?: string;
   email?: string;
+  bio?: string | null;
 }
 
 export interface UserRepository {

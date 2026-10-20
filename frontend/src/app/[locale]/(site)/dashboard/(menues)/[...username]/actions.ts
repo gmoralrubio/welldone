@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 import type { AccountFormData } from './schema';
 
-export async function updateAccount(data: AccountFormData) {
+export async function updateAccount(data: Partial<AccountFormData>) {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
 

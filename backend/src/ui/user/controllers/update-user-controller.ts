@@ -21,7 +21,7 @@ export const updateUserController = async (
       throw new ValidationError("Invalid request body");
     }
 
-    const allowedFields = ["name", "surname", "username", "email"];
+    const allowedFields = ["name", "surname", "username", "email", "bio"];
 
     const receivedFields = Object.keys(req.body);
 
@@ -42,6 +42,7 @@ export const updateUserController = async (
       ...(req.body.surname !== undefined && { surname: req.body.surname }),
       ...(req.body.username !== undefined && { username: req.body.username }),
       ...(req.body.email !== undefined && { email: req.body.email }),
+      ...(req.body.bio !== undefined && { bio: req.body.bio }),
     };
 
     const userRepository = new PrismaUserRepository();
@@ -55,6 +56,7 @@ export const updateUserController = async (
       surname: updatedUser.surname,
       username: updatedUser.username,
       email: updatedUser.email,
+      bio: updatedUser.bio,
     });
   } catch (error) {
     next(error);

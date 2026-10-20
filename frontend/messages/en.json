@@ -381,7 +381,12 @@
   "ProfileAbout": {
     "emptyTitle": "Tell the world about yourself",
     "emptyDescription": "Here’s where you can share more about yourself: your history, work experience, accomplishments, interests, dreams, and more.",
-    "getStarted": "Get started"
+    "getStarted": "Get started",
+    "placeholder": "Write something about yourself...",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "saveError": "There was an error saving your bio"
   },
   "ConfirmExitModal": {
     "title": "Are you sure you want to leave?",

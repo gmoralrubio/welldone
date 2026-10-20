@@ -20,6 +20,8 @@ export const accountSchema = z.object({
         error: 'emailInvalid',
       })
     ),
+    
+  bio: z.string().optional().nullable(),
 });
 
 export type AccountFormData = z.infer<typeof accountSchema>;

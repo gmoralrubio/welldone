@@ -13,6 +13,7 @@ type PrismaUser = {
   username: string;
   name: string;
   surname: string;
+  bio?: string | null;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -73,7 +74,7 @@ export class PrismaUserRepository implements UserRepository {
     });
 
     // Devuelves un nuevo Usuario
-    // con los valores que pusiste a la tabla de prisma
+    // con los valores de la tabla de prisma
     return this.restore(user);
   }
 
@@ -99,6 +100,7 @@ export class PrismaUserRepository implements UserRepository {
       username: prismaUser.username,
       name: prismaUser.name,
       surname: prismaUser.surname,
+      bio: prismaUser.bio,
       createdAt: prismaUser.createdAt,
       updatedAt: prismaUser.updatedAt,
     });
