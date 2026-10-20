@@ -2,11 +2,11 @@
 
 import { authorArticlesHref, readingMinutes } from '@/lib/article/article-presenters';
 import { ArticleDto } from '@/lib/article/articles.types';
-import { Button, Card } from '@heroui/react';
-import { ArrowUpFromSquare, Clock, Comment } from '@gravity-ui/icons';
+import { Card } from '@heroui/react';
+import { Clock } from '@gravity-ui/icons';
 import Image from 'next/image';
 import { ArticleCategory } from '@/app/[locale]/components/article/article-category';
-import { FavoriteButton } from '@/app/[locale]/components/article/favorite-button';
+import { ArticleCardPublishedActions } from '@/app/[locale]/components/article/article-card-published-actions';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { useRelativeTime } from '@/app/[locale]/hooks/useRelativeTime';
@@ -97,34 +97,12 @@ export function ArticleHero({ article, isFavorite = false }: ArticleHeroProps) {
                 </Link>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <FavoriteButton
-                authorUsername={article.author.username}
-                slug={article.slug}
-                saved={isFavorite}
-              />
-              <Button
-                isIconOnly
-                variant="ghost"
-                size="sm"
-                aria-label="Compartir"
-              >
-                <ArrowUpFromSquare
-                  width={14}
-                  height={14}
-                />
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                aria-label="Comentarios"
-              >
-                <Comment
-                  width={14}
-                  height={14}
-                />
-              </Button>
-            </div>
+            <ArticleCardPublishedActions
+              commentCount={article.commentCount}
+              authorUsername={article.author.username}
+              slug={article.slug}
+              isFavorite={isFavorite}
+            />
           </div>
         </div>
         <div className="relative min-h-64 overflow-hidden rounded bg-surface-secondary lg:col-span-5 lg:min-h-96">

@@ -1,8 +1,7 @@
 'use client';
 
 import { FavoriteButton } from '@/app/[locale]/components/article/favorite-button';
-import { ArrowUpFromSquare, Comment } from '@gravity-ui/icons';
-import { Button } from '@heroui/react';
+import { Comment } from '@gravity-ui/icons';
 import { useTranslations } from 'next-intl';
 
 type ArticleCardPublishedActionsProps = {
@@ -22,33 +21,22 @@ export function ArticleCardPublishedActions({
 
   return (
     <div className="flex items-center">
-      <Button
-        variant="ghost"
-        size="sm"
+      <span
         aria-label={t('commentsAria', { count: commentCount })}
+        className="inline-flex items-center gap-1 px-2 text-xs "
       >
         <Comment
           width={14}
           height={14}
+          aria-hidden
         />
-        <span className="text-xs">{commentCount}</span>
-      </Button>
+        <span aria-hidden>{commentCount}</span>
+      </span>
       <FavoriteButton
         authorUsername={authorUsername}
         slug={slug}
         saved={isFavorite}
       />
-      <Button
-        isIconOnly
-        variant="ghost"
-        size="sm"
-        aria-label={t('shareAria')}
-      >
-        <ArrowUpFromSquare
-          width={14}
-          height={14}
-        />
-      </Button>
     </div>
   );
 }
