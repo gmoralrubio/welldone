@@ -5,19 +5,18 @@ import { useTranslations } from 'next-intl';
 
 export function SidebarMenu({ username }: { username: string }) {
   const pathname = usePathname();
-  const t = useTranslations('Dashboard');
+  const t = useTranslations('UserNavigation');
 
   const menuItems = [
-    { href: '/articles', label: t('nav.home') },
+    { href: '/articles', label: t('home') },
     {
       href: `/dashboard/@${username}`,
-      label: t('nav.profile'),
+      label: t('profile'),
       matchPrefix: '/dashboard/@',
     },
-    { href: '/dashboard/my-articles', label: t('nav.articles') },
-    { href: '/dashboard/favorites', label: t('nav.favorites') },
-    { href: '/dashboard/notifications', label: t('nav.notifications') },
-    { href: '/dashboard/settings', label: t('nav.settings') },
+    { href: '/dashboard/favorites', label: t('favorites') },
+    { href: '/dashboard/notifications', label: t('notifications') },
+    { href: '/dashboard/settings', label: t('settings') },
   ];
 
   return (
