@@ -43,7 +43,7 @@ export async function ArticleListing({
 
   return (
     <div className="flex min-h-full flex-1 flex-col font-sans text-foreground">
-      <div className="mx-auto flex w-full max-w-[1088px] flex-1 flex-col px-8">
+      <div className="mx-auto flex w-full max-w-272 flex-1 flex-col px-8">
         {heading}
         {featured ? (
           <ArticleHero

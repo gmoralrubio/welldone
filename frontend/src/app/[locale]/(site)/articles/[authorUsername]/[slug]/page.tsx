@@ -7,13 +7,7 @@ import {
 } from '@/app/[locale]/(site)/articles/actions';
 import { authorArticlesHref, formatDate } from '@/lib/article/article-presenters';
 import { Button, Card, CardContent, Chip } from '@heroui/react';
-import {
-  Check,
-  ThumbsUp,
-  Comment,
-  ArrowUpFromSquare,
-  PersonPlus,
-} from '@gravity-ui/icons';
+import { Check, Comment, PersonPlus } from '@gravity-ui/icons';
 import { Metadata } from 'next';
 import Image from 'next/image';
 import { cookies } from 'next/headers';
@@ -141,24 +135,17 @@ export default async function ArticleDetailPage({
               </div>
             </div>
           </div>
-          <div className="flex divide-x-2 divide-soft-foreground">
-            <div className="flex gap-1 items-center px-3">
-              <ThumbsUp />
-              <span className="text-sm">1.4k</span>
-            </div>
-            <div className="flex gap-1 items-center px-3">
+          <div className="flex">
+            <div className="flex gap-1 items-center px-1">
               <Comment />
               <span className="text-sm">{article.commentCount}</span>
             </div>
-            <div className="flex gap-1 items-center px-3">
+            <div className="flex gap-1 items-center px-1">
               <FavoriteButton
                 authorUsername={article.author.username}
                 slug={article.slug}
                 saved={favoriteIds.includes(article.id)}
               />
-            </div>
-            <div className="flex gap-1 items-center px-3">
-              <ArrowUpFromSquare />
             </div>
           </div>
         </Card>
@@ -196,7 +183,6 @@ export default async function ArticleDetailPage({
       <article className="flex flex-col gap-4 text-xl leading-relaxed font-serif ">
         {parseContent(article.content)}
       </article>
-
 
       {/* Otros artículos del autor */}
       <Card

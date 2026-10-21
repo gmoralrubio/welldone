@@ -124,7 +124,7 @@ export default async function PrivateProfile({
               search=""
               order={order}
               category=""
-              pathname="/dashboard/account"
+              pathname={`/dashboard/@${currentUser.username}`}
               status={currentStatus === 'DRAFT' ? 'DRAFT' : 'PUBLISHED'}
             />
           </div>
