@@ -76,7 +76,7 @@ export default async function PrivateProfile({
             href={`/dashboard/@${currentUser.username}`}
             className={currentStatus === 'PUBLISHED' ? activeTabClass : inactiveTabClass}
           >
-            {t('tabs.home')}
+            {t('tabs.published')}
           </Link>
 
           <Link
@@ -130,7 +130,7 @@ export default async function PrivateProfile({
           </div>
         )}
       </div>
-      <aside className="flex w-full flex-col gap-6 pt-4 lg:w-48 lg:shrink-0 lg:border-l lg:border-separator lg:pl-10">
+      <aside className="flex w-full flex-col gap-6 pt-4 lg:w-40 lg:shrink-0 lg:border-l lg:border-separator lg:pl-10">
         <UserAvatar
           name={currentUser.name}
           surname={currentUser.surname}

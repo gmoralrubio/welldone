@@ -110,7 +110,7 @@ export default async function PublicProfile({
             href={`/dashboard/@${targetUser.username}`}
             className={currentStatus === 'PUBLISHED' ? activeTabClass : inactiveTabClass}
           >
-            {t('tabs.home')}
+            {t('tabs.published')}
           </Link>
 
           <Link
