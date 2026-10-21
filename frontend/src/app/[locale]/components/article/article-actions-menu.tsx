@@ -14,13 +14,13 @@ const DotsIcon = () => (
 );
 
 interface Props {
-  articleId: string | number;
+  authorUsername: string;
   slug: string;
   editLabel: string;
   deleteLabel: string;
 }
 
-export function ArticleActionsMenu({ articleId, slug, editLabel, deleteLabel }: Props) {
+export function ArticleActionsMenu({ authorUsername, slug, editLabel, deleteLabel }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -61,7 +61,7 @@ export function ArticleActionsMenu({ articleId, slug, editLabel, deleteLabel }: 
 
     startTransition(async () => {
       try {
-        const result = await deleteArticleAction(articleId);
+        const result = await deleteArticleAction(authorUsername, slug);
 
         if (result.status === 204) {
           dialogRef.current?.close();
@@ -123,7 +123,7 @@ export function ArticleActionsMenu({ articleId, slug, editLabel, deleteLabel }: 
 
       <dialog
         ref={dialogRef}
-        aria-labelledby={`delete-dialog-title-${articleId}`}
+        aria-labelledby={`delete-dialog-title-${slug}`}
         onCancel={(event) => {
           if (isPending) event.preventDefault();
         }}
@@ -131,7 +131,7 @@ export function ArticleActionsMenu({ articleId, slug, editLabel, deleteLabel }: 
         className="m-auto w-[calc(100%-2rem)] max-w-md rounded-xl bg-white p-6 shadow-xl backdrop:bg-black/50 backdrop:backdrop-blur-sm z-50 fixed inset-0"
       >
         <h3
-          id={`delete-dialog-title-${articleId}`}
+          id={`delete-dialog-title-${slug}`}
           className="font-serif text-2xl font-semibold text-black"
         >
           {t('deleteModalTitle') || '¿Eliminar artículo?'}

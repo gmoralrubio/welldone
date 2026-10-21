@@ -42,7 +42,12 @@ export default async function EditArticlePage({
         </header>
 
         <ArticleForm
-          action={updateArticleAction.bind(null, safeLocale, String(article.id))}
+          action={updateArticleAction.bind(
+            null,
+            safeLocale,
+            article.author.username,
+            article.slug
+          )}
           initialData={article}
         />
       </main>

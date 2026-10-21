@@ -102,7 +102,7 @@ export function ArticleCard({
 
             {showActions && (
               <ArticleActionsMenu
-                articleId={article.id}
+                authorUsername={article.author.username}
                 slug={article.slug}
                 editLabel={t('edit')}
                 deleteLabel={t('delete')}

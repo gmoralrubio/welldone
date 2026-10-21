@@ -21,8 +21,16 @@ articlesRouter.get('/me', authenticationMiddleware, findMyArticlesController);
 articlesRouter.get('/me/favorites', authenticationMiddleware, findFavoritesController);
 articlesRouter.get('/me/:slug', authenticationMiddleware, findMyArticleController);
 
-articlesRouter.patch('/:id', authenticationMiddleware, updateArticleController);
-articlesRouter.delete('/:id', authenticationMiddleware, deleteArticleController);
+articlesRouter.patch(
+  '/:authorUsername/:slug',
+  authenticationMiddleware,
+  updateArticleController
+);
+articlesRouter.delete(
+  '/:authorUsername/:slug',
+  authenticationMiddleware,
+  deleteArticleController
+);
 
 articlesRouter.get('/:authorUsername/:slug', articleDetailController);
 articlesRouter.get('/:authorUsername/:slug/comments', articleCommentsController);
