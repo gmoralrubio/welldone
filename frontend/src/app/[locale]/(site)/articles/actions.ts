@@ -427,22 +427,6 @@ export async function getMyArticleBySlug(slug: string): Promise<ArticleDto | nul
   return data.article;
 }
 
-export async function getArticleById(id: string): Promise<ArticleDto> {
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get('accessToken')?.value;
-
-  const response = await fetch(`${process.env.API_URL}/api/articles/${id}`, {
-    headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},
-    cache: 'no-store',
-  });
-
-  if (!response.ok) throw new Error('No se pudo cargar el artículo para editar');
-
-  const data = await response.json();
-
-  return data.article || data;
-}
-
 export async function updateArticleAction(
   locale: string,
   articleId: string,
