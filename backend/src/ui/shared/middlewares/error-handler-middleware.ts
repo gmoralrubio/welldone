@@ -49,7 +49,7 @@ export const errorHandlerMiddleware = (
     });
     if (error instanceof Error) {
       return res.status(500).json({
-        error: error.message,
+        error: "Internal server error.",
       });
     }
     return res.status(500).json({

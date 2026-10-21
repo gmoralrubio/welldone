@@ -1,6 +1,6 @@
 import PrivateProfile from '@/app/[locale]/components/dashboard/private-profile';
-import PublicProfile from '@/app/[locale]/components/dashboard/public-profile';
 import { getProfileData } from './profile-utils';
+import { notFound } from 'next/navigation';
 
 interface ProfilePageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -9,11 +9,11 @@ interface ProfilePageProps {
 
 export default async function ProfilePublishedPage({ params, searchParams }: ProfilePageProps) {
   const { username } = await params;
-  const { currentUser, targetUsername, isOwnProfile } = await getProfileData(username);
+  const { currentUser, isOwnProfile } = await getProfileData(username);
 
-  if (isOwnProfile && currentUser) {
-    return <PrivateProfile currentUser={currentUser} searchParams={searchParams} currentTab="PUBLISHED" />;
+  if (!isOwnProfile || !currentUser) {
+    notFound();
   }
 
-  return <PublicProfile targetUsername={targetUsername} searchParams={searchParams} currentTab="PUBLISHED" />;
+  return <PrivateProfile currentUser={currentUser} searchParams={searchParams} currentTab="PUBLISHED" />;
 }

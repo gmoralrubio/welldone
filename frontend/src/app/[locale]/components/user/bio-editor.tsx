@@ -104,7 +104,7 @@ export function BioEditor({ initialBio }: BioEditorProps) {
   if (bio) {
     return (
       <div className="group relative rounded-lg p-6 bg-surface-secondary border border-transparent hover:border-separator transition-all w-full">
-        <div className="prose prose-sm sm:prose-base dark:prose-invert max-w-none font-serif text-muted leading-relaxed">
+        <div className="prose prose-sm sm:prose-base dark:prose-invert max-w-none break-words font-serif text-muted leading-relaxed">
           {bio}
         </div>
         <Button
