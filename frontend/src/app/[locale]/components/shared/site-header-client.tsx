@@ -17,12 +17,7 @@ type SiteHeaderClientProps = {
   } | null;
 };
 
-
-export function SiteHeaderClient({
-  search,
-  order,
-  user
-}: SiteHeaderClientProps) {
+export function SiteHeaderClient({ search, order, user }: SiteHeaderClientProps) {
   const locale = useLocale();
 
   const t = useTranslations('SiteHeader');
@@ -31,7 +26,7 @@ export function SiteHeaderClient({
   const pathname = usePathname();
   const router = useRouter();
   const articlesAction = getPathname({ locale, href: '/articles' });
-  
+
   const isEditorMode = pathname.includes('/create') || pathname.includes('/edit');
 
   const cancelDialogRef = useRef<HTMLDialogElement>(null);
@@ -39,7 +34,6 @@ export function SiteHeaderClient({
   const handleConfirmExit = () => {
     cancelDialogRef.current?.close();
     router.push(`/dashboard/@${user?.username}`);
-
   };
 
   return (
@@ -51,10 +45,11 @@ export function SiteHeaderClient({
               href="/articles"
               className="flex items-center gap-2 text-foreground no-underline"
             >
-              <span className="grid size-8 place-items-center leading-0 rounded-md bg-accent-dark font-serif text-lg text-accent-dark-foreground pt-1">
+              <span className="grid size-8 place-items-center rounded-md bg-accent-dark pt-1 font-serif text-lg leading-0 text-accent-dark-foreground">
                 W
               </span>
-              <span className="font-serif text-2xl font-semibold pt-1">WellDone</span>
+
+              <span className="pt-1 font-serif text-2xl font-semibold">WellDone</span>
             </Link>
 
             {!isEditorMode && (
@@ -70,12 +65,14 @@ export function SiteHeaderClient({
                 >
                   <SearchField.Group className="h-7 rounded bg-field">
                     <SearchField.SearchIcon />
+
                     <SearchField.Input
                       placeholder={t('searchPlaceholder')}
                       className="text-xs"
                     />
                   </SearchField.Group>
                 </SearchField>
+
                 {order === 'asc' ? (
                   <input
                     type="hidden"
@@ -86,7 +83,7 @@ export function SiteHeaderClient({
               </form>
             )}
           </div>
-          
+
           <div className="flex items-center gap-4">
             {!isEditorMode && (
               <div>
@@ -107,13 +104,13 @@ export function SiteHeaderClient({
                 <Button
                   type="submit"
                   form="article-editor-form"
-                  className="bg-[#0f9d58] text-white font-medium rounded-sm"
+                  className="rounded-sm bg-[#0f9d58] font-medium text-white"
                 >
                   {t('saveButton')}
                 </Button>
               </div>
             ) : (
-              <UserActions user={user}/>
+              <UserActions user={user} />
             )}
           </div>
         </div>
@@ -125,13 +122,10 @@ export function SiteHeaderClient({
           className="m-auto w-full max-w-md rounded-2xl border border-border bg-background p-0 shadow-lg backdrop:bg-black/50 backdrop:backdrop-blur-sm open:animate-in open:fade-in open:zoom-in-95"
         >
           <div className="flex flex-col gap-3 p-6">
-            <h2 className="text-xl font-bold text-foreground">
-              {tModal('title')}
-            </h2>
-            <p className="text-sm text-foreground/80 mb-4">
-              {tModal('description')}
-            </p>
-            
+            <h2 className="text-xl font-bold text-foreground">{tModal('title')}</h2>
+
+            <p className="mb-4 text-sm text-foreground/80">{tModal('description')}</p>
+
             <div className="flex flex-row justify-end gap-3">
               <button
                 type="button"
@@ -140,6 +134,7 @@ export function SiteHeaderClient({
               >
                 {tModal('cancel')}
               </button>
+
               <button
                 type="button"
                 onClick={handleConfirmExit}
