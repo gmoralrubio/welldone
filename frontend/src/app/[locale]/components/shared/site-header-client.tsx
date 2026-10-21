@@ -13,6 +13,7 @@ type SiteHeaderClientProps = {
   order: ArticleOrder;
   user: {
     name: string;
+    surname: string;
     username: string;
   } | null;
 };

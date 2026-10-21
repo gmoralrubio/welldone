@@ -9,6 +9,7 @@ type SiteHeaderProps = {
 
 type HeaderUser = {
   name: string;
+  surname: string;
   username: string;
 };
 
@@ -32,6 +33,7 @@ export async function SiteHeader({ search, order }: SiteHeaderProps) {
 
         user = {
           name: data.name,
+          surname: data.surname,
           username: data.username,
         };
       }

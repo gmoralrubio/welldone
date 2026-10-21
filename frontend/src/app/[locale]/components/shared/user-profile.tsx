@@ -1,17 +1,19 @@
 'use client';
 
-import { Avatar, Dropdown } from '@heroui/react';
+import { Dropdown } from '@heroui/react';
 import { ChevronDown } from '@gravity-ui/icons';
 import { Link } from '@/i18n/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import { logout } from '@/app/[locale]/logout/logout-action';
+import { UserAvatar } from '@/app/[locale]/components/user/user-avatar';
 
 type UserProfileProps = {
   name: string;
+  surname: string;
   username: string;
 };
 
-const UserProfile = ({ name, username }: UserProfileProps) => {
+const UserProfile = ({ name, surname, username }: UserProfileProps) => {
   const locale = useLocale();
   const t = useTranslations('SiteHeader');
 
@@ -21,17 +23,18 @@ const UserProfile = ({ name, username }: UserProfileProps) => {
         className="flex items-center gap-1.5 rounded-full bg-black/5 py-1 pl-1 pr-4 transition-colors hover:bg-black/10"
         aria-label={t('accountAria')}
       >
-        <Avatar
+        <UserAvatar
+          name={name}
+          surname={surname}
+          username={username}
           size="sm"
           className="size-8 shrink-0"
-        >
-          <Avatar.Fallback className="bg-accent-soft text-xs text-accent-soft-foreground">
-            {name.charAt(0).toUpperCase()}
-          </Avatar.Fallback>
-        </Avatar>
+        />
+
         <span className="hidden max-w-40 truncate px-1 text-xs font-bold text-foreground sm:inline">
           @{username}
         </span>
+
         <ChevronDown
           width={8}
           height={8}
