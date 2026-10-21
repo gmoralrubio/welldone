@@ -1,7 +1,7 @@
 'use client';
 
 import { submitFavoriteAction } from '@/app/[locale]/(site)/articles/actions';
-import { Bookmark, BookmarkFill } from '@gravity-ui/icons';
+import { ThumbsUp, ThumbsUpFill } from '@gravity-ui/icons';
 import { Button } from '@heroui/react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useActionState, useOptimistic } from 'react';
@@ -38,13 +38,13 @@ export function FavoriteButton({
   }
 
   const icon = optimisticSaved ? (
-    <BookmarkFill
+    <ThumbsUpFill
       width={14}
       height={14}
       className="text-success"
     />
   ) : (
-    <Bookmark
+    <ThumbsUp
       width={14}
       height={14}
     />

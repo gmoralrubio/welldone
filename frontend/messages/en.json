@@ -166,7 +166,7 @@
     "commentsNext": "Next"
   },
   "AuthorArticlesPage": {
-    "heading": "Articles by {author}",
+    "heading": "Profile of {author}",
     "empty": "This member has not published any articles yet."
   },
   "AuthorNotFound": {
