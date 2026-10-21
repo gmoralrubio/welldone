@@ -9,18 +9,20 @@ export const authenticationMiddleware = (
 ) => {
   const authToken = req.headers.authorization;
 
-  if (!authToken) {
-    throw new UnauthorizedError('Token missing in request');
+  if (!authToken || !authToken.startsWith('Bearer ')) {
+    throw new UnauthorizedError('Token missing or invalid');
   }
 
-  const token = authToken.replace('Bearer ', '');
+  const token = authToken.slice(7);
+
   const securityService = new SecurityServiceImplementation();
   const decodedToken = securityService.verifyJWT(token);
-  req.authorId = decodedToken?.authorId;
 
-  if (decodedToken) {
-    next();
-  } else {
-    throw new UnauthorizedError('Invalid Token');
+  if (!decodedToken) {
+    throw new UnauthorizedError('Invalid or expired token');
   }
+
+  req.authorId = decodedToken.authorId;
+
+  next();
 };
