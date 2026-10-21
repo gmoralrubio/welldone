@@ -18,31 +18,31 @@ export class UpdateArticleUseCase {
   constructor(private readonly articleRepository: ArticleRepository) {}
 
   async execute(
-    articleId: number, 
-    authorId: number, 
+    authorUsername: string,
+    slug: string,
+    authorId: number,
     data: UpdateArticleUseCaseInput
   ): Promise<Article> {
+    const existingArticle = await this.articleRepository.findPublishedArticleByAuthorAndSlug({
+      authorUsername,
+      slug,
+    });
 
-    const existingArticle = await this.articleRepository.findById(articleId);
-    if (!existingArticle) {
-      throw new EntityNotFoundError('Article', articleId.toString());
-    }
-    
-    if (existingArticle.author.id !== authorId) {
-      throw new Error('No tienes permisos para editar este artículo');
+    if (!existingArticle || existingArticle.authorId !== authorId) {
+      throw new EntityNotFoundError('Article', slug);
     }
 
     if (data.title && data.title !== existingArticle.title) {
       const articleWithSameTitle = await this.articleRepository.findByTitleAndAuthor(
-        data.title, 
+        data.title,
         authorId
       );
 
-      if (articleWithSameTitle && articleWithSameTitle.id !== articleId) {
+      if (articleWithSameTitle && articleWithSameTitle.id !== existingArticle.id) {
         throw new ValidationError('TITLE_ALREADY_EXISTS');
       }
     }
 
-    return this.articleRepository.update(articleId, data);
+    return this.articleRepository.update(existingArticle.id, data);
   }
 }

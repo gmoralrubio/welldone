@@ -1,20 +1,19 @@
 import { ArticleRepository } from '@domain/article/repositories/ArticleRepository';
+import { EntityNotFoundError } from '@domain/errors/EntityNotFoundError';
 
 export class DeleteArticleUseCase {
   constructor(private readonly articleRepository: ArticleRepository) {}
 
-  async execute(articleId: number, userId: number): Promise<void> {
+  async execute(authorUsername: string, slug: string, userId: number): Promise<void> {
+    const article = await this.articleRepository.findPublishedArticleByAuthorAndSlug({
+      authorUsername,
+      slug,
+    });
 
-    const article = await this.articleRepository.findById(articleId);
-
-    if (!article) {
-      throw new Error('ARTICLE_NOT_FOUND');
+    if (!article || article.authorId !== userId) {
+      throw new EntityNotFoundError('Article', slug);
     }
 
-    if (article.authorId !== userId) {
-      throw new Error('FORBIDDEN_ACTION');
-    }
-
-    await this.articleRepository.delete(articleId);
+    await this.articleRepository.delete(article.id);
   }
 }
