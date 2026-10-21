@@ -18,11 +18,12 @@ export async function ArticlesAuthorHeading({
     <div className="flex flex-col gap-4 pt-8">
       <ArticleBreadcrumbs
         current={author ? `${author.name} ${author.surname}` : `@${authorUsername}`}
+        asSlug={false}
       />
       <header>
         <h1 className="font-serif text-3xl font-medium">
           {t('heading', { author: ' ' })}
-          <Link 
+          <Link
             href={`/dashboard/@${authorUsername}`}
             className="underline decoration-1 underline-offset-4 hover:text-accent transition-colors"
           >
