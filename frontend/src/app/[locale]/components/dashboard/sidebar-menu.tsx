@@ -3,31 +3,36 @@
 import { Link, usePathname } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
 
-export function SidebarMenu({ username }: { username?: string }) {
+export function SidebarMenu({ username }: { username: string }) {
   const pathname = usePathname();
-  const t = useTranslations('Dashboard'); 
-
+  const t = useTranslations('UserNavigation');
 
   const menuItems = [
-    { href: `/dashboard/@${username}`, label: t('nav.profile'), matchPrefix: `/dashboard/@`},
-    { href: '/dashboard/favorites', label: t('nav.favorites') },
-    { href: '/dashboard/highlights', label: t('nav.highlights') },
-    { href: '/dashboard/notifications', label: t('nav.notifications') },
-    { href: '/dashboard/settings', label: t('nav.settings') },
+
+    { href: '/articles', label: t('home') },
+    {
+      href: `/dashboard/@${username}`,
+      label: t('profile'),
+      matchPrefix: '/dashboard/@',
+    },
+    { href: '/dashboard/favorites', label: t('favorites') },
+    { href: '/dashboard/notifications', label: t('notifications') },
+    { href: '/dashboard/settings', label: t('settings') },
+
   ];
 
   return (
-    <nav className="flex flex-col gap-2">
+    <nav className="flex flex-col gap-0.5">
       {menuItems.map((item) => {
-        const isActive = item.matchPrefix 
-          ? pathname.startsWith(item.matchPrefix) 
-          : pathname.startsWith(item.href);
+        const isActive = item.matchPrefix
+          ? pathname.startsWith(item.matchPrefix)
+          : pathname === item.href;
 
         return (
           <Link
             key={item.href}
             href={item.href}
-            className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+            className={`rounded-md px-3 py-1.5 text-xs font-medium leading-5 transition-colors duration-200 ${
               isActive
                 ? 'bg-surface-secondary text-foreground'
                 : 'text-muted hover:bg-surface-secondary/50 hover:text-foreground'

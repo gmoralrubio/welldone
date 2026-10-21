@@ -10,7 +10,6 @@ const environmentVariablesValidator = z
     NODE_ENV: z.enum(['local', 'staging', 'production', 'test']),
     PORT: z.coerce.number(),
     FRONTEND_URL: z.url(),
-    REDIS_URL: z.url(),
     MAILDEV_HOST: z.string().optional(),
     MAILDEV_PORT: z.string().optional(),
     SMTP_HOST: z.string().min(1).optional(),

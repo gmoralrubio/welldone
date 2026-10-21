@@ -427,25 +427,10 @@ export async function getMyArticleBySlug(slug: string): Promise<ArticleDto | nul
   return data.article;
 }
 
-export async function getArticleById(id: string): Promise<ArticleDto> {
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get('accessToken')?.value;
-
-  const response = await fetch(`${process.env.API_URL}/api/articles/${id}`, {
-    headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},
-    cache: 'no-store',
-  });
-
-  if (!response.ok) throw new Error('No se pudo cargar el artículo para editar');
-
-  const data = await response.json();
-
-  return data.article || data;
-}
-
 export async function updateArticleAction(
   locale: string,
-  articleId: string,
+  authorUsername: string,
+  slug: string,
   formData: FormData
 ) {
   const cookieStore = await cookies();
@@ -465,14 +450,17 @@ export async function updateArticleAction(
     featuredVideoUrl: formData.get('featuredVideoUrl') || null,
   };
 
-  const response = await fetch(`${process.env.API_URL}/api/articles/${articleId}`, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify(payload),
-  });
+  const response = await fetch(
+    `${process.env.API_URL}/api/articles/${encodeURIComponent(authorUsername)}/${encodeURIComponent(slug)}`,
+    {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(payload),
+    }
+  );
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => null);
@@ -494,7 +482,7 @@ export async function updateArticleAction(
   });
 }
 
-export async function deleteArticleAction(articleId: string | number) {
+export async function deleteArticleAction(authorUsername: string, slug: string) {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
 
@@ -503,12 +491,15 @@ export async function deleteArticleAction(articleId: string | number) {
   }
 
   try {
-    const response = await fetch(`${process.env.API_URL}/api/articles/${articleId}`, {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const response = await fetch(
+      `${process.env.API_URL}/api/articles/${encodeURIComponent(authorUsername)}/${encodeURIComponent(slug)}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
 
     if (!response.ok) {
       return { status: response.status, error: 'Error al eliminar el artículo' };

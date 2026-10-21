@@ -5,7 +5,9 @@ import dynamic from 'next/dynamic';
 import { Button } from '@heroui/react';
 import { Pencil, Check, Xmark } from '@gravity-ui/icons';
 import { useTranslations } from 'next-intl';
- import { updateAccount } from '@/app/[locale]/(site)/dashboard/(menues)/[username]/actions'; 
+import { updateAccount } from '@/app/[locale]/(site)/dashboard/(menues)/[username]/actions';
+import { parseBio } from '@/lib/user/parse-bio';
+
 
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 import 'react-quill-new/dist/quill.snow.css';
@@ -35,14 +37,13 @@ export function BioEditor({ initialBio }: BioEditorProps) {
   const handleSave = async () => {
     setIsSaving(true);
     setError(null);
-    
 
     const isEmpty = content.replace(/<[^>]*>?/gm, '').trim().length === 0;
     const finalContent = isEmpty ? null : content;
 
     try {
       const response = await updateAccount({ bio: finalContent });
-      
+
       if (response.status === 200) {
         setIsEditing(false);
       } else {
@@ -72,16 +73,24 @@ export function BioEditor({ initialBio }: BioEditorProps) {
             onChange={setContent}
             modules={modules}
             placeholder={t('placeholder')}
-            className="min-h-[150px] font-serif"
+            className="min-h-37.5 font-serif"
           />
         </div>
         {error && <p className="text-sm text-red-500">{error}</p>}
         <div className="flex gap-2 justify-end">
-          <Button variant="ghost" onPress={handleCancel} isDisabled={isSaving}>
+          <Button
+            variant="ghost"
+            onPress={handleCancel}
+            isDisabled={isSaving}
+          >
             <Xmark width={16} /> {t('cancel')}
           </Button>
-          
-          <Button variant="primary" onPress={handleSave} isDisabled={isSaving}>
+
+          <Button
+            variant="primary"
+            onPress={handleSave}
+            isDisabled={isSaving}
+          >
             <Check width={16} /> {isSaving ? '...' : t('save')}
           </Button>
         </div>
@@ -89,14 +98,15 @@ export function BioEditor({ initialBio }: BioEditorProps) {
     );
   }
 
+  const bio = initialBio ? parseBio(initialBio) : null;
+
   // ESTADO 2: Tiene contenido (modo lectura)
-  if (initialBio) {
+  if (bio) {
     return (
       <div className="group relative rounded-lg p-6 bg-surface-secondary border border-transparent hover:border-separator transition-all w-full">
-        <div 
-          className="prose prose-sm sm:prose-base dark:prose-invert max-w-none font-serif text-muted leading-relaxed"
-          dangerouslySetInnerHTML={{ __html: initialBio }}
-        />
+        <div className="prose prose-sm sm:prose-base dark:prose-invert max-w-none font-serif text-muted leading-relaxed">
+          {bio}
+        </div>
         <Button
           size="sm"
           variant="ghost"
@@ -115,11 +125,9 @@ export function BioEditor({ initialBio }: BioEditorProps) {
       <h3 className="text-xl font-bold font-serif mb-4 text-foreground">
         {t('emptyTitle')}
       </h3>
-      <p className="text-muted max-w-lg mb-6">
-        {t('emptyDescription')}
-      </p>
-      <Button 
-        variant="outline" 
+      <p className="text-muted max-w-lg mb-6">{t('emptyDescription')}</p>
+      <Button
+        variant="outline"
         className="rounded-full font-medium"
         onPress={() => setIsEditing(true)}
       >

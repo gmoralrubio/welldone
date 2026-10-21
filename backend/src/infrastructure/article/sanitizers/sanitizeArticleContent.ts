@@ -1,6 +1,6 @@
 import sanitizeHtml from 'sanitize-html';
 
-// Limpia el html de article content
+// Misma política que frontend/src/lib/article/sanitize-article-content.ts
 export function sanitizeArticleContent(html: string): string {
   const htmlWithSpaces = html
     .replace(/&nbsp;|&#160;|&#x0*a0;/gi, ' ')
@@ -28,5 +28,20 @@ export function sanitizeArticleContent(html: string): string {
     },
     allowedSchemes: ['http', 'https'],
     allowProtocolRelative: false,
+    transformTags: {
+      a: (tagName, attribs) => {
+        if (attribs.target === '_blank') {
+          return {
+            tagName,
+            attribs: {
+              ...attribs,
+              rel: 'noopener noreferrer',
+            },
+          };
+        }
+
+        return { tagName, attribs };
+      },
+    },
   });
 }

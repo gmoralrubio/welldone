@@ -1,6 +1,9 @@
 import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
-import { getFavoriteArticleIds, getMyArticlesAction } from '@/app/[locale]/(site)/articles/actions';
+import {
+  getFavoriteArticleIds,
+  getMyArticlesAction,
+} from '@/app/[locale]/(site)/articles/actions';
 import { ArticleCard } from '@/app/[locale]/components/article/article-card';
 import { ArticlePagination } from '@/app/[locale]/components/article/article-pagination';
 import { parseArticleQuery } from '@/lib/article/article-query';
@@ -8,7 +11,6 @@ import { Button } from '@heroui/react';
 import { UserAvatar } from '@/app/[locale]/components/user/user-avatar';
 import { ArticleDto } from '@/lib/article/articles.types';
 import { BioEditor } from '@/app/[locale]/components/user/bio-editor';
-
 
 interface UserProfile {
   id: number;
@@ -25,9 +27,12 @@ interface AccountPageProps {
   currentTab: string;
 }
 
-export default async function PrivateProfile({ searchParams, currentUser, currentTab }: AccountPageProps) {
+export default async function PrivateProfile({
+  searchParams,
+  currentUser,
+  currentTab,
+}: AccountPageProps) {
   const t = await getTranslations('Dashboard');
-
 
   const params = await searchParams;
   const { page, limit, order } = parseArticleQuery(params);
@@ -44,20 +49,24 @@ export default async function PrivateProfile({ searchParams, currentUser, curren
       order,
       status: currentStatus,
     });
+
     articles = articlesResponse.data;
     meta = articlesResponse.meta;
   }
 
-  const favoriteIds = new Set(await getFavoriteArticleIds(articles.map((article) => article.id)));
+  const favoriteIds = new Set(
+    await getFavoriteArticleIds(articles.map((article) => article.id))
+  );
 
   const activeTabClass =
     'border-b border-foreground pb-3 text-sm font-medium text-foreground';
+
   const inactiveTabClass =
     'border-b border-transparent pb-3 text-sm font-medium text-muted transition-colors hover:text-foreground';
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 lg:flex-row">
-      <div className="flex flex-1 flex-col gap-6">
+    <div className="flex w-full flex-col gap-16 lg:flex-row">
+      <div className="flex min-w-0 flex-1 flex-col gap-6">
         <h1 className="font-serif text-4xl font-bold text-foreground sm:text-5xl">
           {currentUser.name} {currentUser.surname}
         </h1>
@@ -67,14 +76,16 @@ export default async function PrivateProfile({ searchParams, currentUser, curren
             href={`/dashboard/@${currentUser.username}`}
             className={currentStatus === 'PUBLISHED' ? activeTabClass : inactiveTabClass}
           >
-            {t('tabs.home')}
+            {t('tabs.published')}
           </Link>
+
           <Link
             href={`/dashboard/@${currentUser.username}/draft`}
             className={currentStatus === 'DRAFT' ? activeTabClass : inactiveTabClass}
           >
             {t('tabs.drafts')}
           </Link>
+
           <Link
             href={`/dashboard/@${currentUser.username}/about`}
             className={currentStatus === 'ABOUT' ? activeTabClass : inactiveTabClass}
@@ -100,7 +111,7 @@ export default async function PrivateProfile({ searchParams, currentUser, curren
             <p className="text-lg text-muted">
               {currentStatus === 'DRAFT'
                 ? t('emptyStates.drafts')
-               : t('emptyStates.published')}
+                : t('emptyStates.published')}
             </p>
           )}
         </div>
@@ -116,11 +127,10 @@ export default async function PrivateProfile({ searchParams, currentUser, curren
               pathname='/dashboard/@${username}'
               status={currentStatus === 'DRAFT' ? 'DRAFT' : 'PUBLISHED'}
             />
-         </div>
+          </div>
         )}
       </div>
-
-      <aside className="flex w-full flex-col gap-6 pt-4 lg:w-80 lg:border-l lg:border-separator lg:pl-10">
+      <aside className="flex w-full flex-col gap-6 pt-4 lg:w-40 lg:shrink-0 lg:border-l lg:border-separator lg:pl-10">
         <UserAvatar
           name={currentUser.name}
           surname={currentUser.surname}
@@ -128,12 +138,13 @@ export default async function PrivateProfile({ searchParams, currentUser, curren
           size="lg"
           className="h-24 w-24 text-large"
         />
+
         <div className="flex flex-col gap-1">
           <h2 className="text-lg font-bold text-foreground">
             {currentUser.name} {currentUser.surname}
           </h2>
-          <span className="text-sm text-muted">@{currentUser.username}</span>
 
+          <span className="text-sm text-muted">@{currentUser.username}</span>
         </div>
 
         <div className="mt-2 flex gap-2">
@@ -145,7 +156,6 @@ export default async function PrivateProfile({ searchParams, currentUser, curren
               {t('editProfile')}
             </Button>
           </Link>
-
         </div>
       </aside>
     </div>

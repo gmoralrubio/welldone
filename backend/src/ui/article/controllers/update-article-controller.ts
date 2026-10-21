@@ -2,9 +2,9 @@ import { NextFunction, Request, Response } from 'express';
 import { PrismaArticleRepository } from '@infrastructure/article/PrismaArticleRepository';
 import { UpdateArticleUseCase } from '@domain/article/use-cases/update-article';
 import { UnauthorizedError } from '@domain/errors/UnauthorizedError';
-import { 
-  articleIdParamSchema, 
-  updateArticleValidationSchema 
+import {
+  articleDetailValidationSchema,
+  updateArticleValidationSchema,
 } from '@ui/article/validators/articles-validator';
 
 export async function updateArticleController(
@@ -17,7 +17,7 @@ export async function updateArticleController(
       throw new UnauthorizedError('Debes estar autenticado para editar un artículo');
     }
 
-    const { id } = articleIdParamSchema.parse(req.params);
+    const { authorUsername, slug } = articleDetailValidationSchema.parse(req.params);
     const updateData = updateArticleValidationSchema.parse(req.body);
 
     //Conversión de texto a fecha
@@ -32,8 +32,9 @@ export async function updateArticleController(
     const updateArticleUseCase = new UpdateArticleUseCase(articleRepository);
 
     const updatedArticle = await updateArticleUseCase.execute(
-      id, 
-      req.authorId, 
+      authorUsername,
+      slug,
+      req.authorId,
       domainData
     );
 

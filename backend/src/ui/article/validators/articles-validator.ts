@@ -66,10 +66,6 @@ export const createArticleValidationSchema = z.object({
     .min(1, 'Debes seleccionar al menos una categoría'),
 });
 
-export const articleIdParamSchema = z.object({
-  id: z.coerce.number().int().positive('El ID debe ser un número positivo'),
-});
-
 export const updateArticleValidationSchema = z.object({
   title: z.string().min(2, 'El título debe tener al menos 2 caracteres').optional(),
   content: z
