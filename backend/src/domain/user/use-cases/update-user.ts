@@ -72,8 +72,15 @@ export class UpdateUserUseCase {
         }
       }
     }
+    
+    // 6. Validar la biografía (puede ser string o null)
+    if (input.bio !== undefined) {
+      if (input.bio !== null && typeof input.bio !== "string") {
+        throw new ValidationError("Bio must be a string or null");
+      }
+    }
 
-    // 6. Actualizar los datos
+    // 7. Actualizar los datos
     return this.userRepository.update(userId, input);
   }
 }

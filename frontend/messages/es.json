@@ -381,7 +381,12 @@
   "ProfileAbout": {
     "emptyTitle": "Cuéntale al mundo sobre ti",
     "emptyDescription": "Aquí es donde puedes compartir más sobre ti: tu historia, experiencia laboral, logros, intereses, sueños y más.",
-    "getStarted": "Empezar"
+    "getStarted": "Empezar",
+    "placeholder": "Escribe algo sobre ti...",
+    "edit": "Editar",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "saveError": "Hubo un error al guardar tu biografía"
   },
   "ConfirmExitModal": {
     "title": "¿Seguro que quieres salir?",

@@ -104,9 +104,16 @@ export default async function PublicProfile({ targetUsername,searchParams, curre
               <h3 className="text-xl font-bold font-serif mb-4 text-foreground">
                 {tProfile('aboutUser', { name: targetUser.name })}
               </h3>
-              <p className="text-muted leading-relaxed">
-                {targetUser.bio || tProfile('emptyBio')}
-              </p>
+              {targetUser.bio ? (
+                <div 
+                  className="prose prose-sm sm:prose-base dark:prose-invert max-w-none font-serif text-muted leading-relaxed"
+                  dangerouslySetInnerHTML={{ __html: targetUser.bio }}
+                />
+              ) : (
+                <p className="text-muted leading-relaxed italic">
+                  {tProfile('emptyBio')}
+                </p>
+              )}
             </div>
           ) : articles.length > 0 ? (
             articles.map((article) => (

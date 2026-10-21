@@ -31,6 +31,7 @@ export const getCurrentUserController = async (
       surname: user.surname,
       username: user.username,
       email: user.email,
+      bio: user.bio,
     });
   } catch (error) {
     next(error);

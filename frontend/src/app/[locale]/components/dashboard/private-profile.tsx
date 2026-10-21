@@ -7,6 +7,7 @@ import { parseArticleQuery } from '@/lib/article/article-query';
 import { Button } from '@heroui/react';
 import { UserAvatar } from '@/app/[locale]/components/user/user-avatar';
 import { ArticleDto } from '@/lib/article/articles.types';
+import { BioEditor } from '@/app/[locale]/components/user/bio-editor';
 
 
 interface UserProfile {
@@ -15,6 +16,7 @@ interface UserProfile {
   surname: string;
   username: string;
   email: string;
+  bio: string | null;
 }
 
 interface AccountPageProps {
@@ -25,7 +27,6 @@ interface AccountPageProps {
 
 export default async function PrivateProfile({ searchParams, currentUser, currentTab }: AccountPageProps) {
   const t = await getTranslations('Dashboard');
-  const tAbout = await getTranslations('ProfileAbout');
 
 
   const params = await searchParams;
@@ -84,17 +85,7 @@ export default async function PrivateProfile({ searchParams, currentUser, curren
 
         <div className="mt-4 flex flex-col gap-8">
           {currentStatus === 'ABOUT' ? (
-            <div className="flex flex-col items-center justify-center p-12 text-center bg-surface-secondary rounded-lg">
-              <h3 className="text-xl font-bold font-serif mb-4 text-foreground">
-                {tAbout('emptyTitle')}
-              </h3>
-              <p className="text-muted max-w-lg mb-6">
-                {tAbout('emptyDescription')}
-              </p>
-              <Button variant="outline" className="rounded-full font-medium">
-                {tAbout('getStarted')}
-              </Button>
-            </div>
+            <BioEditor initialBio={currentUser.bio} />
           ) : articles.length > 0 ? (
             articles.map((article) => (
               <ArticleCard
