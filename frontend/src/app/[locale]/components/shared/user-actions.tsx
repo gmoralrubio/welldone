@@ -8,10 +8,10 @@ import { useTranslations } from 'next-intl';
 type UserActionsProps = {
   user: {
     name: string;
+    surname: string;
     username: string;
   } | null;
 };
-
 
 const UserActions = ({ user }: UserActionsProps) => {
   const t = useTranslations('SiteHeader');
@@ -35,6 +35,7 @@ const UserActions = ({ user }: UserActionsProps) => {
       {!isEditorMode && isDashboard && <WriteButton />}
       <UserProfile
         name={user.name}
+        surname={user.surname}
         username={user.username}
       />
     </div>
