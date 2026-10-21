@@ -24,13 +24,6 @@ services:
       - postgres
     restart: always
 
-  redis:
-    image: redis:7
-    container_name: welldone_redis
-    ports:
-      - '6379:6379'
-    restart: always
-
   maildev:
     image: maildev/maildev
     container_name: welldone_maildev

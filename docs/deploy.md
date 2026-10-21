@@ -79,7 +79,7 @@ CMD ["node", "src/index.js"]
 ## Ejemplo docker-compose.prod.yml
 
 - En la instancia EC2, no en el repo
-- Añadir servicios que sean necesarios (postgres, redis, etc)
+- Añadir servicios que sean necesarios (postgres, etc)
 
 ```yml
 services:
@@ -284,7 +284,6 @@ jobs:
 
   ```
   DATABASE_URL=postgresql://user:password@postgres:5432/WelldoneApi
-  REDIS_URL=redis://redis:6379
   NODE_ENV=production
   PORT=4000
   JWT_SECRET=<secreto-largo-y-aleatorio>
@@ -333,9 +332,9 @@ Cosas que el workflow no puede hacer y hay que dejar listas una sola vez:
 ### Nombres de servicio vs contenedor
 
 Los servicios `backend` y `frontend` tienen el mismo `container_name` que su nombre de servicio.
-Los de infraestructura no: el servicio `postgres` crea el contenedor `welldone_postgres`, `redis`
-crea `welldone_redis` y `migrate` crea `welldone_migrate`. Los comandos de Compose usan el nombre de
-servicio; `docker ...` y la columna NAMES de `docker ps` usan el del contenedor.
+Los de infraestructura no: el servicio `postgres` crea el contenedor `welldone_postgres` y
+`migrate` crea `welldone_migrate`. Los comandos de Compose usan el nombre de servicio;
+`docker ...` y la columna NAMES de `docker ps` usan el del contenedor.
 
 ```bash
 docker compose -f docker-compose.prod.yml logs backend    # servicio
@@ -344,7 +343,7 @@ docker logs welldone_postgres                             # contenedor (nombre c
 
 Nota: si Compose responde `no such service: backend`, es que en la EC2 está el compose antiguo (el
 que solo definía `front`). Asegúrate de que el `docker-compose.prod.yml` del servidor es el que
-define `postgres`, `redis`, `migrate`, `backend` y `frontend`.
+define `postgres`, `migrate`, `backend` y `frontend`.
 
 ### El servicio `migrate`
 
@@ -380,7 +379,7 @@ docker compose -f docker-compose.prod.yml ps -a
 ```
 
 - `backend` y `frontend`: `Up` (backend además `(healthy)`).
-- `welldone_postgres` y `welldone_redis`: `Up (healthy)`.
+- `welldone_postgres`: `Up (healthy)`.
 - `welldone_migrate`: `Exited (0)`.
 
 ### Cargar datos de ejemplo (seed)
