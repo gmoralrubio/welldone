@@ -1,5 +1,8 @@
 import { getTranslations } from 'next-intl/server';
-import { getFavoriteArticleIds, getMyArticlesAction } from '@/app/[locale]/(site)/articles/actions';
+import {
+  getFavoriteArticleIds,
+  getMyArticlesAction,
+} from '@/app/[locale]/(site)/articles/actions';
 import { ArticleCard } from '@/app/[locale]/components/article/article-card';
 import { ArticlePagination } from '@/app/[locale]/components/article/article-pagination';
 import { parseArticleQuery } from '@/lib/article/article-query';
@@ -12,7 +15,7 @@ export default async function MyArticlesPage({ searchParams }: MyArticlesPagePro
   const t = await getTranslations('Dashboard');
   const params = await searchParams;
   const { page, limit, order } = parseArticleQuery(params);
-  
+
   const response = await getMyArticlesAction({
     page: String(page),
     limit: String(limit),
@@ -20,10 +23,13 @@ export default async function MyArticlesPage({ searchParams }: MyArticlesPagePro
   });
 
   const { data: articles, meta } = response;
-  const favoriteIds = new Set(await getFavoriteArticleIds(articles.map((article) => article.id)));
+
+  const favoriteIds = new Set(
+    await getFavoriteArticleIds(articles.map((article) => article.id))
+  );
 
   return (
-    <div className="mx-auto flex w-full max-w-3xl flex-col gap-8">
+    <div className="flex w-full flex-col gap-8">
       <header className="border-b border-separator pb-4">
         <h1 className="font-serif text-4xl font-bold text-foreground sm:text-5xl">
           {t('articlesTitle')}
@@ -42,10 +48,7 @@ export default async function MyArticlesPage({ searchParams }: MyArticlesPagePro
           ))
         ) : (
           <div className="rounded-xl border border-dashed border-separator p-12 text-center">
-            <p className="font-serif text-lg text-muted">
-              {t('emptyState')}
-            </p>
-
+            <p className="font-serif text-lg text-muted">{t('emptyState')}</p>
           </div>
         )}
       </div>
@@ -60,10 +63,8 @@ export default async function MyArticlesPage({ searchParams }: MyArticlesPagePro
             category=""
             pathname="/dashboard/my-articles"
           />
-
         </div>
       )}
     </div>
   );
-
 }

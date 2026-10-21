@@ -23,41 +23,45 @@ export default async function FavoritesPage({ searchParams }: FavoritesPageProps
   const { data: articles, meta } = response;
 
   return (
-    <div className="mx-auto flex w-full max-w-3xl flex-col gap-8">
-      <header className="border-b border-separator pb-4">
-        <h1 className="font-serif text-4xl font-bold text-foreground sm:text-5xl">
-          {t('favoritesTitle')}
-        </h1>
-      </header>
+    <div className="flex w-full flex-col gap-16 lg:flex-row">
+      <div className="flex min-w-0 flex-1 flex-col gap-8">
+        <header className="border-b border-separator pb-4">
+          <h1 className="font-serif text-4xl font-bold text-foreground sm:text-5xl">
+            {t('favoritesTitle')}
+          </h1>
+        </header>
 
-      <div className="flex flex-col gap-8">
-        {articles.length > 0 ? (
-          articles.map((article) => (
-            <ArticleCard
-              key={article.id}
-              article={article}
-              isFavorite
+        <div className="flex flex-col gap-8">
+          {articles.length > 0 ? (
+            articles.map((article) => (
+              <ArticleCard
+                key={article.id}
+                article={article}
+                isFavorite
+              />
+            ))
+          ) : (
+            <div className="rounded-xl border border-dashed border-separator p-12 text-center">
+              <p className="font-serif text-lg text-muted">{t('favoritesEmpty')}</p>
+            </div>
+          )}
+        </div>
+
+        {meta.pages > 1 && (
+          <div className="mt-4">
+            <ArticlePagination
+              page={meta.page}
+              pages={meta.pages}
+              search=""
+              order={order}
+              category=""
+              pathname="/dashboard/favorites"
             />
-          ))
-        ) : (
-          <div className="rounded-xl border border-dashed border-separator p-12 text-center">
-            <p className="font-serif text-lg text-muted">{t('favoritesEmpty')}</p>
           </div>
         )}
       </div>
 
-      {meta.pages > 1 && (
-        <div className="mt-4">
-          <ArticlePagination
-            page={meta.page}
-            pages={meta.pages}
-            search=""
-            order={order}
-            category=""
-            pathname="/dashboard/favorites"
-          />
-        </div>
-      )}
+      <aside className="hidden lg:block lg:w-40 lg:shrink-0" />
     </div>
   );
 }

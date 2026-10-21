@@ -52,6 +52,13 @@
     "membershipBody": "Conviértete en miembro para publicar artículos enriquecidos con nuestro editor WYSIWYG, gestionar borradores y crear comunidad.",
     "membershipCta": "Comenzar a escribir gratis"
   },
+  "UserNavigation": {
+    "home": "Inicio",
+    "favorites": "Favoritos",
+    "notifications": "Notificaciones",
+    "profile": "Perfil",
+    "settings": "Configuración"
+  },
   "SelectOrder": {
     "placeholder": "Selecciona el orden",
     "ariaLabel": "Orden",
@@ -314,14 +321,6 @@
     "ciberseguridad": "Ciberseguridad"
   },
   "Dashboard": {
-    "nav": {
-      "articles": "Mis artículos",
-      "favorites": "Favoritos",
-      "highlights": "Destacados",
-      "notifications": "Notificaciones",
-      "profile": "Perfil",
-      "settings": "Configuración"
-    },
     "articlesTitle": "Mis artículos",
     "favoritesTitle": "Favoritos",
     "highlightsTitle": "Destacados",
@@ -329,7 +328,7 @@
     "accountTitle": "Cuenta",
     "settingsTitle": "Configuración",
     "tabs": {
-      "home": "Inicio",
+      "published": "Publicados",
       "drafts": "Borradores",
       "about": "Acerca de"
     },

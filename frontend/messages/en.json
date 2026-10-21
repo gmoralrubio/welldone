@@ -52,6 +52,13 @@
     "membershipBody": "Become a member to publish rich articles with our WYSIWYG editor, manage drafts, and build community.",
     "membershipCta": "Start writing for free"
   },
+  "UserNavigation": {
+    "home": "Home",
+    "favorites": "Favorites",
+    "notifications": "Notifications",
+    "profile": "Profile",
+    "settings": "Settings"
+  },
   "SelectOrder": {
     "placeholder": "Select order",
     "ariaLabel": "Order",
@@ -314,14 +321,6 @@
     "ciberseguridad": "Cybersecurity"
   },
   "Dashboard": {
-    "nav": {
-      "articles": "My articles",
-      "favorites": "Favorites",
-      "highlights": "Highlights",
-      "notifications": "Notifications",
-      "profile": "Profile",
-      "settings": "Settings"
-    },
     "articlesTitle": "My articles",
     "favoritesTitle": "Favorites",
     "highlightsTitle": "Highlights",
@@ -329,7 +328,7 @@
     "accountTitle": "Account",
     "settingsTitle": "Settings",
     "tabs": {
-      "home": "Home",
+      "published": "Published",
       "drafts": "Drafts",
       "about": "About"
     },

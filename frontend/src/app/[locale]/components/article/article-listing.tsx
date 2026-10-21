@@ -30,7 +30,9 @@ export async function ArticleListing({
   emptyCatalog,
 }: ArticleListingProps) {
   const data = articles?.data ?? [];
-  const favoriteIds = new Set(await getFavoriteArticleIds(data.map((article) => article.id)));
+  const favoriteIds = new Set(
+    await getFavoriteArticleIds(data.map((article) => article.id))
+  );
   const featured =
     criteria.page === 1 && criteria.search === '' && criteria.category.length === 0
       ? data[0]
@@ -41,7 +43,7 @@ export async function ArticleListing({
 
   return (
     <div className="flex min-h-full flex-1 flex-col font-sans text-foreground">
-      <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-8">
+      <div className="mx-auto flex w-full max-w-[1088px] flex-1 flex-col px-8">
         {heading}
         {featured ? (
           <ArticleHero
