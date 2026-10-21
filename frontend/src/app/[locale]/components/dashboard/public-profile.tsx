@@ -10,7 +10,7 @@ import { parseArticleQuery } from '@/lib/article/article-query';
 import { Button } from '@heroui/react';
 import { UserAvatar } from '@/app/[locale]/components/user/user-avatar';
 import { ArticleDto } from '@/lib/article/articles.types';
-import { sanitizeBio } from '@/lib/user/sanitize-bio';
+import { parseBio } from '@/lib/user/parse-bio';
 
 interface UserProfile {
   id: number;
@@ -85,7 +85,7 @@ export default async function PublicProfile({
   const inactiveTabClass =
     'border-b border-transparent pb-3 text-sm font-medium text-muted transition-colors hover:text-foreground';
 
-  const safeBio = targetUser?.bio ? sanitizeBio(targetUser.bio) : '';
+  const bio = targetUser?.bio ? parseBio(targetUser.bio) : null;
 
   if (!targetUser) {
     return (
@@ -132,11 +132,10 @@ export default async function PublicProfile({
                   name: targetUser.name,
                 })}
               </h3>
-              {safeBio ? (
-                <div
-                  className="prose prose-sm sm:prose-base dark:prose-invert max-w-none font-serif text-muted leading-relaxed"
-                  dangerouslySetInnerHTML={{ __html: safeBio }}
-                />
+              {bio ? (
+                <div className="prose prose-sm sm:prose-base dark:prose-invert max-w-none font-serif text-muted leading-relaxed">
+                  {bio}
+                </div>
               ) : (
                 <p className="text-muted leading-relaxed italic">
                   {tProfile('emptyBio')}

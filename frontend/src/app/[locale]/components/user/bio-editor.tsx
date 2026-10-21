@@ -6,7 +6,7 @@ import { Button } from '@heroui/react';
 import { Pencil, Check, Xmark } from '@gravity-ui/icons';
 import { useTranslations } from 'next-intl';
 import { updateAccount } from '@/app/[locale]/(site)/dashboard/(menues)/[...username]/actions';
-import { sanitizeBio } from '@/lib/user/sanitize-bio';
+import { parseBio } from '@/lib/user/parse-bio';
 
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 import 'react-quill-new/dist/quill.snow.css';
@@ -97,16 +97,15 @@ export function BioEditor({ initialBio }: BioEditorProps) {
     );
   }
 
-  const safeBio = initialBio ? sanitizeBio(initialBio) : '';
+  const bio = initialBio ? parseBio(initialBio) : null;
 
   // ESTADO 2: Tiene contenido (modo lectura)
-  if (safeBio) {
+  if (bio) {
     return (
       <div className="group relative rounded-lg p-6 bg-surface-secondary border border-transparent hover:border-separator transition-all w-full">
-        <div
-          className="prose prose-sm sm:prose-base dark:prose-invert max-w-none font-serif text-muted leading-relaxed"
-          dangerouslySetInnerHTML={{ __html: safeBio }}
-        />
+        <div className="prose prose-sm sm:prose-base dark:prose-invert max-w-none font-serif text-muted leading-relaxed">
+          {bio}
+        </div>
         <Button
           size="sm"
           variant="ghost"
