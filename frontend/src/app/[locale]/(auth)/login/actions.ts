@@ -25,6 +25,7 @@ export async function loginUser(data: LoginUserData) {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       path: '/',
+      maxAge: 60 * 60,
     });
   }
 

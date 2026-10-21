@@ -1,7 +1,7 @@
-import bcrypt from "bcrypt";
-import { SecurityService } from "../../../domain/user/services/SecurityService";
-import jwt from "jsonwebtoken";
-import { environmentService } from "@infrastructure/shared/services/EnvironmentService";
+import bcrypt from 'bcrypt';
+import { SecurityService } from '../../../domain/user/services/SecurityService';
+import jwt from 'jsonwebtoken';
+import { environmentService } from '@infrastructure/shared/services/EnvironmentService';
 
 export class SecurityServiceImplementation implements SecurityService {
   private readonly SECRET_KEY: string;
@@ -22,16 +22,12 @@ export class SecurityServiceImplementation implements SecurityService {
   // Del hashed password saca el salt de ese momento
   // y se lo aplica a la plain password, si salen iguales son la misma.
 
-  async comparePassword(
-    plainPassword: string,
-    hashedPassword: string,
-  ): Promise<boolean> {
+  async comparePassword(plainPassword: string, hashedPassword: string): Promise<boolean> {
     return bcrypt.compare(plainPassword, hashedPassword);
   }
 
   async generateJWT(authorId: number): Promise<string> {
-    const token = jwt.sign({ authorId }, this.SECRET_KEY);
-    // Las opciones por defecto son 24 horas
+    const token = jwt.sign({ authorId }, this.SECRET_KEY, { expiresIn: '1h' });
     return token;
   }
 
