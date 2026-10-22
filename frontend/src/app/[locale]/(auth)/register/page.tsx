@@ -263,6 +263,7 @@ export default function RegisterPage() {
                 onBlur={handleOnBlur}
               />
             </div>
+            <p className="mt-1.5 text-xs text-[#76777d]">{t('usernameHint')}</p>
 
             {errors.username ? (
               <p className="mt-1.5 text-xs font-medium text-[#ba1a1a]">
