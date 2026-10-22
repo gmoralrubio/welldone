@@ -278,6 +278,16 @@ export async function createArticleAction(
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
 
+  if (!accessToken) {
+    throw new Error('No autorizado');
+  }
+
+  const publishedAtRaw = formData.get('publishedAt');
+  let publishedAtIso = null;
+  if (typeof publishedAtRaw === 'string' && publishedAtRaw.trim() !== '') {
+    publishedAtIso = new Date(publishedAtRaw).toISOString();
+  }
+
   const payload = {
     title: formData.get('title'),
     intro: formData.get('intro'),
@@ -286,6 +296,7 @@ export async function createArticleAction(
     categorySlugs: formData.getAll('categorySlugs'),
     featuredImageUrl: formData.get('featuredImageUrl') || null,
     featuredVideoUrl: formData.get('featuredVideoUrl') || null,
+    publishedAt: publishedAtIso
   };
 
   const response = await fetch(`${process.env.API_URL}/api/articles`, {
@@ -440,6 +451,12 @@ export async function updateArticleAction(
     throw new Error('No autorizado');
   }
 
+  const publishedAtRaw = formData.get('publishedAt');
+  let publishedAtIso = null;
+  if (typeof publishedAtRaw === 'string' && publishedAtRaw.trim() !== '') {
+    publishedAtIso = new Date(publishedAtRaw).toISOString();
+  }
+
   const payload = {
     title: formData.get('title'),
     intro: formData.get('intro'),
@@ -448,6 +465,7 @@ export async function updateArticleAction(
     categorySlugs: formData.getAll('categorySlugs'),
     featuredImageUrl: formData.get('featuredImageUrl') || null,
     featuredVideoUrl: formData.get('featuredVideoUrl') || null,
+    publishedAt: publishedAtIso,
   };
 
   const response = await fetch(
@@ -476,8 +494,11 @@ export async function updateArticleAction(
     return { error: errorData?.error || 'Error al actualizar el artículo' };
   }
 
+  revalidatePath(`/dashboard/@${authorUsername}`);
+  revalidatePath('/articles');
+
   redirect({
-    href: '/dashboard/my-articles',
+    href: `/dashboard/@${authorUsername}`,
     locale: resolveLocale(locale),
   });
 }
@@ -506,7 +527,7 @@ export async function deleteArticleAction(authorUsername: string, slug: string) 
     }
 
     // Refrescamos las cachés para que desaparezca de las listas
-    revalidatePath('/dashboard/my-articles');
+    revalidatePath(`/dashboard/@${authorUsername}`);
     revalidatePath('/articles');
 
     return { status: 204 };

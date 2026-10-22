@@ -27,7 +27,7 @@ export default async function MyArticlePage({ params }: MyArticlePageProps) {
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-8">
       <Link
-        href="/dashboard/my-articles"
+        href={`/dashboard/@${article.author.username}`}
         className="text-sm text-muted"
       >
         {t('backToArticles')}

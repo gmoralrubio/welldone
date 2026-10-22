@@ -103,7 +103,7 @@ export default async function PrivateProfile({
                 key={article.id}
                 article={article}
                 showActions
-                href={`/dashboard/my-articles/${article.slug}`}
+                href={`/dashboard/@${article.author.username}/${article.slug}`}
                 isFavorite={favoriteIds.has(article.id)}
               />
             ))

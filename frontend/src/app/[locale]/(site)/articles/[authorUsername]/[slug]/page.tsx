@@ -115,7 +115,7 @@ export default async function ArticleDetailPage({
             <div className="flex flex-col">
               <div className="flex gap-2">
                 <Link
-                  href={`/dashboard/@${article.author.username}`}
+                  href={`/articles/${article.author.username}`}
                   className="text-sm font-semibold text-foreground no-underline hover:underline hover:opacity-80 transition-all"
                 >
                   {article.author.name} {article.author.surname}
@@ -202,7 +202,7 @@ export default async function ArticleDetailPage({
               <div className="flex flex-col justify-center">
                 <h3 className="font-serif font-bold text-xl leading-tight">
                   <Link
-                    href={`/dashboard/@${article.author.username}`}
+                    href={`/articles/${article.author.username}`}
                     className="text-foreground no-underline"
                   >
                     {article.author.name} {article.author.surname}
@@ -210,7 +210,7 @@ export default async function ArticleDetailPage({
                 </h3>
                 <span className="text-muted text-sm leading-tight">
                   <Link
-                    href={`/dashboard/@${article.author.username}`}
+                    href={`/articles/${article.author.username}`}
                     className="font-medium text-muted no-underline"
                   >
                     @{article.author.username}

@@ -1,4 +1,3 @@
-import { ArticlesAuthorHeading } from '@/app/[locale]/components/article/articles-author-heading';
 import { getArticlesByAuthor } from '@/app/[locale]/(site)/articles/actions';
 import { authorUsernameSchema } from '@/app/[locale]/(site)/articles/[authorUsername]/schema';
 import { ArticleListing } from '@/app/[locale]/components/article/article-listing';
@@ -9,6 +8,11 @@ import { SearchParamValue } from '@/lib/shared/searchParam.types';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
+import { PublicProfileHeader } from '@/app/[locale]/components/user/public-profile-header';
+import { cookies } from 'next/headers';
+import { redirect } from '@/i18n/navigation';
+
+
 
 type AuthorArticlesPageProps = {
   searchParams: Promise<Record<string, SearchParamValue>>;
@@ -32,11 +36,34 @@ export default async function AuthorArticlesPage({
   searchParams,
   params,
 }: AuthorArticlesPageProps) {
-  const { authorUsername: rawAuthorUsername } = await params;
+  const { authorUsername: rawAuthorUsername,locale} = await params;
   const parsedAuthor = authorUsernameSchema.safeParse(rawAuthorUsername);
   if (!parsedAuthor.success) notFound();
 
   const authorUsername = parsedAuthor.data;
+
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('accessToken')?.value;
+  
+  if (accessToken) {
+    const meRes = await fetch(`${process.env.API_URL}/api/users/me`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+      cache: 'no-store'
+    });
+    
+    if (meRes.ok) {
+      const me = await meRes.json();
+      if (me.username === authorUsername) {
+        redirect({ href: `/dashboard/@${authorUsername}`, locale: resolveLocale(locale) });
+      }
+    }
+  }
+
+  const userRes = await fetch(`${process.env.API_URL}/api/users/profile/${authorUsername}`, {
+    cache: 'no-store',
+  });
+  if (!userRes.ok) notFound();
+  const userProfile = await userRes.json();
 
   const queryParams = await searchParams;
   const criteria = parseArticleQuery(queryParams);
@@ -47,7 +74,6 @@ export default async function AuthorArticlesPage({
 
   if (!searchTooShort && !articles) notFound();
 
-  const author = articles?.data[0]?.author;
   const hasFilters = criteria.search !== '' || criteria.category.length > 0;
   const t = await getTranslations('AuthorArticlesPage');
   const tArticles = await getTranslations('ArticlesPage');
@@ -59,11 +85,8 @@ export default async function AuthorArticlesPage({
       listPath={authorArticlesHref(authorUsername)}
       emptyCatalog={hasFilters ? tArticles('emptySearch') : t('empty')}
       heading={
-        <div className="flex flex-col gap-4 pt-8">
-          <ArticlesAuthorHeading
-            authorUsername={authorUsername}
-            author={author}
-          />
+        <div className="pt-8">
+          <PublicProfileHeader user={userProfile} currentTab="PUBLISHED" />
         </div>
       }
     />

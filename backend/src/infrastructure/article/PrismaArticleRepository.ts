@@ -181,7 +181,8 @@ export class PrismaArticleRepository implements ArticleRepository {
         content: criteria.content,
         intro: criteria.intro,
         status: criteria.status,
-        publishedAt: criteria.publishedAt ?? undefined,
+        // Si mandan null (borraron la fecha), ponemos "ahora". Si mandan fecha, la usamos. Si no mandan nada, no la tocamos.
+        publishedAt: criteria.publishedAt === null ? new Date() : criteria.publishedAt !== undefined ? criteria.publishedAt : undefined,
         featuredImageUrl: criteria.featuredImageUrl,
         featuredVideoUrl: criteria.featuredVideoUrl,
         ...(criteria.categorySlugs && {

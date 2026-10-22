@@ -190,7 +190,7 @@
   },
   "AuthLogin": {
     "brand": "WellDone",
-    "backToReading": "Back to public reading",
+    "backToReading": "Back",
     "eyebrow": "Welcome to WellDone",
     "title": "Sign in",
     "subtitle": "Sign in to access your WellDone member space.",
@@ -328,7 +328,7 @@
     "accountTitle": "Account",
     "settingsTitle": "Settings",
     "tabs": {
-      "published": "Published",
+      "published": "Articles",
       "drafts": "Drafts",
       "about": "About"
     },
