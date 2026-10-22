@@ -72,16 +72,6 @@ export const createArticleValidationSchema = z.object({
   featuredImageUrl: z
     .string()
     .url('Debe ser una URL válida')
-    .refine(
-      (url) => !url.match(/\.(mp4|webm|ogg)$/i) && !url.includes('youtube.com') && !url.includes('vimeo.com'),
-      'Este campo es solo para imágenes, has introducido un enlace de vídeo'
-    )
-    .optional()
-    .nullable(),
-
-  featuredVideoUrl: z
-    .string()
-    .url('Debe ser una URL válida')
     .refine((url) => {
       try {
         const hostname = new URL(url).hostname;
@@ -90,6 +80,16 @@ export const createArticleValidationSchema = z.object({
         return false;
       }
     }, `Dominio no soportado. Dominios permitidos: ${ALLOWED_IMAGE_DOMAINS.join(', ')}`)
+    .optional()
+    .nullable(),
+
+  featuredVideoUrl: z
+    .string()
+    .url('Debe ser una URL válida')
+    .refine(
+      (url) => url.match(/\.(mp4|webm|ogg)$/i) || url.includes('youtube.com') || url.includes('youtu.be') || url.includes('vimeo.com'),
+      'Debe ser un enlace a un vídeo (YouTube, Vimeo, o archivo .mp4/.webm)'
+    )
     .optional()
     .nullable(),
   categorySlugs: z
