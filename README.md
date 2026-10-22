@@ -125,7 +125,7 @@ La API cuelga de `/api`. Las rutas marcadas con Auth exigen `Authorization: Bear
 | Método | Ruta                         | Descripción                              | Auth |
 | ------ | ---------------------------- | ---------------------------------------- | ---- |
 | POST   | `/api/users/register`        | Registrar usuario                        | No   |
-| POST   | `/api/users/login`           | Iniciar sesión y obtener JWT             | No   |
+| POST   | `/api/users/login`           | Iniciar sesión con email o username y obtener JWT | No |
 | GET    | `/api/users/availability`    | Comprobar si email o username están libres | No |
 | GET    | `/api/users/me`              | Perfil del usuario autenticado           | Sí   |
 | PATCH  | `/api/users/me`              | Actualizar perfil                        | Sí   |
@@ -135,6 +135,8 @@ La API cuelga de `/api`. Las rutas marcadas con Auth exigen `Authorization: Bear
 | POST   | `/api/users/reset-password`  | Establecer una contraseña nueva          | No   |
 
 `GET /api/users/availability` recibe `field` (`email` o `username`) y `value`.
+
+El login acepta email o username en `identifier`. Una credencial incorrecta responde siempre igual, sin indicar cuál de los dos falló. Hay límite de intentos durante 15 minutos: 10 logins fallidos por IP, 5 contraseñas fallidas por cuenta, 5 solicitudes de recuperación y 10 restablecimientos. El username tiene entre 3 y 20 caracteres y solo admite letras, números, puntos y guiones bajos.
 
 ### Artículos
 
@@ -215,7 +217,7 @@ ui/             → Controladores, rutas, validadores, middleware
 - **Validación**: Zod v4 sobre los inputs HTTP antes de llegar a los casos de uso
 - **Contenido**: el HTML de artículos y la bio se sanean antes de persistirse
 - **Errores**: jerarquía de errores de dominio mapeada a códigos HTTP por el error handler middleware
-- **Auth**: JWT en cabecera `Authorization: Bearer`. Las contraseñas se guardan con bcrypt
+- **Auth**: JWT en cabecera `Authorization: Bearer`. Las contraseñas se guardan con bcrypt. Login, recuperación y restablecimiento llevan límite de intentos (`express-rate-limit`); los fallos de login por cuenta se cuentan en memoria
 - **Email**: Nodemailer contra MailDev en local y contra SMTP en producción. El enlace de reset apunta a `FRONTEND_URL`
 
 El frontend es Next.js (App Router) con `next-intl` para español e inglés, HeroUI y Tailwind. Las llamadas a la API se hacen en el servidor y la sesión se guarda en la cookie `accessToken`.
@@ -241,7 +243,7 @@ backend/src/
 ├── ui/                               # Capa HTTP
 │   ├── shared/middlewares/             # Error handler
 │   ├── article/                        # Rutas, controladores, validadores
-│   └── user/                           # Rutas, controladores, middleware JWT
+│   └── user/                           # Rutas, controladores, JWT y rate limit
 ├── index.ts                          # Punto de entrada
 └── api.ts                            # Configuración de Express
 
