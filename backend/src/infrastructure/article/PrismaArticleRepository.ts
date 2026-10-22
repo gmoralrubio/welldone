@@ -63,14 +63,24 @@ export class PrismaArticleRepository implements ArticleRepository {
     criteria: FindMyArticlesUseCaseInput
   ): Promise<FindArticlesResponse> {
     const { page, limit } = criteria;
+    const status = criteria.status as string | undefined; 
+    const now = new Date();
+
     const where = {
       authorId: criteria.authorId,
-      ...(criteria.status ? { status: criteria.status } : {}),
+      ...(status === 'SCHEDULED'
+        ? { status: 'PUBLISHED' as const, publishedAt: { gt: now } }
+        : status === 'PUBLISHED'
+        ? { status: 'PUBLISHED' as const, publishedAt: { lte: now } }
+        : status === 'DRAFT'
+        ? { status: 'DRAFT' as const }
+        : {}),
       ...(criteria.category ? { categories: { some: { slug: criteria.category } } } : {}),
       ...(criteria.search
         ? { title: { contains: criteria.search, mode: 'insensitive' as const } }
         : {}),
     };
+
     const [articlesPrisma, articlesCount] = await Promise.all([
       this.prisma.article.findMany({
         where,

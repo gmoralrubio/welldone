@@ -11,11 +11,13 @@ import {
   articleHref,
   authorArticlesHref,
   readingMinutes,
+  formatDate,
 } from '@/lib/article/article-presenters';
 import { UserAvatar } from '@/app/[locale]/components/user/user-avatar';
 import { useRelativeTime } from '@/app/[locale]/hooks/useRelativeTime';
 import { ArticleCardPublishedActions } from '@/app/[locale]/components/article/article-card-published-actions';
 import { ArticleActionsMenu } from './article-actions-menu';
+
 
 type ArticleCardProps = {
   article: ArticleDto;
@@ -33,6 +35,11 @@ export function ArticleCard({
   const articleLink = href ?? articleHref(article);
   const minutes = readingMinutes(article.intro, article.content);
   const t = useTranslations('ArticleCard');
+
+  const isScheduled = 
+    article.status === 'PUBLISHED' && 
+    article.publishedAt && 
+    new Date(article.publishedAt) > new Date();
 
   return (
     <Card className="flex flex-col gap-4 bg-white p-6 shadow-xs shadow-accent-dark/30 hover:shadow-md sm:flex-row sm:items-stretch group">
@@ -84,6 +91,17 @@ export function ArticleCard({
           </div>
 
           <div className="flex items-center gap-2">
+            {isScheduled && (
+              <Chip
+                color="accent"
+                variant="soft"
+                size="sm"
+                className="font-medium"
+              >
+                Programado: {formatDate(article.publishedAt)}
+              </Chip>
+            )}
+
             {article.status === 'PUBLISHED' ? (
               <ArticleCardPublishedActions
                 commentCount={article.commentCount}

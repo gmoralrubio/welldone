@@ -335,6 +335,7 @@
     "settingsTitle": "Settings",
     "tabs": {
       "published": "Published",
+      "schedule" : "Scheduled",
       "drafts": "Drafts",
       "about": "About"
     },

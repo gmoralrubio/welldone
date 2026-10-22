@@ -1,5 +1,4 @@
 import PrivateProfile from '@/app/[locale]/components/dashboard/private-profile';
-
 import { getProfileData } from '../profile-utils';
 import { notFound } from 'next/navigation';
 

@@ -12,6 +12,7 @@ import { UserAvatar } from '@/app/[locale]/components/user/user-avatar';
 import { ArticleDto } from '@/lib/article/articles.types';
 import { BioEditor } from '@/app/[locale]/components/user/bio-editor';
 
+
 interface UserProfile {
   id: number;
   name: string;
@@ -24,7 +25,7 @@ interface UserProfile {
 interface AccountPageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
   currentUser: UserProfile;
-  currentTab: string;
+  currentTab: string; // 'PUBLISHED' |'SCHEDULED'| 'DRAFT' | 'ABOUT'
 }
 
 export default async function PrivateProfile({
@@ -47,7 +48,7 @@ export default async function PrivateProfile({
       page: String(page),
       limit: String(limit),
       order,
-      status: currentStatus,
+      status: currentStatus, 
     });
 
     articles = articlesResponse.data;
@@ -80,11 +81,19 @@ export default async function PrivateProfile({
           </Link>
 
           <Link
+            href={`/dashboard/@${currentUser.username}/scheduled`}
+            className={currentStatus === 'SCHEDULED' ? activeTabClass : inactiveTabClass}
+          >
+            {t('tabs.schedule')}
+          </Link>
+
+          <Link
             href={`/dashboard/@${currentUser.username}/draft`}
             className={currentStatus === 'DRAFT' ? activeTabClass : inactiveTabClass}
           >
             {t('tabs.drafts')}
           </Link>
+
 
           <Link
             href={`/dashboard/@${currentUser.username}/about`}
@@ -111,6 +120,8 @@ export default async function PrivateProfile({
             <p className="text-lg text-muted">
               {currentStatus === 'DRAFT'
                 ? t('emptyStates.drafts')
+                : currentStatus === 'SCHEDULED' 
+                ? 'No tienes ningún artículo programado para el futuro.'
                 : t('emptyStates.published')}
             </p>
           )}
@@ -124,7 +135,13 @@ export default async function PrivateProfile({
               search=""
               order={order}
               category=""
-              pathname={`/dashboard/@${currentUser.username}`}
+              pathname={
+                currentStatus === 'SCHEDULED' 
+                  ? `/dashboard/@${currentUser.username}/scheduled`
+                  : currentStatus === 'DRAFT'
+                  ? `/dashboard/@${currentUser.username}/draft`
+                  : `/dashboard/@${currentUser.username}`
+              }
               status={currentStatus === 'DRAFT' ? 'DRAFT' : 'PUBLISHED'}
             />
           </div>
