@@ -211,7 +211,9 @@
     "footerPrivacy": "Privacidad",
     "errors": {
       "invalidCredentials": "El email, nombre de usuario o contraseña son incorrectos.",
-      "loginFailed": "No se ha podido iniciar sesión. Inténtalo de nuevo."
+      "loginFailed": "No se ha podido iniciar sesión. Inténtalo de nuevo.",
+      "tooManyAttempts": "Demasiados intentos fallidos. Vuelve a intentarlo más tarde.",
+      "tooManyRequests": "Has realizado demasiadas solicitudes desde esta conexión. Espera unos minutos antes de volver a intentarlo."
     }
   },
   "AuthForgotPassword": {

@@ -211,7 +211,9 @@
     "footerPrivacy": "Privacy",
     "errors": {
       "invalidCredentials": "Email, username, or password is incorrect.",
-      "loginFailed": "Could not sign in. Please try again."
+      "loginFailed": "Could not sign in. Please try again.",
+      "tooManyAttempts": "Too many failed login attempts. Please try again later.",
+      "tooManyRequests": "Too many requests from this connection. Please wait a few minutes before trying again."
     }
   },
   "AuthForgotPassword": {

@@ -10,8 +10,11 @@ import { useTranslations } from 'next-intl';
 
 type LoginFieldKey = keyof LoginFormData;
 type LoginValidationKey = 'identifierRequired' | 'passwordRequired';
-type LoginFormErrorKey = 'invalidCredentials' | 'loginFailed';
-
+type LoginFormErrorKey =
+  | 'invalidCredentials'
+  | 'tooManyAttempts'
+  | 'tooManyRequests'
+  | 'loginFailed';
 type LoginErrors = Partial<
   Record<LoginFieldKey, LoginValidationKey> & { form: LoginFormErrorKey }
 >;
@@ -57,12 +60,29 @@ export default function LoginPage() {
       router.push('/articles');
       return;
     }
+    // Límite por IP: demasiadas solicitudes desde la misma conexión
+    if (response.status === 429) {
+      setErrors({ form: 'tooManyRequests' });
+      return;
+    }
 
+    // Límite por cuenta: demasiados intentos fallidos en esa cuenta
+    if (
+      response.status === 401 &&
+      response.data?.error ===
+        'Demasiados intentos fallidos. Vuelve a intentarlo más tarde.'
+    ) {
+      setErrors({ form: 'tooManyAttempts' });
+      return;
+    }
+
+    // Credenciales incorrectas
     if (response.status === 401 || response.status === 404) {
       setErrors({ form: 'invalidCredentials' });
       return;
     }
 
+    // Otros errores
     setErrors({ form: 'loginFailed' });
   };
 
