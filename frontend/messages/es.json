@@ -335,6 +335,7 @@
     "settingsTitle": "Configuración",
     "tabs": {
       "published": "Publicado",
+      "schedule" : "Programados",
       "drafts": "Borradores",
       "about": "Acerca de"
     },

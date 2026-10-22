@@ -43,7 +43,7 @@ export const findMyArticlesValidationSchema = z.object({
   search: z.string().min(3).optional(),
   category: z.enum(CATEGORY_SLUGS).optional(),
   order: z.enum(['asc', 'desc']).default('desc').catch('desc'),
-  status: z.enum(['PUBLISHED', 'DRAFT']).optional(),
+  status: z.enum(['PUBLISHED', 'DRAFT', 'SCHEDULED']).optional(),
 });
 
 export const myArticleValidationSchema = z.object({
