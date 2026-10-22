@@ -1,9 +1,11 @@
+import 'server-only';
 import parse, {
   DOMNode,
   Element,
   HTMLReactParserOptions,
   domToReact,
 } from 'html-react-parser';
+import { sanitizeArticleContent } from '@/lib/article/sanitize-article-content';
 import { ArticleH2 } from '@/app/[locale]/components/article-detail/article-h2';
 import { ArticleH3 } from '@/app/[locale]/components/article-detail/article-h3';
 import { ArticleOl } from '@/app/[locale]/components/article-detail/article-ol';
@@ -51,5 +53,5 @@ export function parseContent(content: string) {
     },
   };
 
-  return parse(content, options);
+  return parse(sanitizeArticleContent(content), options);
 }

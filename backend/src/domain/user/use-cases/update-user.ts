@@ -1,3 +1,4 @@
+import { sanitizeBio } from "../../../infrastructure/user/sanitizers/sanitizeBio";
 import { BadSyntaxError } from "../../errors/BadSyntaxError";
 import { BusinessConflictError } from "../../errors/BusinessConflictError";
 import { ValidationError } from "../../errors/ValidationError";
@@ -73,14 +74,21 @@ export class UpdateUserUseCase {
       }
     }
     
-    // 6. Validar la biografía (puede ser string o null)
-    if (input.bio !== undefined) {
-      if (input.bio !== null && typeof input.bio !== "string") {
+    // 6. Validar la biografía (puede ser string o null) y sanear el HTML
+    let bio = input.bio;
+    if (bio !== undefined) {
+      if (bio !== null && typeof bio !== "string") {
         throw new ValidationError("Bio must be a string or null");
+      }
+      if (typeof bio === "string") {
+        bio = sanitizeBio(bio);
       }
     }
 
     // 7. Actualizar los datos
-    return this.userRepository.update(userId, input);
+    return this.userRepository.update(userId, {
+      ...input,
+      ...(bio !== undefined ? { bio } : {}),
+    });
   }
 }

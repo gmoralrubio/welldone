@@ -166,7 +166,7 @@
     "commentsNext": "Siguiente"
   },
   "AuthorArticlesPage": {
-    "heading": "Artículos de {author}",
+    "heading": "Perfil de {author}",
     "empty": "Este miembro todavía no tiene artículos publicados."
   },
   "AuthorNotFound": {
@@ -190,7 +190,7 @@
   },
   "AuthLogin": {
     "brand": "WellDone",
-    "backToReading": "Volver a la lectura pública",
+    "backToReading": "Volver",
     "eyebrow": "Bienvenido a WellDone",
     "title": "Iniciar sesión",
     "subtitle": "Accede a tu cuenta para entrar en tu espacio de miembro de WellDone.",
@@ -330,7 +330,7 @@
     "accountTitle": "Cuenta",
     "settingsTitle": "Configuración",
     "tabs": {
-      "published": "Publicados",
+      "published": "Artículos",
       "drafts": "Borradores",
       "about": "Acerca de"
     },

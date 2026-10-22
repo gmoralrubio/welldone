@@ -8,6 +8,7 @@ export function SidebarMenu({ username }: { username: string }) {
   const t = useTranslations('UserNavigation');
 
   const menuItems = [
+
     { href: '/articles', label: t('home') },
     {
       href: `/dashboard/@${username}`,
@@ -17,6 +18,7 @@ export function SidebarMenu({ username }: { username: string }) {
     { href: '/dashboard/favorites', label: t('favorites') },
     { href: '/dashboard/notifications', label: t('notifications') },
     { href: '/dashboard/settings', label: t('settings') },
+
   ];
 
   return (

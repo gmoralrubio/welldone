@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
-import { redirect } from '@/i18n/navigation';
 import { getLocale } from 'next-intl/server';
+import { redirect } from '@/i18n/navigation';
 
 export default async function DashboardRootLayout({
   children,
@@ -12,7 +12,7 @@ export default async function DashboardRootLayout({
   const accessToken = cookieStore.get('accessToken')?.value;
 
   if (!accessToken) {
-    redirect({ href: '/login', locale });
+    return redirect({ href: '/login', locale });
   }
 
   const response = await fetch(`${process.env.API_URL}/api/users/me`, {
@@ -23,11 +23,10 @@ export default async function DashboardRootLayout({
     cache: 'no-store',
   });
 
-  if (response.status === 401) {
-    redirect({ href: '/login', locale });
-  }
-
   if (!response.ok) {
+    if (response.status === 401) {
+      return redirect({ href: '/login', locale });
+    }
     throw new Error('No se ha podido comprobar la sesión del usuario');
   }
 

@@ -14,12 +14,13 @@ const DotsIcon = () => (
 );
 
 interface Props {
-  articleId: string | number;
+  authorUsername: string;
+  slug: string;
   editLabel: string;
   deleteLabel: string;
 }
 
-export function ArticleActionsMenu({ articleId, editLabel, deleteLabel }: Props) {
+export function ArticleActionsMenu({ authorUsername, slug, editLabel, deleteLabel }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -60,7 +61,7 @@ export function ArticleActionsMenu({ articleId, editLabel, deleteLabel }: Props)
 
     startTransition(async () => {
       try {
-        const result = await deleteArticleAction(articleId);
+        const result = await deleteArticleAction(authorUsername, slug);
 
         if (result.status === 204) {
           dialogRef.current?.close();
@@ -96,7 +97,7 @@ export function ArticleActionsMenu({ articleId, editLabel, deleteLabel }: Props)
         <div className="absolute right-0 z-50 mt-2 w-40 origin-top-right rounded-md bg-white p-1 shadow-lg ring-1 ring-black/5 focus:outline-none">
           <div className="flex flex-col gap-1">
             <Link
-              href={`/dashboard/edit/${articleId}`}
+              href={`/dashboard/edit/${slug}`}
               className="block w-full rounded-md px-3 py-2 text-left text-sm text-foreground hover:bg-default-100"
               onClick={() => setIsOpen(false)}
             >
@@ -122,7 +123,7 @@ export function ArticleActionsMenu({ articleId, editLabel, deleteLabel }: Props)
 
       <dialog
         ref={dialogRef}
-        aria-labelledby={`delete-dialog-title-${articleId}`}
+        aria-labelledby={`delete-dialog-title-${slug}`}
         onCancel={(event) => {
           if (isPending) event.preventDefault();
         }}
@@ -130,7 +131,7 @@ export function ArticleActionsMenu({ articleId, editLabel, deleteLabel }: Props)
         className="m-auto w-[calc(100%-2rem)] max-w-md rounded-xl bg-white p-6 shadow-xl backdrop:bg-black/50 backdrop:backdrop-blur-sm z-50 fixed inset-0"
       >
         <h3
-          id={`delete-dialog-title-${articleId}`}
+          id={`delete-dialog-title-${slug}`}
           className="font-serif text-2xl font-semibold text-black"
         >
           {t('deleteModalTitle') || '¿Eliminar artículo?'}

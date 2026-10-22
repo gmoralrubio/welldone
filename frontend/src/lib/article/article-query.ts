@@ -6,8 +6,6 @@ export type ArticleOrder = 'asc' | 'desc';
 
 export type ArticleListPathname =
   | '/articles'
-  | '/dashboard/account'
-  | '/dashboard/my-articles'
   | `/articles/${string}`
   | `/dashboard/@${string}`
   | '/dashboard/favorites';
