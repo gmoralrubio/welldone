@@ -39,7 +39,7 @@ export function SiteHeaderClient({ search, order, user }: SiteHeaderClientProps)
 
   return (
     <header className="sticky top-0 z-20 border-b border-separator bg-background-secondary shadow-accent-dark backdrop-blur-md">
-      <div className="mx-auto flex w-full max-w-340 flex-col px-8">
+      <div className="flex w-full flex-col px-4 sm:px-8">
         <div className="flex h-16 items-center justify-between gap-6">
           <div className="flex min-w-0 items-center gap-6">
             <Link
