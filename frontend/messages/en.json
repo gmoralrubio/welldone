@@ -328,7 +328,7 @@
     "accountTitle": "Account",
     "settingsTitle": "Settings",
     "tabs": {
-      "published": "Articles",
+      "published": "Published",
       "drafts": "Drafts",
       "about": "About"
     },
