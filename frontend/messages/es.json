@@ -230,7 +230,8 @@
     "success": "Si existe una cuenta asociada a este correo, recibirás un enlace para restablecer tu contraseña.",
     "backToLogin": "Volver a iniciar sesión",
     "errors": {
-      "requestFailed": "No se ha podido procesar la solicitud. Inténtalo de nuevo."
+      "requestFailed": "No se ha podido procesar la solicitud. Inténtalo de nuevo.",
+      "tooManyRequests": "Has solicitado demasiados correos de recuperación. Espera unos minutos antes de volver a intentarlo."
     }
   },
   "ValidationForgotPassword": {
@@ -254,7 +255,8 @@
     "backToLogin": "Volver a iniciar sesión",
     "errors": {
       "invalidToken": "El enlace de recuperación no es válido o ha caducado. Solicita uno nuevo.",
-      "requestFailed": "No se ha podido restablecer la contraseña. Inténtalo de nuevo."
+      "requestFailed": "No se ha podido restablecer la contraseña. Inténtalo de nuevo.",
+      "tooManyRequests": "Has realizado demasiados intentos de restablecimiento. Espera unos minutos antes de volver a intentarlo."
     }
   },
   "ValidationResetPassword": {

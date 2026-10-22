@@ -230,7 +230,8 @@
     "success": "If an account exists with this email address, you'll receive a link to reset your password.",
     "backToLogin": "Back to sign in",
     "errors": {
-      "requestFailed": "We couldn't process your request. Please try again."
+      "requestFailed": "We couldn't process your request. Please try again.",
+      "tooManyRequests": "Too many password recovery requests. Please wait a few minutes before trying again."
     }
   },
   "ValidationForgotPassword": {
@@ -254,7 +255,8 @@
     "backToLogin": "Back to sign in",
     "errors": {
       "invalidToken": "This recovery link is invalid or has expired. Request a new one.",
-      "requestFailed": "Your password could not be reset. Please try again."
+      "requestFailed": "Your password could not be reset. Please try again.",
+      "tooManyRequests": "Too many password reset attempts. Please wait a few minutes before trying again."
     }
   },
   "ValidationResetPassword": {

@@ -17,7 +17,7 @@ type ValidationErrorKey =
   | 'repeatPasswordRequired'
   | 'passwordsMismatch';
 
-type FormErrorKey = 'invalidToken' | 'requestFailed';
+type FormErrorKey = 'invalidToken' | 'requestFailed' | 'tooManyRequests';
 
 type ResetPasswordErrors = Partial<
   Record<'password' | 'repeatPassword', ValidationErrorKey> & {
@@ -79,6 +79,8 @@ function ResetPasswordForm() {
 
       if (response.status === 200) {
         setIsSuccess(true);
+      } else if (response.status === 429) {
+        setErrors({ form: 'tooManyRequests' });
       } else if (response.status === 401) {
         setErrors({ form: 'invalidToken' });
       } else {
