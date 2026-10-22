@@ -9,6 +9,7 @@ export const accountSchema = z.object({
     .string()
     .trim()
     .min(3, 'usernameMin')
+    .max(20, 'usernameMax')
     .regex(/^[a-zA-Z0-9._]+$/, 'usernamePattern'),
 
   email: z

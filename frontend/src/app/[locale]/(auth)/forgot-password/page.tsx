@@ -9,7 +9,12 @@ import { useLocale, useTranslations } from 'next-intl';
 import { forgotPasswordSchema } from './schema';
 import { forgotPassword } from './actions';
 
-type ForgotPasswordError = 'emailRequired' | 'emailInvalid' | 'requestFailed' | null;
+type ForgotPasswordError =
+  | 'emailRequired'
+  | 'emailInvalid'
+  | 'requestFailed'
+  | 'tooManyRequests'
+  | null;
 
 export default function ForgotPasswordPage() {
   const t = useTranslations('AuthForgotPassword');
@@ -44,6 +49,8 @@ export default function ForgotPasswordPage() {
 
       if (response.status === 200) {
         setIsSuccess(true);
+      } else if (response.status === 429) {
+        setError('tooManyRequests');
       } else {
         setError('requestFailed');
       }
@@ -105,7 +112,7 @@ export default function ForgotPasswordPage() {
               />
             </div>
 
-            {error && error !== 'requestFailed' ? (
+            {error === 'emailRequired' || error === 'emailInvalid' ? (
               <p
                 className="mt-1.5 text-xs font-medium text-[#ba1a1a]"
                 role="alert"
@@ -115,12 +122,12 @@ export default function ForgotPasswordPage() {
             ) : null}
           </TextField>
 
-          {error === 'requestFailed' ? (
+          {error === 'requestFailed' || error === 'tooManyRequests' ? (
             <p
               className="text-xs font-medium text-[#ba1a1a]"
               role="alert"
             >
-              {t('errors.requestFailed')}
+              {t(`errors.${error}`)}
             </p>
           ) : null}
 

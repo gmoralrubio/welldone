@@ -1,25 +1,28 @@
-import { LoginUserUseCase } from "../../../domain/user/use-cases/login-user";
-import { PrismaUserRepository } from "@infrastructure/user/repositories/PrismaUserRepository";
-import { SecurityServiceImplementation } from "@infrastructure/user/services/SecurityServiceImplementation";
-import { NextFunction, Request, Response } from "express";
+import { LoginUserUseCase } from '../../../domain/user/use-cases/login-user';
+import { PrismaUserRepository } from '@infrastructure/user/repositories/PrismaUserRepository';
+import { InMemoryLoginAttemptSecurityService } from '@infrastructure/user/services/InMemoryLoginAttemptSecurityService';
+import { SecurityServiceImplementation } from '@infrastructure/user/services/SecurityServiceImplementation';
+import { NextFunction, Request, Response } from 'express';
 
 export const loginUserController = async (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   const { identifier, password } = req.body;
 
   if (!identifier || !password) {
-    res.status(400).json({ error: "Inputs email and password are mandatory." });
+    res.status(400).json({ error: 'Inputs email and password are mandatory.' });
     return;
   }
 
   const userRepository = new PrismaUserRepository();
   const securityService = new SecurityServiceImplementation();
+  const loginAttemptSecurityService = new InMemoryLoginAttemptSecurityService();
   const loginUserUseCase = new LoginUserUseCase(
     userRepository,
     securityService,
+    loginAttemptSecurityService
   );
   try {
     const token = await loginUserUseCase.execute({

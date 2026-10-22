@@ -211,7 +211,9 @@
     "footerPrivacy": "Privacy",
     "errors": {
       "invalidCredentials": "Email, username, or password is incorrect.",
-      "loginFailed": "Could not sign in. Please try again."
+      "loginFailed": "Could not sign in. Please try again.",
+      "tooManyAttempts": "Too many failed login attempts. Please try again later.",
+      "tooManyRequests": "Too many requests from this connection. Please wait a few minutes before trying again."
     }
   },
   "AuthForgotPassword": {
@@ -228,7 +230,8 @@
     "success": "If an account exists with this email address, you'll receive a link to reset your password.",
     "backToLogin": "Back to sign in",
     "errors": {
-      "requestFailed": "We couldn't process your request. Please try again."
+      "requestFailed": "We couldn't process your request. Please try again.",
+      "tooManyRequests": "Too many password recovery requests. Please wait a few minutes before trying again."
     }
   },
   "ValidationForgotPassword": {
@@ -252,7 +255,8 @@
     "backToLogin": "Back to sign in",
     "errors": {
       "invalidToken": "This recovery link is invalid or has expired. Request a new one.",
-      "requestFailed": "Your password could not be reset. Please try again."
+      "requestFailed": "Your password could not be reset. Please try again.",
+      "tooManyRequests": "Too many password reset attempts. Please wait a few minutes before trying again."
     }
   },
   "ValidationResetPassword": {
@@ -273,6 +277,7 @@
     "surnamePlaceholder": "Your last name",
     "usernameLabel": "Username",
     "usernamePlaceholder": "your_username",
+    "usernameHint": "Between 3 and 20 characters. You can use letters without accents, numbers, periods (.) and underscores (_).",
     "emailLabel": "Email",
     "emailPlaceholder": "you@email.com",
     "passwordLabel": "Password",
@@ -302,8 +307,9 @@
     "Register": {
       "nameMin": "First name must be at least three characters.",
       "surnameRequired": "Last name is required.",
-      "usernameMin": "Username must be at least three characters.",
-      "usernamePattern": "Username may only contain letters, numbers, dots, and underscores.",
+      "usernameMin": "Username must be at least 3 characters long.",
+      "usernameMax": "Username cannot exceed 20 characters.",
+      "usernamePattern": "Only letters without accents, numbers, periods (.) and underscores (_) are allowed.",
       "emailRequired": "Email is required.",
       "emailInvalid": "Enter a valid email address.",
       "passwordRequired": "Password is required.",
@@ -350,6 +356,7 @@
     "nameLabel": "First name",
     "surnameLabel": "Last name",
     "usernameLabel": "Username",
+    "usernameHint": "Between 3 and 20 characters. You can use letters without accents, numbers, periods (.) and underscores (_).",
     "emailLabel": "Email address",
     "save": "Save changes",
     "saving": "Saving...",

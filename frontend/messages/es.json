@@ -211,7 +211,9 @@
     "footerPrivacy": "Privacidad",
     "errors": {
       "invalidCredentials": "El email, nombre de usuario o contraseña son incorrectos.",
-      "loginFailed": "No se ha podido iniciar sesión. Inténtalo de nuevo."
+      "loginFailed": "No se ha podido iniciar sesión. Inténtalo de nuevo.",
+      "tooManyAttempts": "Demasiados intentos fallidos. Vuelve a intentarlo más tarde.",
+      "tooManyRequests": "Has realizado demasiadas solicitudes desde esta conexión. Espera unos minutos antes de volver a intentarlo."
     }
   },
   "AuthForgotPassword": {
@@ -228,7 +230,8 @@
     "success": "Si existe una cuenta asociada a este correo, recibirás un enlace para restablecer tu contraseña.",
     "backToLogin": "Volver a iniciar sesión",
     "errors": {
-      "requestFailed": "No se ha podido procesar la solicitud. Inténtalo de nuevo."
+      "requestFailed": "No se ha podido procesar la solicitud. Inténtalo de nuevo.",
+      "tooManyRequests": "Has solicitado demasiados correos de recuperación. Espera unos minutos antes de volver a intentarlo."
     }
   },
   "ValidationForgotPassword": {
@@ -252,7 +255,8 @@
     "backToLogin": "Volver a iniciar sesión",
     "errors": {
       "invalidToken": "El enlace de recuperación no es válido o ha caducado. Solicita uno nuevo.",
-      "requestFailed": "No se ha podido restablecer la contraseña. Inténtalo de nuevo."
+      "requestFailed": "No se ha podido restablecer la contraseña. Inténtalo de nuevo.",
+      "tooManyRequests": "Has realizado demasiados intentos de restablecimiento. Espera unos minutos antes de volver a intentarlo."
     }
   },
   "ValidationResetPassword": {
@@ -273,6 +277,7 @@
     "surnamePlaceholder": "Tus apellidos",
     "usernameLabel": "Nombre de usuario",
     "usernamePlaceholder": "tu_usuario",
+    "usernameHint": "Entre 3 y 20 caracteres. Puedes utilizar letras sin tildes, números, puntos (.) y guiones bajos (_).",
     "emailLabel": "Correo electrónico",
     "emailPlaceholder": "tu@email.com",
     "passwordLabel": "Contraseña",
@@ -302,8 +307,9 @@
     "Register": {
       "nameMin": "El nombre debe tener mínimo tres caracteres.",
       "surnameRequired": "Los apellidos son obligatorios.",
-      "usernameMin": "El nombre de usuario debe tener mínimo tres caracteres.",
-      "usernamePattern": "El nombre de usuario solo puede contener letras, números, puntos y guiones bajos.",
+      "usernameMin": "El nombre de usuario debe tener al menos 3 caracteres.",
+      "usernameMax": "El nombre de usuario no puede superar los 20 caracteres.",
+      "usernamePattern": "Solo se permiten letras sin tildes, números, puntos (.) y guiones bajos (_).",
       "emailRequired": "El correo electrónico es obligatorio.",
       "emailInvalid": "Introduce un correo electrónico válido.",
       "passwordRequired": "La contraseña es obligatoria.",
@@ -350,6 +356,7 @@
     "nameLabel": "Nombre",
     "surnameLabel": "Apellidos",
     "usernameLabel": "Nombre de usuario",
+    "usernameHint": "Entre 3 y 20 caracteres. Puedes utilizar letras sin tildes, números, puntos (.) y guiones bajos (_).",
     "emailLabel": "Correo electrónico",
     "save": "Guardar cambios",
     "saving": "Guardando...",
