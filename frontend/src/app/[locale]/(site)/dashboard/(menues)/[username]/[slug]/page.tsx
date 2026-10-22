@@ -1,11 +1,12 @@
 import { getMyArticleBySlug } from '@/app/[locale]/(site)/articles/actions';
 import { parseContent } from '@/app/[locale]/(site)/articles/article-content-parser';
 import { ArticleCategory } from '@/app/[locale]/components/article/article-category';
-import { Link } from '@/i18n/navigation';
+import { Link, redirect } from '@/i18n/navigation';
 import { ArticleStatus } from '@/lib/article/articles.types';
-import { Chip } from '@heroui/react';
-import { getTranslations } from 'next-intl/server';
+import { Card, Chip } from '@heroui/react';
+import { getTranslations, getLocale } from 'next-intl/server';
 import Image from 'next/image';
+import { ArticleVideo } from '@/app/[locale]/components/article-detail/article-video';
 import { notFound } from 'next/navigation';
 
 interface MyArticlePageProps {
@@ -18,6 +19,19 @@ export default async function MyArticlePage({ params }: MyArticlePageProps) {
 
   if (!article) {
     notFound();
+  }
+
+  const isPublished = article.status === ArticleStatus.PUBLISHED;
+  const isPastPublicationDate = article.publishedAt
+    ? new Date(article.publishedAt) <= new Date()
+    : true; // Si no hay fecha programada pero está publicado, asume que es visible
+
+  if (isPublished && isPastPublicationDate) {
+    const locale = await getLocale();
+    redirect({ 
+      href: `/articles/${article.author.username}/${article.slug}`,
+      locale: locale
+    });
   }
 
   const t = await getTranslations('Dashboard');
@@ -69,14 +83,15 @@ export default async function MyArticlePage({ params }: MyArticlePageProps) {
       ) : null}
 
       {article.featuredVideoUrl ? (
-        <video
-          src={article.featuredVideoUrl}
-          controls
-          poster={article.featuredImageUrl ?? undefined}
-          className="aspect-video w-full rounded-2xl bg-surface-secondary"
-        >
-          {t('videoUnsupported')}
-        </video>
+        <Card
+            variant="transparent"
+            className="overflow-hidden p-0!"
+          >
+          <ArticleVideo 
+            url={article.featuredVideoUrl.trim()}
+            poster={article.featuredImageUrl} 
+          />
+        </Card>
       ) : null}
 
       <article className="flex flex-col gap-4 font-serif text-xl leading-relaxed">

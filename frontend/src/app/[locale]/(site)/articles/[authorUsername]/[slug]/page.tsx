@@ -10,6 +10,8 @@ import { Button, Card, CardContent, Chip } from '@heroui/react';
 import { Check, Comment, PersonPlus } from '@gravity-ui/icons';
 import { Metadata } from 'next';
 import Image from 'next/image';
+import { ArticleVideo } from '@/app/[locale]/components/article-detail/article-video';
+
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { ArticleBreadcrumbs } from '@/app/[locale]/components/article/article-breadcrumbs';
@@ -169,14 +171,10 @@ export default async function ArticleDetailPage({
           variant="transparent"
           className="overflow-hidden p-0!"
         >
-          <video
-            src={article.featuredVideoUrl}
-            controls
-            poster={article.featuredImageUrl ?? undefined}
-            className="aspect-video w-full rounded-2xl bg-surface-secondary"
-          >
-            {t('videoUnsupported')}
-          </video>
+          <ArticleVideo 
+            url={article.featuredVideoUrl.trim()}
+            poster={article.featuredImageUrl} 
+          />
         </Card>
       ) : null}
 
